@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Kinetic Performance Audit | Conscious Growth</title>
+    <style>
+        /* --- DESIGN TOKENS --- */
+        :root {
+            --stone-900: #1c1917; 
+            --stone-600: #57534e;
+            --stone-100: #f5f5f4;
+            --gold-500: #f59e0b;
+            --gold-600: #d97706;
+            --teal-500: #14b8a6;
+            --rose-500: #f43f5e;
+            --bg-body: #fafaf9;
+            
+            --font-heading: 'Georgia', serif;
+            --font-body: 'Helvetica Neue', sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-body);
+            font-family: var(--font-body);
+            color: var(--stone-900);
+            line-height: 1.6;
+            padding-bottom: 100px;
+        }
+
+        /* --- HEADER --- */
+        .app-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e7e5e4;
+            position: sticky; top: 0; z-index: 100;
+            padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .brand-logo { font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--stone-900); font-size: 0.8rem; display: flex; align-items: center; gap: 8px; }
+        .progress-bar-container { flex-grow: 1; max-width: 300px; margin: 0 20px; background: #e7e5e4; height: 4px; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--gold-500); width: 0%; transition: width 0.5s ease; }
+        .save-status { font-size: 0.7rem; color: var(--stone-600); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- CONTAINER --- */
+        .course-container { max-width: 700px; margin: 40px auto; background: white; border-radius: 16px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #e7e5e4; }
+
+        .hero-section { background: var(--stone-900); color: white; padding: 60px 40px; text-align: center; }
+        h1 { margin: 0; font-family: var(--font-heading); font-size: 2.5rem; line-height: 1.1; font-style: italic; }
+        .subtitle { color: var(--gold-500); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; font-size: 0.75rem; }
+
+        /* --- MODULES --- */
+        .module { padding: 40px; border-bottom: 1px solid #f5f5f4; }
+        .module-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+        .module-number { background: var(--stone-100); color: var(--stone-900); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; border: 1px solid #e7e5e4; }
+        h2 { font-size: 1.25rem; margin: 0; color: var(--stone-900); font-family: var(--font-heading); }
+
+        .insight-block { background: #fffbeb; border-left: 3px solid var(--gold-500); padding: 20px; margin-bottom: 25px; border-radius: 0 8px 8px 0; }
+        .insight-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold-600); font-weight: 700; margin-bottom: 8px; display: block; }
+        .insight-text { color: var(--stone-600); font-style: italic; font-size: 0.95rem; }
+
+        label { display: block; font-weight: 700; margin-bottom: 10px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--stone-900); }
+        textarea { width: 100%; padding: 15px; border: 1px solid #d6d3d1; border-radius: 8px; font-family: inherit; min-height: 100px; resize: vertical; transition: all 0.3s; background: #fafaf9; }
+        textarea:focus { outline: none; border-color: var(--gold-500); background: white; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1); }
+
+        /* --- CHECKBOXES --- */
+        .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+        .custom-checkbox { display: flex; align-items: center; padding: 15px; background: white; border: 1px solid #e7e5e4; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .custom-checkbox:hover { border-color: var(--stone-400); }
+        .custom-checkbox input { margin-right: 15px; accent-color: var(--stone-900); transform: scale(1.2); }
+        .custom-checkbox span { font-size: 0.95rem; color: var(--stone-600); }
+
+        /* --- ENERGY QUESTIONS --- */
+        .energy-question { margin-bottom: 25px; }
+        .energy-question p { font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; }
+        .energy-options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .energy-opt { 
+            padding: 10px; border: 1px solid #e7e5e4; border-radius: 8px; text-align: center; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; background: #fff;
+        }
+        .energy-opt:hover { border-color: var(--gold-500); }
+        .energy-opt.selected { background: var(--stone-900); color: white; border-color: var(--stone-900); }
+
+        /* --- SCORECARD (DYNAMIC) --- */
+        .score-section { background: var(--stone-900); color: white; padding: 40px; text-align: center; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--gold-500); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 800; margin: 0 auto 20px auto; font-family: var(--font-heading); }
+        
+        .energy-badge { 
+            display: inline-block; padding: 5px 15px; border-radius: 20px; background: rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255,255,255,0.2); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;
+        }
+
+        /* --- RECOMMENDATION ENGINE --- */
+        .rec-box { background: white; padding: 35px; border-radius: 12px; margin-top: 30px; text-align: left; color: var(--stone-900); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .rec-title { color: var(--gold-600); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; margin-bottom: 15px; display:block;}
+        .rec-product { font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 15px; font-style: italic; line-height: 1.1; }
+        .rec-desc { font-size: 0.95rem; color: #555; line-height: 1.6; margin-bottom: 25px; }
+        
+        .btn-main { display: block; width: 100%; padding: 16px; background: var(--stone-900); color: white; text-align: center; text-decoration: none; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-size: 0.85rem; }
+        .btn-main:hover { background: var(--gold-500); color: var(--stone-900); transform: translateY(-2px); }
+
+        /* Secondary Options (General Upsells) */
+        .eco-section { border-top: 1px dashed #e7e5e4; margin-top: 30px; padding-top: 25px; }
+        .eco-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--stone-600); margin-bottom: 15px; text-align: center; }
+        
+        .eco-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .eco-btn { 
+            padding: 15px; border: 1px solid #e7e5e4; border-radius: 8px; text-align: center; text-decoration: none; transition: all 0.2s; background: #fafaf9;
+            display: flex; flex-direction: column; align-items: center; gap: 4px; justify-content: center;
+        }
+        .eco-btn:hover { background: white; border-color: var(--stone-900); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .eco-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--stone-400); font-weight: 700; }
+        .eco-name { font-size: 0.85rem; font-weight: 600; color: var(--stone-900); }
+        
+        .linkedin-btn { grid-column: span 2; background: white; }
+
+        @media (max-width: 768px) {
+            .hero-section { padding: 40px 20px; }
+            h1 { font-size: 2rem; }
+            .module { padding: 25px 20px; }
+            .energy-options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-header">
+        <div class="brand-logo"><span style="color:var(--gold-500)">●</span> Conscious Growth</div>
+        <div class="progress-bar-container"><div class="progress-fill" id="progressBar"></div></div>
+        <div class="save-status" id="saveStatus">Active</div>
+    </div>
+
+    <div class="course-container">
+        
+        <div class="hero-section">
+            <h1>The Kinetic Audit</h1>
+            <div class="subtitle">Performance Diagnostic</div>
+            <p style="opacity: 0.7; margin-top: 20px; font-size: 0.95rem;">
+                Where is your energy leaking? This diagnostic calculates your <strong>Resilience Pulse</strong> and identifies your <strong>Energy Archetype</strong>.
+            </p>
+        </div>
+
+        <!-- MODULE 1: THE DRAIN -->
+        <div class="module">
+            <div class="module-header"><div class="module-number">1</div><h2>Energy Leak Detection</h2></div>
+            <div class="insight-block">
+                <span class="insight-label">The Concept</span>
+                <p class="insight-text">"You don't need more energy; you need fewer leaks. Identify the 'Catabolic' drain—the thing that sucks your battery dry."</p>
+            </div>
+            <label>What is your primary drain right now?</label>
+            <textarea id="input_trigger" oninput="updateUI()" placeholder="e.g., The fear of failing the project..."></textarea>
+        </div>
+
+        <!-- MODULE 2: THE REACTION -->
+        <div class="module">
+            <div class="module-header"><div class="module-number">2</div><h2>Reaction Speed</h2></div>
+            <label>In the last 48 hours, did you:</label>
+            <div class="checkbox-group">
+                <label class="custom-checkbox"><input type="checkbox" id="check_email" onchange="updateUI()"><span>Reply to an email/text while frustrated?</span></label>
+                <label class="custom-checkbox"><input type="checkbox" id="check_defensive" onchange="updateUI()"><span>Get defensive when receiving feedback?</span></label>
+                <label class="custom-checkbox"><input type="checkbox" id="check_overwhelm" onchange="updateUI()"><span>Say "Yes" to a request out of guilt/fear?</span></label>
+            </div>
+        </div>
+
+        <!-- MODULE 3: THE NARRATIVE -->
+        <div class="module">
+            <div class="module-header"><div class="module-number">3</div><h2>The Narrative</h2></div>
+            <label>Which statement feels most true today?</label>
+            <div class="checkbox-group">
+                <label class="custom-checkbox"><input type="radio" name="mindset" value="1" onchange="updateUI()"><span>"I feel like things are happening TO me." (Victim)</span></label>
+                <label class="custom-checkbox"><input type="radio" name="mindset" value="2" onchange="updateUI()"><span>"I have to fight to get what I want." (Conflict)</span></label>
+                <label class="custom-checkbox"><input type="radio" name="mindset" value="3" onchange="updateUI()"><span>"I choose how I respond to this challenge." (Responsibility)</span></label>
+            </div>
+        </div>
+
+        <!-- MODULE 4: THE ENERGY LENS (NEW) -->
+        <div class="module">
+            <div class="module-header"><div class="module-number">4</div><h2>The Energy Lens</h2></div>
+            <div class="insight-block">
+                <span class="insight-label">The Lens</span>
+                <p class="insight-text">"How you view the world determines how you engage with it. Select your default response to stress."</p>
+            </div>
+
+            <div class="energy-question">
+                <p>1. When a problem hits, your first thought is:</p>
+                <div class="energy-options">
+                    <div class="energy-opt" onclick="selectEnergy(0, 1, this)">"Why does this always happen?"</div>
+                    <div class="energy-opt" onclick="selectEnergy(0, 2, this)">"Who messed this up?"</div>
+                    <div class="energy-opt" onclick="selectEnergy(0, 5, this)">"How do we fix it?"</div>
+                </div>
+            </div>
+
+            <div class="energy-question">
+                <p>2. Your primary motivation at work is:</p>
+                <div class="energy-options">
+                    <div class="energy-opt" onclick="selectEnergy(1, 1, this)">"Fear of failure."</div>
+                    <div class="energy-opt" onclick="selectEnergy(1, 2, this)">"Winning / Proving myself."</div>
+                    <div class="energy-opt" onclick="selectEnergy(1, 5, this)">"Purpose / Growth."</div>
+                </div>
+            </div>
+
+            <div class="energy-question">
+                <p>3. When someone disagrees with you, you feel:</p>
+                <div class="energy-options">
+                    <div class="energy-opt" onclick="selectEnergy(2, 1, this)">"Ignored / Small."</div>
+                    <div class="energy-opt" onclick="selectEnergy(2, 2, this)">"Angry / Ready to debate."</div>
+                    <div class="energy-opt" onclick="selectEnergy(2, 5, this)">"Curious about their view."</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCORE SECTION -->
+        <div class="score-section">
+            <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; opacity: 0.7; margin-bottom: 20px;">Your Resilience Pulse</p>
+            <div class="score-circle" id="scoreDisplay">--</div>
+            <div class="energy-badge" id="energyType">...</div>
+            
+            <!-- DYNAMIC RECOMMENDATION ENGINE -->
+            <div id="rec-engine" class="rec-box" style="display:none;">
+                <span class="rec-title">Primary Recommendation</span>
+                <div class="rec-product" id="rec-product-name">...</div>
+                <p class="rec-desc" id="rec-desc">...</p>
+                <a href="#" id="rec-link" class="btn-main">Get Your Protocol</a>
+                
+                <!-- General Ecosystem Links -->
+                <div class="eco-section">
+                    <p class="eco-title">Complete Your Ecosystem</p>
+                    <div class="eco-grid">
+                        <a href="https://app.liveadaptiv.com" target="_blank" class="eco-btn">
+                            <span class="eco-label">Daily Maintenance</span>
+                            <span class="eco-name">Adaptiv App (Free)</span>
+                        </a>
+                        <a href="https://calendly.com/alexioda" target="_blank" class="eco-btn">
+                            <span class="eco-label">Deep Architecture</span>
+                            <span class="eco-name">Strategy Session</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/alexioda" target="_blank" class="eco-btn linkedin-btn">
+                            <span class="eco-label">Connect</span>
+                            <span class="eco-name">Follow on LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let energyScores = [0, 0, 0]; 
+
+        function selectEnergy(qIndex, val, el) {
+            // Visual Selection
+            const siblings = el.parentElement.querySelectorAll('.energy-opt');
+            siblings.forEach(s => s.classList.remove('selected'));
+            el.classList.add('selected');
+            
+            // Logic
+            energyScores[qIndex] = val;
+            updateUI();
+        }
+
+        function updateUI() {
+            // Update Progress Bar
+            const totalInputs = 6; 
+            let completed = 0;
+            if(document.getElementById('input_trigger').value.length > 5) completed++;
+            if(document.querySelector('input[name="mindset"]:checked')) completed++;
+            completed += Math.min(1, document.querySelectorAll('input[type="checkbox"]:checked').length);
+            completed += energyScores.filter(s => s > 0).length;
+            
+            const pct = Math.min(100, (completed / 6) * 100);
+            document.getElementById('progressBar').style.width = pct + "%";
+
+            calculateScore();
+        }
+
+        function calculateScore() {
+            let score = 100;
+            
+            // Deduct for reactive behaviors
+            if(document.getElementById('check_email').checked) score -= 10;
+            if(document.getElementById('check_defensive').checked) score -= 10;
+            if(document.getElementById('check_overwhelm').checked) score -= 10;
+
+            // Adjust for Mindset
+            const mindset = document.querySelector('input[name="mindset"]:checked');
+            if(mindset) {
+                if(mindset.value === "1") score -= 15;
+                if(mindset.value === "2") score -= 5;
+            }
+
+            // Adjust for Energy Questions
+            let avgEnergy = 0;
+            let answeredCount = 0;
+            energyScores.forEach(s => {
+                if(s > 0) {
+                    if(s === 1) score -= 10;
+                    if(s === 2) score -= 5;
+                    if(s === 5) score += 5; // Bonus
+                    avgEnergy += s;
+                    answeredCount++;
+                }
+            });
+
+            if(score < 0) score = 0;
+            if(score > 100) score = 100;
+
+            document.getElementById('scoreDisplay').innerText = score + "%";
+            
+            // Determine Archetype
+            if(answeredCount === 3) {
+                const finalAvg = avgEnergy / 3;
+                let type = "Reviewing...";
+                if(finalAvg < 2) type = "The Fighter (High Friction)";
+                else if(finalAvg < 4) type = "The Manager (Coping)";
+                else type = "The Alchemist (High Flow)";
+                
+                document.getElementById('energyType').innerText = type;
+            }
+
+            showRecommendation(score);
+        }
+
+        function showRecommendation(score) {
+            const recBox = document.getElementById('rec-engine');
+            const name = document.getElementById('rec-product-name');
+            const desc = document.getElementById('rec-desc');
+            const link = document.getElementById('rec-link');
+            
+            recBox.style.display = 'block';
+
+            if(score < 60) {
+                // RED ZONE: Needs Foundation
+                name.innerText = "The Stress Transformation Guide";
+                desc.innerText = "Your system is leaking energy (Survival Mode). You need to stabilize your biology and build the Stoic Fortress before you can advance. This Guide stops the bleeding.";
+                link.innerText = "Download Architect's Edition ($47)";
+                link.href = "https://alexioda.gumroad.com/l/roxaxf"; 
+                recBox.style.borderLeft = "4px solid #f43f5e"; // Red
+            } else {
+                // GREEN ZONE: Needs Expansion
+                name.innerText = "The Alchemist Field Guide";
+                desc.innerText = "Your foundation is solid, but you are playing small. You are ready to shift from 'Managing Stress' to 'Creating Reality.' This Guide is for identity shifting.";
+                link.innerText = "Download Master Edition ($97)";
+                link.href = "https://alexioda.gumroad.com/l/roxaxf"; 
+                recBox.style.borderLeft = "4px solid #14b8a6"; // Teal
+            }
+        }
+    </script>
+</body>
+</html>
