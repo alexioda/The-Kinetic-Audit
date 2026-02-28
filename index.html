@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Kinetic Performance Audit | Conscious Growth</title>
+    
+    <!-- Lemon Squeezy Overlay Script -->
+    <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
+
     <style>
         /* --- DESIGN TOKENS --- */
         :root {
@@ -225,7 +229,8 @@
                 <span class="rec-title">Primary Recommendation</span>
                 <div class="rec-product" id="rec-product-name">...</div>
                 <p class="rec-desc" id="rec-desc">...</p>
-                <a href="#" id="rec-link" class="btn-main">Get Your Protocol</a>
+                <!-- Added lemonsqueezy-button class so overlays work -->
+                <a href="#" id="rec-link" class="btn-main lemonsqueezy-button">Get Your Protocol</a>
                 
                 <!-- General Ecosystem Links -->
                 <div class="eco-section">
@@ -339,14 +344,14 @@
                 name.innerText = "The Stress Transformation Guide";
                 desc.innerText = "Your system is leaking energy (Survival Mode). You need to stabilize your biology and build the Stoic Fortress before you can advance. This Guide stops the bleeding.";
                 link.innerText = "Download Architect's Edition ($47)";
-                link.href = "https://alexioda.gumroad.com/l/roxaxf"; 
+                link.href = "https://your-store.lemonsqueezy.com/checkout/buy/PLACEHOLDER_STRESS?embed=1"; 
                 recBox.style.borderLeft = "4px solid #f43f5e"; // Red
             } else {
                 // GREEN ZONE: Needs Expansion
                 name.innerText = "The Alchemist Field Guide";
                 desc.innerText = "Your foundation is solid, but you are playing small. You are ready to shift from 'Managing Stress' to 'Creating Reality.' This Guide is for identity shifting.";
                 link.innerText = "Download Master Edition ($97)";
-                link.href = "https://alexioda.gumroad.com/l/roxaxf"; 
+                link.href = "https://billing.liveadaptiv.com/checkout/buy/b5da07e0-5ab8-465e-9fd6-b7b2fc291e44?embed=1"; 
                 recBox.style.borderLeft = "4px solid #14b8a6"; // Teal
             }
         }
