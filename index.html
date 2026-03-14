@@ -6,13 +6,13 @@
     <title>The Kinetic Audit | LiveAdaptiv</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script\= src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: { sans: ['"Inter"', 'sans-serif'] },
-                    colors: { 
+                    colors: {
                         slate: { 50: '#f8fafc', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
                         teal: { 400: '#2dd4bf', 500: '#14b8a6', 600: '#0d9488' },
                         rose: { 500: '#f43f5e', 600: '#e11d48' },
@@ -27,6 +27,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .slide-left { animation: slideLeft 0.4s ease-out forwards; }
         @keyframes slideLeft { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
         /* Custom Radio Buttons */
         input[type="radio"] { appearance: none; width: 20px; height: 20px; border: 2px solid #475569; border-radius: 50%; outline: none; transition: all 0.2s; cursor: pointer; }
         input[type="radio"]:checked { border-color: #14b8a6; border-width: 6px; }
@@ -48,7 +49,7 @@
     </nav>
 
     <main class="max-w-2xl mx-auto px-6 py-12 flex-grow w-full relative">
-        
+
         <!-- Intro Screen -->
         <div id="intro-screen" class="text-center fade-in">
             <div class="w-16 h-16 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(20,184,166,0.15)]">
@@ -96,7 +97,7 @@
     </main>
 
     <footer class="text-center pb-8 border-t border-slate-800/50 mt-auto">
-        <p class="mt-6 text-[10px] text-slate-500 uppercase tracking-widest font-bold">© 2026 LiveAdaptiv Systems</p>
+        <p class="mt-6 text-[10px] text-slate-500 uppercase tracking-widest font-bold">&copy; 2026 LiveAdaptiv Systems</p>
     </footer>
 
     <script>
@@ -135,14 +136,13 @@
             const progress = ((currentQuestion + 1) / questions.length) * 100;
             document.getElementById('progress-bar').style.width = `${progress}%`;
             document.getElementById('progress-percent').innerText = `${Math.round(progress)}%`;
-
+            
             const container = document.getElementById('options-container');
             container.innerHTML = '';
-            
             container.classList.remove('slide-left');
-            void container.offsetWidth; 
+            void container.offsetWidth;
             container.classList.add('slide-left');
-
+            
             q.options.forEach((opt, index) => {
                 const label = document.createElement('label');
                 label.className = "flex items-center gap-4 p-4 rounded-xl border border-slate-700 bg-slate-800/50 hover:bg-slate-800 cursor-pointer transition-colors group";
@@ -171,15 +171,17 @@
             const rScreen = document.getElementById('results-screen');
             rScreen.classList.remove('hidden');
             rScreen.classList.add('fade-in');
-
+            
             let uiConfig = {};
 
-            // -------------------------------------------------------------
-            // THE NEW INVERTED 3-TIER ROUTING LOGIC
-            // -------------------------------------------------------------
+            // Calculate percentage: 0 raw friction = 100% capacity, 30 raw friction = 0% capacity
+            let percentScore = Math.round(((30 - totalScore) / 30) * 100);
 
-            if (totalScore <= 10) {
-                // TIER 1: LOW FRICTION (Score 0-10) -> $97 The Alchemist Field Guide
+            // -------------------------------------------------------------
+            // THE NEW PERCENTAGE-BASED 3-TIER ROUTING LOGIC
+            // -------------------------------------------------------------
+            if (percentScore >= 66) {
+                // TIER 1: LOW FRICTION (Score 66-100%) -> $97 The Alchemist Field Guide
                 // Rationale: High cognitive bandwidth. Ready for optimization and mastery.
                 uiConfig = {
                     title: "High Cognitive Bandwidth",
@@ -189,12 +191,11 @@
                     desc: "Your nervous system is currently regulated. You have the cognitive bandwidth required to build indestructible enterprise architecture. Now is the time to fortify your boundaries before the environment degrades your reserves.",
                     productName: "The Alchemist Field Guide (Master Edition)",
                     productPrice: "$97",
-                    // PASTE YOUR $97 LEMON SQUEEZY LINK HERE:
                     checkoutLink: "https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1"
                 };
-            } 
-            else if (totalScore <= 20) {
-                // TIER 2: MODERATE FRICTION (Score 11-20) -> $47 Stress Transformation
+            }
+            else if (percentScore >= 33) {
+                // TIER 2: MODERATE FRICTION (Score 33-65%) -> $47 Stress Transformation
                 // Rationale: Operating in Sympathetic overdrive. Needs structural metabolic tools.
                 uiConfig = {
                     title: "Moderate Autonomic Debt (Sympathetic Response)",
@@ -204,12 +205,11 @@
                     desc: "You are operating in a chronic state of 'Fight or Flight.' Your amygdala is actively dumping cortisol, resulting in high anxiety, disrupted sleep, and reactivity. You need structural tools to metabolize this stress before you enter collapse.",
                     productName: "Stress Transformation Protocol",
                     productPrice: "$47",
-                    // PASTE YOUR $47 LEMON SQUEEZY LINK HERE:
                     checkoutLink: "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e"
                 };
-            } 
+            }
             else {
-                // TIER 3: HIGH FRICTION (Score 21-30) -> $27 Burnout Rescue
+                // TIER 3: HIGH FRICTION (Score 0-32%) -> $27 Burnout Rescue
                 // Rationale: Dorsal Vagal Shutdown. Low bandwidth. Needs immediate, low-barrier lifeline.
                 uiConfig = {
                     title: "Critical Burnout (Dorsal Vagal Shutdown)",
@@ -219,7 +219,6 @@
                     desc: "Diagnostic Critical. You are exhibiting signs of severe Autonomic Collapse. You do not have the bandwidth for a complex masterclass right now. You need an immediate, frictionless lifeline to stop the psychological bleed.",
                     productName: "The Burnout Rescue Workbook",
                     productPrice: "$27",
-                    // PASTE YOUR $27 LEMON SQUEEZY LINK HERE:
                     checkoutLink: "https://billing.liveadaptiv.com/checkout/buy/aab07394-9db6-46d1-8972-60038742f1b7"
                 };
             }
@@ -228,10 +227,10 @@
             rScreen.innerHTML = `
                 <div class="text-center mb-8">
                     <h2 class="text-slate-400 uppercase tracking-widest font-bold text-xs mb-2">Diagnostic Complete</h2>
-                    <div class="text-6xl font-black ${uiConfig.color} mb-2 font-mono">${totalScore}<span class="text-2xl text-slate-600">/30</span></div>
-                    <p class="text-sm text-slate-500">Burnout Severity Score</p>
+                    <div class="text-6xl font-black ${uiConfig.color} mb-2 font-mono">${percentScore}<span class="text-2xl text-slate-600">%</span></div>
+                    <p class="text-sm text-slate-500">Kinetic Bandwidth Score</p>
                 </div>
-
+                
                 <div class="${uiConfig.bgTheme} border rounded-2xl p-6 md:p-8 mb-8 relative overflow-hidden">
                     <div class="flex items-center gap-4 mb-4">
                         ${uiConfig.icon}
@@ -241,7 +240,7 @@
                         ${uiConfig.desc}
                     </p>
                 </div>
-
+                
                 <div class="bg-slate-900 border border-slate-700 p-8 rounded-2xl text-center shadow-2xl relative overflow-hidden group">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900 to-transparent z-0"></div>
                     <div class="relative z-10">
@@ -255,7 +254,7 @@
                 </div>
                 
                 <div class="mt-8 text-center">
-                    <a href="index.html" class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors">Return to LiveAdaptiv Hub</a>
+                    <a href="https://liveadaptiv.com" class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors">Return to LiveAdaptiv Hub</a>
                 </div>
             `;
             
