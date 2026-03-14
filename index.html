@@ -4,19 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kinetic Audit | LiveAdaptiv</title>
-
-    <!-- ========================================== -->
-    <!-- PASTE YOUR GOOGLE ANALYTICS TAG BELOW HERE -->
-    <!-- ========================================== -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
-    </script> -->
-    <!-- ========================================== -->
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -172,6 +159,7 @@
             void container.offsetWidth; 
 
             if (currentStep === -1) {
+                // INTRO SCREEN
                 container.innerHTML = `
                     <div class="text-center space-y-8 mt-12 fade-in">
                         <span class="text-xs font-bold tracking-[0.3em] uppercase text-[#b2945e] border border-[#b2945e] px-3 py-1 rounded-full">Diagnostic</span>
@@ -186,6 +174,7 @@
                     </div>
                 `;
             } else if (currentStep >= 0 && currentStep < questions.length) {
+                // QUESTION SCREEN
                 const q = questions[currentStep];
                 let optionsHtml = '';
                 q.options.forEach((opt, idx) => {
@@ -201,6 +190,7 @@
 
                 container.innerHTML = `
                     <div class="slide-in-right">
+                        <!-- Progress Bar -->
                         <div class="mb-8">
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400">Phase 0${currentStep + 1} of 06</span>
@@ -264,7 +254,7 @@
                         
                         <div class="text-center mt-8">
                             <a href="https://liveadaptiv.com" class="text-[10px] font-bold uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors">
-                                ← Return to Hub
+                                &larr; Return to Hub
                             </a>
                         </div>
                     </div>
@@ -294,6 +284,3 @@
     </script>
 </body>
 </html>
-
-
-
