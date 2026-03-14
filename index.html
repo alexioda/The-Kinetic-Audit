@@ -3,335 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Kinetic Audit | LiveAdaptiv</title>
+    <title>Kinetic Audit | LiveAdaptiv</title>
+
+    <!-- ========================================== -->
+    <!-- PASTE YOUR GOOGLE ANALYTICS TAG BELOW HERE -->
+    <!-- ========================================== -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script> -->
+    <!-- ========================================== -->
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --gold: #b2945e;
-            --stone: #fafaf9;
-            --charcoal: #1c1917;
-            --stone-border: #e7e5e4;
-        }
-        body {
-            background-color: var(--stone);
-            color: var(--charcoal);
-            font-family: 'Inter', sans-serif;
-            overscroll-behavior: none;
-            -webkit-font-smoothing: antialiased;
-        }
-        .a-logo { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold); }
-        .glass-light { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(178, 148, 94, 0.1); }
-        .blueprint-dot {
-            background-image: radial-gradient(circle at 1px 1px, var(--stone-border) 1px, transparent 0);
-            background-size: 30px 30px;
-        }
-        .timer-glow { box-shadow: 0 10px 40px rgba(178, 148, 94, 0.08); }
-        .fade-in { animation: fadeIn 0.6s ease; }
+        :root { --gold: #b2945e; --stone: #fafaf9; --charcoal: #1c1917; }
+        body { background-color: var(--stone); color: var(--charcoal); font-family: 'Inter', sans-serif; overscroll-behavior: none; }
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+        .blueprint-dot { background-image: radial-gradient(circle at 1px 1px, #e7e5e4 1px, transparent 0); background-size: 30px 30px; }
+        
+        .fade-in { animation: fadeIn 0.6s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Custom Inputs */
-        textarea { -webkit-appearance: none; }
+        .slide-in-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideInRight { 0% { opacity: 0; transform: translateX(20px); } 100% { opacity: 1; transform: translateX(0); } }
+
+        .option-btn { transition: all 0.2s ease; border: 1px solid #e7e5e4; }
+        .option-btn:hover { border-color: var(--gold); background-color: rgba(178, 148, 94, 0.05); }
+        .option-btn.selected { border-color: var(--gold); background-color: rgba(178, 148, 94, 0.1); box-shadow: 0 0 15px rgba(178, 148, 94, 0.2); }
     </style>
 </head>
-<body class="min-h-screen blueprint-dot pb-24">
+<body class="blueprint-dot min-h-screen flex flex-col">
 
-    <!-- TOP NAVIGATION & PROGRESS -->
-    <nav class="p-5 flex flex-col justify-center sticky top-0 z-50 glass-light border-b border-stone-200">
-        <div class="flex justify-between items-center w-full max-w-lg mx-auto mb-3">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
-                    <span class="a-logo text-lg pb-0.5">A</span>
-                </div>
-                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
+    <!-- Navigation -->
+    <nav class="p-5 flex justify-between items-center sticky top-0 z-50 bg-stone-50/90 backdrop-blur-md border-b border-stone-200">
+        <a href="https://liveadaptiv.com" class="flex items-center gap-3 hover:opacity-70 transition-opacity">
+            <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
+                <span class="font-serif italic text-lg text-[#b2945e] pb-0.5">A</span>
             </div>
-            <div class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#b2945e] animate-pulse"></span> Diagnostic Active
-            </div>
-        </div>
-        <!-- Progress Bar -->
-        <div class="w-full max-w-lg mx-auto h-1 bg-stone-200 rounded-full overflow-hidden">
-            <div id="progressBar" class="h-full bg-[#b2945e] w-0 transition-all duration-500"></div>
+            <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
+        </a>
+        <div class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#b2945e] animate-pulse"></span> Diagnostic
         </div>
     </nav>
 
-    <main class="p-6 space-y-8 max-w-lg mx-auto">
-        
-        <!-- HEADER -->
-        <section class="text-center py-6">
-            <span class="text-[#b2945e] font-bold text-[9px] uppercase tracking-[0.3em] mb-4 block">Performance Diagnostic</span>
-            <h1 class="text-5xl font-serif italic text-stone-900 mb-4 leading-tight">The Kinetic Audit</h1>
-            <p class="text-[11px] text-stone-500 max-w-xs mx-auto leading-relaxed font-light">
-                Where is your energy leaking? This diagnostic calculates your <strong class="font-semibold text-stone-800">Resilience Pulse</strong> and identifies your <strong class="font-semibold text-stone-800">Energy Archetype</strong>.
-            </p>
-        </section>
-
-        <!-- MODULE 1: THE DRAIN -->
-        <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-serif italic text-stone-900">1. Energy Leak Detection</h2>
-                <i data-lucide="battery-warning" class="w-5 h-5 text-[#b2945e]"></i>
-            </div>
-            <div class="bg-stone-50 border-l-2 border-[#b2945e] p-4 rounded-r-xl mb-6">
-                <p class="text-[8px] uppercase tracking-widest text-[#b2945e] font-bold mb-1">The Concept</p>
-                <p class="text-[11px] text-stone-500 italic">"You don't need more energy; you need fewer leaks. Identify the 'Catabolic' drain—the thing that sucks your battery dry."</p>
-            </div>
-            <label class="block text-[9px] font-bold uppercase tracking-widest text-stone-400 mb-3">What is your primary drain right now?</label>
-            <textarea id="input_trigger" oninput="updateUI()" class="w-full bg-stone-50 border border-stone-100 p-5 rounded-2xl text-xs h-28 outline-none focus:border-[#b2945e] transition-all resize-none font-serif italic text-stone-700" placeholder="e.g., The fear of failing the project..."></textarea>
+    <main class="flex-1 max-w-2xl mx-auto w-full p-6 pb-24 flex flex-col justify-center">
+        <!-- Dynamic Content Container -->
+        <div id="app-container">
+            <!-- Content injected by JS -->
         </div>
-
-        <!-- MODULE 2: THE REACTION -->
-        <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-serif italic text-stone-900">2. Reaction Speed</h2>
-                <i data-lucide="zap" class="w-5 h-5 text-[#b2945e]"></i>
-            </div>
-            <label class="block text-[9px] font-bold uppercase tracking-widest text-stone-400 mb-4">In the last 48 hours, did you:</label>
-            
-            <div class="space-y-3">
-                <label class="flex items-start gap-4 p-4 bg-stone-50 border border-stone-100 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="checkbox" id="check_email" onchange="updateUI()" class="mt-0.5 w-4 h-4 text-[#b2945e] border-stone-300 rounded focus:ring-[#b2945e] accent-[#b2945e]">
-                    <span class="text-xs text-stone-600 font-medium group-hover:text-stone-900">Reply to an email/text while frustrated?</span>
-                </label>
-                <label class="flex items-start gap-4 p-4 bg-stone-50 border border-stone-100 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="checkbox" id="check_defensive" onchange="updateUI()" class="mt-0.5 w-4 h-4 text-[#b2945e] border-stone-300 rounded focus:ring-[#b2945e] accent-[#b2945e]">
-                    <span class="text-xs text-stone-600 font-medium group-hover:text-stone-900">Get defensive when receiving feedback?</span>
-                </label>
-                <label class="flex items-start gap-4 p-4 bg-stone-50 border border-stone-100 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="checkbox" id="check_overwhelm" onchange="updateUI()" class="mt-0.5 w-4 h-4 text-[#b2945e] border-stone-300 rounded focus:ring-[#b2945e] accent-[#b2945e]">
-                    <span class="text-xs text-stone-600 font-medium group-hover:text-stone-900">Say "Yes" to a request out of guilt/fear?</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- MODULE 3: THE NARRATIVE -->
-        <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-serif italic text-stone-900">3. The Narrative</h2>
-                <i data-lucide="book-open" class="w-5 h-5 text-[#b2945e]"></i>
-            </div>
-            <label class="block text-[9px] font-bold uppercase tracking-widest text-stone-400 mb-4">Which statement feels most true today?</label>
-            
-            <div class="space-y-3">
-                <label class="flex items-start gap-4 p-4 bg-stone-50 border border-stone-100 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="radio" name="mindset" value="1" onchange="updateUI()" class="mt-0.5 w-4 h-4 text-[#b2945e] border-stone-300 focus:ring-[#b2945e] accent-[#b2945e]">
-                    <span class="text-xs text-stone-600 font-medium group-hover:text-stone-900">"I feel like things are happening TO me." (Victim)</span>
-                </label>
-                <label class="flex items-start gap-4 p-4 bg-stone-50 border border-stone-100 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="radio" name="mindset" value="2" onchange="updateUI()" class="mt-0.5 w-4 h-4 text-[#b2945e] border-stone-300 focus:ring-[#b2945e] accent-[#b2945e]">
-                    <span class="text-xs text-stone-600 font-medium group-hover:text-stone-900">"I have to fight to get what I want." (Conflict)</span>
-                </label>
-                <label class="flex items-start gap-4 p-4 bg-stone-50 border border-stone-100 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="radio" name="mindset" value="3" onchange="updateUI()" class="mt-0.5 w-4 h-4 text-[#b2945e] border-stone-300 focus:ring-[#b2945e] accent-[#b2945e]">
-                    <span class="text-xs text-stone-600 font-medium group-hover:text-stone-900">"I choose how I respond to this challenge." (Responsibility)</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- MODULE 4: THE ENERGY LENS -->
-        <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-serif italic text-stone-900">4. The Energy Lens</h2>
-                <i data-lucide="eye" class="w-5 h-5 text-[#b2945e]"></i>
-            </div>
-            <div class="bg-stone-50 border-l-2 border-[#b2945e] p-4 rounded-r-xl mb-8">
-                <p class="text-[8px] uppercase tracking-widest text-[#b2945e] font-bold mb-1">The Lens</p>
-                <p class="text-[11px] text-stone-500 italic">"How you view the world determines how you engage with it. Select your default response to stress."</p>
-            </div>
-            
-            <div class="space-y-8">
-                <div>
-                    <p class="text-xs font-bold text-stone-800 mb-3">1. When a problem hits, your first thought is:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectEnergy(0, 1, this)" class="energy-opt w-full text-left p-4 bg-stone-50 border border-stone-100 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Why does this always happen?"</button>
-                        <button onclick="selectEnergy(0, 2, this)" class="energy-opt w-full text-left p-4 bg-stone-50 border border-stone-100 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Who messed this up?"</button>
-                        <button onclick="selectEnergy(0, 5, this)" class="energy-opt w-full text-left p-4 bg-stone-50 border border-stone-100 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"How do we fix it?"</button>
-                    </div>
-                </div>
-
-                <div>
-                    <p class="text-xs font-bold text-stone-800 mb-3">2. Your primary motivation at work is:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectEnergy(1, 1, this)" class="energy-opt w-full text-left p-4 bg-stone-50 border border-stone-100 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Fear of failure."</button>
-                        <button onclick="selectEnergy(1, 2, this)" class="energy-opt w-full text-left p-4 bg-stone-50 border border-stone-100 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Winning / Proving myself."</button>
-                        <button onclick="selectEnergy(1, 5, this)" class="energy-opt w-full text-left p-4 bg-stone-50 border border-stone-100 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Purpose / Growth."</button>
-                    </div>
-                </div>
-
-                <div>
-                    <p class="text-xs font-bold text-stone-800 mb-3">3. When someone disagrees with you, you feel:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectEnergy(2, 1, this)" class="energy-opt w-full text-left p-4 bg-stone-50 border border-stone-100 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Ignored / Small."</button>
-                        <button onclick="selectEnergy(2, 2, this)" class="energy-opt w-full text-left p-4 bg-stone-50 border border-stone-100 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Angry / Ready to debate."</button>
-                        <button onclick="selectEnergy(2, 5, this)" class="energy-opt w-full text-left p-4 bg-stone-50 border border-stone-100 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Curious about their view."</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCORE & RECOMMENDATION ENGINE -->
-        <div class="bg-[#1c1917] p-10 rounded-[2.5rem] shadow-2xl text-center mt-10 relative overflow-hidden">
-            <div class="absolute top-0 right-0 p-32 bg-[#b2945e]/10 rounded-full blur-3xl pointer-events-none"></div>
-            
-            <p class="text-[#b2945e] font-bold text-[9px] uppercase tracking-[0.3em] mb-6 relative z-10">Your Resilience Pulse</p>
-            
-            <div class="w-40 h-40 mx-auto border-2 border-[#b2945e] rounded-full flex items-center justify-center mb-6 relative z-10 shadow-[0_0_30px_rgba(178,148,94,0.15)] bg-stone-900/50 backdrop-blur-md">
-                <span id="scoreDisplay" class="text-6xl font-serif italic text-white font-bold">--</span>
-            </div>
-            
-            <div class="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-stone-700 bg-stone-800/80 relative z-10 mb-2">
-                <i data-lucide="shield" class="w-3 h-3 text-[#b2945e]"></i>
-                <span id="energyType" class="text-[10px] font-bold uppercase tracking-widest text-stone-300">Awaiting Data...</span>
-            </div>
-
-            <!-- Dynamic Prescription -->
-            <div id="rec-engine" class="hidden relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-[#b2945e]">
-                <span id="rec-title" class="text-[8px] font-bold uppercase tracking-widest text-stone-400 mb-2 block">Primary Prescription</span>
-                <h3 id="rec-product-name" class="text-2xl font-serif italic text-stone-900 mb-3 leading-tight">...</h3>
-                <p id="rec-desc" class="text-xs text-stone-600 leading-relaxed mb-8 font-medium">...</p>
-                <a href="#" id="rec-link" target="_blank" class="block w-full py-4 bg-stone-900 text-white font-bold rounded-xl text-[10px] uppercase tracking-widest text-center shadow-lg hover:bg-stone-800 transition-all">
-                    Get Protocol
-                </a>
-            </div>
-        </div>
-
-        <!-- ECOSYSTEM LINKS -->
-        <div class="grid grid-cols-2 gap-4 pt-4">
-            <a href="dashboard.html" class="glass-light p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white transition-all text-center">
-                <i data-lucide="layout-grid" class="w-5 h-5 text-stone-400"></i>
-                <span class="text-[8px] uppercase font-bold tracking-widest text-[#b2945e]">Daily Maintenance</span>
-                <span class="text-xs font-semibold text-stone-800">Sovereign App</span>
-            </a>
-            <a href="https://calendly.com/alexioda" target="_blank" class="glass-light p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white transition-all text-center">
-                <i data-lucide="calendar" class="w-5 h-5 text-stone-400"></i>
-                <span class="text-[8px] uppercase font-bold tracking-widest text-[#b2945e]">Deep Architecture</span>
-                <span class="text-xs font-semibold text-stone-800">Strategy Session</span>
-            </a>
-        </div>
-        
-        <div class="text-center mt-6">
-            <a href="index.html" class="text-[10px] font-bold uppercase tracking-widest text-stone-500 hover:text-[#b2945e] transition-colors">Return to Hub</a>
-        </div>
-
     </main>
 
     <script>
         lucide.createIcons();
 
-        let energyScores = [0, 0, 0];
+        // --- APP STATE ---
+        let currentStep = -1; 
+        let score = 0;
+        let selectedOption = null;
 
-        function selectEnergy(qIndex, val, el) {
-            const siblings = el.parentElement.querySelectorAll('.energy-opt');
-            siblings.forEach(s => {
-                s.classList.remove('bg-[#1c1917]', 'text-white', 'border-[#1c1917]', 'shadow-md');
-                s.classList.add('bg-stone-50', 'text-stone-600', 'border-stone-100');
-            });
-            
-            el.classList.remove('bg-stone-50', 'text-stone-600', 'border-stone-100');
-            el.classList.add('bg-[#1c1917]', 'text-white', 'border-[#1c1917]', 'shadow-md');
-            
-            energyScores[qIndex] = val;
-            updateUI();
-        }
-
-        function updateUI() {
-            let mandatoryCompleted = 0;
-            // The 5 mandatory triggers to reach 100% completion
-            if(document.getElementById('input_trigger').value.length > 5) mandatoryCompleted++;
-            if(document.querySelector('input[name="mindset"]:checked')) mandatoryCompleted++;
-            mandatoryCompleted += energyScores.filter(s => s > 0).length;
-            
-            const pct = Math.min(100, (mandatoryCompleted / 5) * 100);
-            document.getElementById('progressBar').style.width = pct + "%";
-            
-            calculateScore(mandatoryCompleted);
-        }
-
-        function calculateScore(mandatoryCompleted) {
-            let score = 100;
-            
-            if(document.getElementById('check_email').checked) score -= 10;
-            if(document.getElementById('check_defensive').checked) score -= 10;
-            if(document.getElementById('check_overwhelm').checked) score -= 10;
-            
-            const mindset = document.querySelector('input[name="mindset"]:checked');
-            if(mindset) {
-                if(mindset.value === "1") score -= 15;
-                if(mindset.value === "2") score -= 5;
+        const questions = [
+            { 
+                q: "Reaction to Friction", 
+                desc: "When a major deadline shifts or a client cancels, what is your immediate default response?",
+                options: [
+                    { text: "I feel like a victim. 'Why does this always happen to me?'", val: 1 }, 
+                    { text: "I get angry and have to fight to fix it immediately.", val: 2 }, 
+                    { text: "I look for the opportunity or lesson hidden in the shift.", val: 5 }
+                ] 
+            },
+            { 
+                q: "Inner Monologue", 
+                desc: "When you are working quietly by yourself, what does the voice in your head sound like?",
+                options: [
+                    { text: "Highly critical. Pointing out where I am failing or falling behind.", val: 1 }, 
+                    { text: "Competitive. Focusing on how to beat the competition or prove myself.", val: 2 }, 
+                    { text: "Curious and expansive. Thinking about what I can create next.", val: 5 }
+                ] 
+            },
+            { 
+                q: "Motivation Source", 
+                desc: "What is the primary fuel driving your work and ambition right now?",
+                options: [
+                    { text: "Fear. I am avoiding failure, poverty, or letting people down.", val: 1 }, 
+                    { text: "Ego. I need to achieve the next level to prove my worth.", val: 2 }, 
+                    { text: "Purpose. I want to build something meaningful and expressive.", val: 6 }
+                ] 
+            },
+            { 
+                q: "View of Others", 
+                desc: "When dealing with subordinates, colleagues, or vendors, how do you primarily view them?",
+                options: [
+                    { text: "As obstacles or people who just don't 'get it'.", val: 2 }, 
+                    { text: "As people doing their best, even if I have to fix their mistakes.", val: 4 }, 
+                    { text: "As true partners and co-creators in the vision.", val: 6 }
+                ] 
+            },
+            { 
+                q: "Energy at 3 PM", 
+                desc: "How does your physical and mental bandwidth feel in the mid-afternoon?",
+                options: [
+                    { text: "Completely drained, foggy, and relying heavily on caffeine.", val: 1 }, 
+                    { text: "Wired, anxious, and physically tense.", val: 2 }, 
+                    { text: "Steady, calm, and capable of sustained focus.", val: 5 }
+                ] 
+            },
+            { 
+                q: "Goal Driver", 
+                desc: "When you set a massive 12-month goal, what is the core reason?",
+                options: [
+                    { text: "To escape my current situation.", val: 1 }, 
+                    { text: "To hit the revenue metric or acquire the title.", val: 2 }, 
+                    { text: "To experience my highest potential in real time.", val: 6 }
+                ] 
             }
-            
-            let avgEnergy = 0;
-            
-            energyScores.forEach(s => {
-                if(s > 0) {
-                    if(s === 1) score -= 10;
-                    if(s === 2) score -= 5;
-                    if(s === 5) score += 5; // Bonus
-                    avgEnergy += s;
-                }
-            });
-            
-            if(score < 0) score = 0;
-            if(score > 100) score = 100;
-            
-            // Only reveal score and prescription if the 5 mandatory actions are completed
-            if(mandatoryCompleted === 5) {
-                document.getElementById('scoreDisplay').innerText = score + "%";
-                
-                const finalAvg = avgEnergy / 3;
-                let type = "Reviewing...";
-                if(finalAvg < 2) type = "The Fighter (High Friction)";
-                else if(finalAvg < 4) type = "The Manager (Coping)";
-                else type = "The Alchemist (High Flow)";
-                
-                document.getElementById('energyType').innerText = type;
-                
-                showRecommendation(score);
+        ];
+
+        // --- DYNAMIC ROUTING ENGINE ---
+        function getResultData(avgScore) {
+            if (avgScore <= 2.5) {
+                // TIER 3: BURNOUT RESCUE
+                return {
+                    title: "Catabolic Friction",
+                    subtitle: "Critical Burnout Risk",
+                    desc: "Your current operating system is running on catabolic energy—fueled by conflict, fear, or a need to prove yourself. You are biologically drained and fighting the current.",
+                    action: "You need immediate biological stabilization before you can focus on high-level growth. You need the Burnout Rescue Workbook.",
+                    upsellTitle: "The Burnout Rescue Workbook",
+                    upsellDesc: "A targeted tactical manual to stop the bleeding, restore your sleep architecture, and recover your baseline bandwidth.",
+                    upsellLink: "https://billing.liveadaptiv.com/checkout/buy/aab07394-9db6-46d1-8972-60038742f1b7",
+                    btnText: "Acquire The Rescue Workbook"
+                };
+            } else if (avgScore <= 4.5) {
+                // TIER 2: STRESS TRANSFORMATION
+                return {
+                    title: "Transitional Energy",
+                    subtitle: "Coping / Rationalization",
+                    desc: "You are currently running a hybrid operating system. You cope well with stress, but you are likely tolerating more friction than you realize. You are surviving the current, but not directing it.",
+                    action: "To move from 'coping' to sovereignty, you must identify your hidden energy leaks. The Stress Transformation Protocol is your next step.",
+                    upsellTitle: "The Stress Transformation Protocol",
+                    upsellDesc: "Learn how to convert biological anxiety and friction into actionable, anabolic fuel for your career.",
+                    upsellLink: "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e",
+                    btnText: "Acquire The Protocol"
+                };
             } else {
-                document.getElementById('scoreDisplay').innerText = "--";
-                document.getElementById('energyType').innerText = "Awaiting Data...";
-                document.getElementById('rec-engine').classList.add('hidden');
-                document.getElementById('rec-engine').classList.remove('fade-in');
+                // TIER 1: ALCHEMIST FIELD GUIDE
+                return {
+                    title: "Anabolic Sovereignty",
+                    subtitle: "High Flow / Low Resistance",
+                    desc: "You are operating at a high level of anabolic energy. You view challenges as raw material, you create rather than react, and your motivation is driven by purpose.",
+                    action: "To lock in this frequency and scale it across your entire life, utilize the advanced frameworks inside The Alchemist Field Guide.",
+                    upsellTitle: "The Alchemist Field Guide",
+                    upsellDesc: "The ultimate manual for overriding autonomic panic and rewiring your cognitive baseline. Master your sovereign energy.",
+                    upsellLink: "https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1",
+                    btnText: "Acquire The Field Guide"
+                };
             }
         }
 
-        function showRecommendation(score) {
-            const recBox = document.getElementById('rec-engine');
-            const title = document.getElementById('rec-title');
-            const name = document.getElementById('rec-product-name');
-            const desc = document.getElementById('rec-desc');
-            const link = document.getElementById('rec-link');
-            
-            recBox.classList.remove('hidden');
-            recBox.classList.add('fade-in');
-            
-            if(score < 50) {
-                // TIER 3: HIGH FRICTION (Low Score) -> $27 Burnout Rescue
-                title.innerText = "Diagnostic: Critical Autonomic Friction";
-                name.innerText = "The Burnout Rescue Workbook";
-                desc.innerText = "You are exhibiting signs of severe Autonomic Collapse (Dorsal Vagal Shutdown). You do not have the bandwidth for a complex masterclass right now. You need an immediate, frictionless lifeline to stop the psychological bleed.";
-                link.innerText = "Unlock Rescue Protocol ($27)";
-                link.href = "https://billing.liveadaptiv.com/checkout/buy/aab07394-9db6-46d1-8972-60038742f1b7";
-                recBox.className = "relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-rose-500 fade-in";
-            } else if (score < 80) {
-                // TIER 2: MODERATE FRICTION -> $47 Stress Transformation
-                title.innerText = "Diagnostic: Moderate Autonomic Debt";
-                name.innerText = "Stress Transformation Protocol";
-                desc.innerText = "You are operating in a chronic state of 'Fight or Flight.' Your amygdala is actively dumping cortisol, resulting in high anxiety, disrupted sleep, and reactivity. You need structural tools to metabolize this stress before you enter collapse.";
-                link.innerText = "Unlock Architect's Edition ($47)";
-                link.href = "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e";
-                recBox.className = "relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-amber-500 fade-in";
+        // --- RENDER ENGINE ---
+        function renderApp() {
+            const container = document.getElementById('app-container');
+            container.classList.remove('slide-in-right');
+            void container.offsetWidth; 
+
+            if (currentStep === -1) {
+                container.innerHTML = `
+                    <div class="text-center space-y-8 mt-12 fade-in">
+                        <span class="text-xs font-bold tracking-[0.3em] uppercase text-[#b2945e] border border-[#b2945e] px-3 py-1 rounded-full">Diagnostic</span>
+                        <h1 class="text-5xl md:text-6xl font-serif italic text-stone-900 leading-tight">The Kinetic<br>Audit.</h1>
+                        <div class="w-16 h-1 bg-[#b2945e] mx-auto"></div>
+                        <p class="text-lg text-stone-600 font-serif leading-relaxed max-w-xl mx-auto">
+                            Identify your invisible energy leaks. This 6-question clinical diagnostic maps the exact nature of the friction in your life.
+                        </p>
+                        <button onclick="nextStep()" class="mt-8 bg-stone-900 text-white px-10 py-4 rounded-full font-sans text-xs font-bold tracking-[0.2em] uppercase shadow-lg hover:bg-[#b2945e] transition-all transform hover:-translate-y-1">
+                            Begin Audit
+                        </button>
+                    </div>
+                `;
+            } else if (currentStep >= 0 && currentStep < questions.length) {
+                const q = questions[currentStep];
+                let optionsHtml = '';
+                q.options.forEach((opt, idx) => {
+                    optionsHtml += `
+                        <button onclick="selectOption(${opt.val})" class="w-full text-left p-6 rounded-2xl bg-white option-btn mb-4 group relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-[#b2945e] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <span class="font-sans text-sm text-stone-700 leading-relaxed block pl-2">${opt.text}</span>
+                        </button>
+                    `;
+                });
+
+                const progress = ((currentStep + 1) / questions.length) * 100;
+
+                container.innerHTML = `
+                    <div class="slide-in-right">
+                        <div class="mb-8">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400">Phase 0${currentStep + 1} of 06</span>
+                            </div>
+                            <div class="w-full h-1 bg-stone-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#b2945e] transition-all duration-500" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+
+                        <h2 class="text-3xl font-serif italic text-stone-900 mb-3">${q.q}</h2>
+                        <p class="text-sm text-stone-500 mb-8 max-w-md">${q.desc}</p>
+                        
+                        <div class="space-y-2">
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                `;
             } else {
-                // TIER 1: LOW FRICTION (High Score) -> $97 Alchemist
-                title.innerText = "Diagnostic: High Cognitive Bandwidth";
-                name.innerText = "The Alchemist Field Guide";
-                desc.innerText = "Your nervous system is currently regulated. You have the cognitive bandwidth required to build indestructible enterprise architecture. Now is the time to fortify your boundaries and shift from 'Managing Stress' to 'Creating Reality.'";
-                link.innerText = "Unlock Master Edition ($97)";
-                link.href = "https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1";
-                recBox.className = "relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-[#b2945e] fade-in";
+                // RESULTS & DYNAMIC UPSELL
+                const avgScore = score / questions.length;
+                const result = getResultData(avgScore);
+                const isCatabolic = avgScore <= 3.5;
+
+                container.innerHTML = `
+                    <div class="fade-in">
+                        <div class="text-center mb-10">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400 block mb-2">Audit Complete</span>
+                            <h2 class="text-4xl font-serif italic text-stone-900 mb-2">Your Profile: <br><span class="text-[#b2945e]">${result.title}</span></h2>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-[24px] border border-stone-200 shadow-xl mb-10 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-[#b2945e] opacity-5 rounded-full blur-2xl transform translate-x-10 -translate-y-10"></div>
+                            <div class="flex items-center gap-3 mb-6">
+                                <i data-lucide="${isCatabolic ? 'alert-circle' : 'zap'}" class="w-6 h-6 text-[#b2945e]"></i>
+                                <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-stone-900">${result.subtitle}</h3>
+                            </div>
+                            <p class="text-stone-600 font-serif text-lg leading-relaxed mb-6">
+                                ${result.desc}
+                            </p>
+                            <div class="p-4 bg-stone-50 border border-stone-100 rounded-xl">
+                                <p class="text-xs text-stone-500 font-bold uppercase tracking-widest mb-1">Clinical Recommendation</p>
+                                <p class="text-sm text-stone-800 italic font-serif">"${result.action}"</p>
+                            </div>
+                        </div>
+
+                        <!-- DYNAMIC UPSELL LAYER -->
+                        <div class="bg-stone-900 rounded-[24px] p-8 text-center shadow-2xl border border-stone-800 relative overflow-hidden group">
+                            <div class="absolute inset-0 bg-[#b2945e] opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
+                            <h3 class="font-serif italic text-3xl text-white mb-3">${result.upsellTitle}</h3>
+                            <p class="text-sm text-stone-400 mb-8 max-w-sm mx-auto leading-relaxed">
+                                ${result.upsellDesc}
+                            </p>
+                            
+                            <!-- DYNAMIC LEMON SQUEEZY CHECKOUT LINK -->
+                            <a href="${result.upsellLink}" target="_blank" class="inline-block w-full py-4 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#d97706] transition-colors shadow-[0_0_20px_rgba(178,148,94,0.3)]">
+                                ${result.btnText}
+                            </a>
+                            
+                            <p class="text-[9px] text-stone-500 uppercase tracking-widest mt-4">Secure Checkout via LiveAdaptiv</p>
+                        </div>
+                        
+                        <div class="text-center mt-8">
+                            <a href="https://liveadaptiv.com" class="text-[10px] font-bold uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors">
+                                ← Return to Hub
+                            </a>
+                        </div>
+                    </div>
+                `;
+                lucide.createIcons();
             }
+
+            container.classList.add('slide-in-right');
         }
+
+        function selectOption(val) {
+            selectedOption = val;
+            score += val;
+            nextStep();
+        }
+
+        function nextStep() {
+            currentStep++;
+            selectedOption = null;
+            renderApp();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize App
+        renderApp();
+
     </script>
 </body>
 </html>
+
+
+
