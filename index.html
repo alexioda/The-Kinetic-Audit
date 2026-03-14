@@ -2,108 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Kinetic Audit | LiveAdaptiv</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kinetic Audit | LiveAdaptiv</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script\= src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Inter"', 'sans-serif'] },
-                    colors: {
-                        slate: { 50: '#f8fafc', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
-                        teal: { 400: '#2dd4bf', 500: '#14b8a6', 600: '#0d9488' },
-                        rose: { 500: '#f43f5e', 600: '#e11d48' },
-                        amber: { 400: '#fbbf24', 500: '#f59e0b' }
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .fade-in { animation: fadeIn 0.5s ease-in-out forwards; opacity: 0; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .slide-left { animation: slideLeft 0.4s ease-out forwards; }
-        @keyframes slideLeft { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        :root { --gold: #b2945e; --stone: #fafaf9; --charcoal: #1c1917; }
+        body { background-color: var(--stone); color: var(--charcoal); font-family: 'Inter', sans-serif; overscroll-behavior: none; }
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+        .blueprint-dot { background-image: radial-gradient(circle at 1px 1px, #e7e5e4 1px, transparent 0); background-size: 30px 30px; }
+        
+        .fade-in { animation: fadeIn 0.6s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .slide-in-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideInRight { 0% { opacity: 0; transform: translateX(20px); } 100% { opacity: 1; transform: translateX(0); } }
 
-        /* Custom Radio Buttons */
-        input[type="radio"] { appearance: none; width: 20px; height: 20px; border: 2px solid #475569; border-radius: 50%; outline: none; transition: all 0.2s; cursor: pointer; }
-        input[type="radio"]:checked { border-color: #14b8a6; border-width: 6px; }
+        .option-btn { transition: all 0.2s ease; border: 1px solid #e7e5e4; }
+        .option-btn:hover { border-color: var(--gold); background-color: rgba(178, 148, 94, 0.05); }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-50 font-sans antialiased min-h-screen flex flex-col">
+<body class="blueprint-dot min-h-screen flex flex-col">
 
-    <!-- Top Navigation -->
-    <nav class="w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <i data-lucide="activity" class="w-5 h-5 text-teal-500"></i>
-                <span class="font-bold text-white tracking-wide uppercase text-sm">LiveAdaptiv</span>
+    <!-- Navigation -->
+    <nav class="p-5 flex justify-between items-center sticky top-0 z-50 bg-stone-50/90 backdrop-blur-md border-b border-stone-200">
+        <a href="https://liveadaptiv.com" class="flex items-center gap-3 hover:opacity-70 transition-opacity">
+            <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
+                <span class="font-serif italic text-lg text-[#b2945e] pb-0.5">A</span>
             </div>
-            <div class="text-[10px] uppercase tracking-widest font-bold text-slate-400 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span> Diagnostic Active
-            </div>
+            <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
+        </a>
+        <div class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#b2945e] animate-pulse"></span> Diagnostic Active
         </div>
     </nav>
 
-    <main class="max-w-2xl mx-auto px-6 py-12 flex-grow w-full relative">
-
-        <!-- Intro Screen -->
-        <div id="intro-screen" class="text-center fade-in">
-            <div class="w-16 h-16 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(20,184,166,0.15)]">
-                <i data-lucide="cpu" class="w-8 h-8 text-teal-400"></i>
-            </div>
-            <h1 class="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">The Kinetic Audit</h1>
-            <p class="text-slate-400 text-base mb-8 max-w-lg mx-auto leading-relaxed">
-                This is a clinical diagnostic tool to measure your current autonomic debt and burnout severity. Answer instinctively. Do not overthink.
-            </p>
-            <button onclick="startAudit()" class="w-full sm:w-auto px-8 py-4 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold rounded-xl text-sm uppercase tracking-widest transition-all shadow-lg hover:shadow-teal-500/25 flex items-center justify-center gap-2 mx-auto">
-                Begin Diagnostic <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
+    <main class="flex-1 max-w-2xl mx-auto w-full p-6 pb-24 flex flex-col justify-center">
+        <!-- Dynamic Content Container -->
+        <div id="app-container">
+            <!-- Content injected by JS -->
         </div>
-
-        <!-- Question Screen -->
-        <div id="question-screen" class="hidden">
-            <div class="mb-8">
-                <div class="flex justify-between text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
-                    <span id="question-counter">Question 1 of 10</span>
-                    <span id="progress-percent" class="text-teal-500">10%</span>
-                </div>
-                <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                    <div id="progress-bar" class="h-full bg-teal-500 transition-all duration-300 w-[10%]"></div>
-                </div>
-            </div>
-
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-24 bg-teal-500/5 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <h2 id="question-text" class="text-xl md:text-2xl font-semibold text-white mb-8 relative z-10 leading-snug">
-                    Question text goes here
-                </h2>
-
-                <div id="options-container" class="space-y-3 relative z-10">
-                    <!-- Options injected via JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Results Screen -->
-        <div id="results-screen" class="hidden">
-            <!-- Content injected via JS based on score -->
-        </div>
-
     </main>
 
-    <footer class="text-center pb-8 border-t border-slate-800/50 mt-auto">
-        <p class="mt-6 text-[10px] text-slate-500 uppercase tracking-widest font-bold">&copy; 2026 LiveAdaptiv Systems</p>
+    <footer class="text-center pb-8 mt-auto">
+        <p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold">&copy; 2026 LiveAdaptiv Systems</p>
     </footer>
 
     <script>
         lucide.createIcons();
 
-        // Audit Data
+        // --- APP STATE ---
+        let currentStep = -1; 
+        let totalScore = 0;
+
+        // 10-Question Clinical Audit Data
         const questions = [
             { text: "When I wake up, my first thought regarding the day ahead is usually:", options: [ { text: "Energized or neutral.", value: 0 }, { text: "Mildly annoyed but manageable.", value: 1 }, { text: "A heavy sense of dread or exhaustion.", value: 2 }, { text: "Complete apathy; I am emotionally numb.", value: 3 } ] },
             { text: "When a minor inconvenience occurs (e.g., an email, a dropped pen, a small delay):", options: [ { text: "I handle it easily.", value: 0 }, { text: "I get briefly frustrated.", value: 1 }, { text: "I feel a disproportionate spike of rage/panic.", value: 2 }, { text: "I feel nothing. I am too tired to care.", value: 3 } ] },
@@ -117,150 +70,179 @@
             { text: "Which statement best describes your current state?", options: [ { text: "I am managing my friction well.", value: 0 }, { text: "I am stressed, but still fighting.", value: 1 }, { text: "I am surviving on pure adrenaline.", value: 2 }, { text: "I am running on empty. I am broken.", value: 3 } ] }
         ];
 
-        let currentQuestion = 0;
-        let totalScore = 0;
-
-        function startAudit() {
-            document.getElementById('intro-screen').classList.add('hidden');
-            const qScreen = document.getElementById('question-screen');
-            qScreen.classList.remove('hidden');
-            qScreen.classList.add('fade-in');
-            renderQuestion();
-        }
-
-        function renderQuestion() {
-            const q = questions[currentQuestion];
-            document.getElementById('question-text').innerText = q.text;
-            document.getElementById('question-counter').innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
-            
-            const progress = ((currentQuestion + 1) / questions.length) * 100;
-            document.getElementById('progress-bar').style.width = `${progress}%`;
-            document.getElementById('progress-percent').innerText = `${Math.round(progress)}%`;
-            
-            const container = document.getElementById('options-container');
-            container.innerHTML = '';
-            container.classList.remove('slide-left');
-            void container.offsetWidth;
-            container.classList.add('slide-left');
-            
-            q.options.forEach((opt, index) => {
-                const label = document.createElement('label');
-                label.className = "flex items-center gap-4 p-4 rounded-xl border border-slate-700 bg-slate-800/50 hover:bg-slate-800 cursor-pointer transition-colors group";
-                label.innerHTML = `
-                    <input type="radio" name="q" value="${opt.value}" onclick="handleSelection(${opt.value})">
-                    <span class="text-slate-300 group-hover:text-white transition-colors text-sm md:text-base leading-snug">${opt.text}</span>
-                `;
-                container.appendChild(label);
-            });
-        }
-
-        function handleSelection(value) {
-            totalScore += value;
-            setTimeout(() => {
-                currentQuestion++;
-                if (currentQuestion < questions.length) {
-                    renderQuestion();
-                } else {
-                    showResults();
-                }
-            }, 300);
-        }
-
-        function showResults() {
-            document.getElementById('question-screen').classList.add('hidden');
-            const rScreen = document.getElementById('results-screen');
-            rScreen.classList.remove('hidden');
-            rScreen.classList.add('fade-in');
-            
-            let uiConfig = {};
-
-            // Calculate percentage: 0 raw friction = 100% capacity, 30 raw friction = 0% capacity
-            let percentScore = Math.round(((30 - totalScore) / 30) * 100);
-
-            // -------------------------------------------------------------
-            // THE NEW PERCENTAGE-BASED 3-TIER ROUTING LOGIC
-            // -------------------------------------------------------------
+        // --- DYNAMIC ROUTING ENGINE ---
+        function getResultData(percentScore) {
             if (percentScore >= 66) {
-                // TIER 1: LOW FRICTION (Score 66-100%) -> $97 The Alchemist Field Guide
-                // Rationale: High cognitive bandwidth. Ready for optimization and mastery.
-                uiConfig = {
+                // TIER 1: HIGH BANDWIDTH
+                return {
                     title: "High Cognitive Bandwidth",
-                    color: "text-teal-500",
-                    bgTheme: "bg-teal-500/10 border-teal-500/30",
-                    icon: `<i data-lucide="shield-check" class="w-10 h-10 text-teal-500"></i>`,
+                    subtitle: "Optimized / Low Resistance",
+                    icon: "shield-check",
                     desc: "Your nervous system is currently regulated. You have the cognitive bandwidth required to build indestructible enterprise architecture. Now is the time to fortify your boundaries before the environment degrades your reserves.",
-                    productName: "The Alchemist Field Guide (Master Edition)",
-                    productPrice: "$97",
-                    checkoutLink: "https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1"
+                    action: "Scale your capacity and execute under pressure with The Alchemist Field Guide.",
+                    upsellTitle: "The Alchemist Field Guide",
+                    upsellDesc: "The ultimate manual for overriding autonomic panic and rewiring your cognitive baseline. Master your sovereign energy.",
+                    upsellLink: "https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1",
+                    btnText: "Acquire The Field Guide"
                 };
-            }
-            else if (percentScore >= 33) {
-                // TIER 2: MODERATE FRICTION (Score 33-65%) -> $47 Stress Transformation
-                // Rationale: Operating in Sympathetic overdrive. Needs structural metabolic tools.
-                uiConfig = {
-                    title: "Moderate Autonomic Debt (Sympathetic Response)",
-                    color: "text-amber-500",
-                    bgTheme: "bg-amber-500/10 border-amber-500/30",
-                    icon: `<i data-lucide="alert-triangle" class="w-10 h-10 text-amber-500"></i>`,
+            } else if (percentScore >= 33) {
+                // TIER 2: MODERATE DEBT
+                return {
+                    title: "Moderate Autonomic Debt",
+                    subtitle: "Sympathetic Response / Coping",
+                    icon: "zap",
                     desc: "You are operating in a chronic state of 'Fight or Flight.' Your amygdala is actively dumping cortisol, resulting in high anxiety, disrupted sleep, and reactivity. You need structural tools to metabolize this stress before you enter collapse.",
-                    productName: "Stress Transformation Protocol",
-                    productPrice: "$47",
-                    checkoutLink: "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e"
+                    action: "Learn to convert biological anxiety and friction into actionable, anabolic fuel.",
+                    upsellTitle: "The Stress Transformation Protocol",
+                    upsellDesc: "A targeted framework to interrupt the cortisol loop, reframe your narrative, and reclaim your bandwidth.",
+                    upsellLink: "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e",
+                    btnText: "Acquire The Protocol"
+                };
+            } else {
+                // TIER 3: CRITICAL BURNOUT
+                return {
+                    title: "Critical Burnout Risk",
+                    subtitle: "Dorsal Vagal Shutdown",
+                    icon: "alert-triangle",
+                    desc: "Diagnostic Critical. You are exhibiting signs of severe Autonomic Collapse. You do not have the bandwidth for a complex masterclass right now. You need an immediate, frictionless lifeline to stop the psychological bleed.",
+                    action: "You need immediate biological stabilization before you can focus on high-level growth.",
+                    upsellTitle: "The Burnout Rescue Workbook",
+                    upsellDesc: "A targeted tactical manual to stop the bleeding, restore your sleep architecture, and recover your baseline bandwidth.",
+                    upsellLink: "https://billing.liveadaptiv.com/checkout/buy/aab07394-9db6-46d1-8972-60038742f1b7",
+                    btnText: "Acquire The Rescue Workbook"
                 };
             }
-            else {
-                // TIER 3: HIGH FRICTION (Score 0-32%) -> $27 Burnout Rescue
-                // Rationale: Dorsal Vagal Shutdown. Low bandwidth. Needs immediate, low-barrier lifeline.
-                uiConfig = {
-                    title: "Critical Burnout (Dorsal Vagal Shutdown)",
-                    color: "text-rose-500",
-                    bgTheme: "bg-rose-500/10 border-rose-500/30",
-                    icon: `<i data-lucide="siren" class="w-10 h-10 text-rose-500"></i>`,
-                    desc: "Diagnostic Critical. You are exhibiting signs of severe Autonomic Collapse. You do not have the bandwidth for a complex masterclass right now. You need an immediate, frictionless lifeline to stop the psychological bleed.",
-                    productName: "The Burnout Rescue Workbook",
-                    productPrice: "$27",
-                    checkoutLink: "https://billing.liveadaptiv.com/checkout/buy/aab07394-9db6-46d1-8972-60038742f1b7"
-                };
+        }
+
+        // --- RENDER ENGINE ---
+        function renderApp() {
+            const container = document.getElementById('app-container');
+            container.classList.remove('slide-in-right');
+            void container.offsetWidth; 
+
+            if (currentStep === -1) {
+                // INTRO SCREEN
+                container.innerHTML = `
+                    <div class="text-center space-y-8 mt-12 fade-in">
+                        <span class="text-xs font-bold tracking-[0.3em] uppercase text-[#b2945e] border border-[#b2945e] px-3 py-1 rounded-full">Diagnostic</span>
+                        <h1 class="text-5xl md:text-6xl font-serif italic text-stone-900 leading-tight">The Kinetic<br>Audit.</h1>
+                        <div class="w-16 h-1 bg-[#b2945e] mx-auto"></div>
+                        <p class="text-lg text-stone-600 font-serif leading-relaxed max-w-xl mx-auto">
+                            Identify your invisible energy leaks. This 10-question clinical diagnostic maps the exact nature of the friction in your life. Answer instinctively.
+                        </p>
+                        <button onclick="nextStep()" class="mt-8 bg-stone-900 text-white px-10 py-4 rounded-full font-sans text-xs font-bold tracking-[0.2em] uppercase shadow-lg hover:bg-[#b2945e] transition-all transform hover:-translate-y-1">
+                            Begin Audit
+                        </button>
+                    </div>
+                `;
+            } else if (currentStep >= 0 && currentStep < questions.length) {
+                // QUESTION SCREEN
+                const q = questions[currentStep];
+                let optionsHtml = '';
+                q.options.forEach((opt) => {
+                    optionsHtml += `
+                        <button onclick="handleSelection(${opt.value})" class="w-full text-left p-6 rounded-2xl bg-white option-btn mb-4 group relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-[#b2945e] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <span class="font-sans text-sm text-stone-700 leading-relaxed block pl-2">${opt.text}</span>
+                        </button>
+                    `;
+                });
+
+                const progress = ((currentStep + 1) / questions.length) * 100;
+
+                container.innerHTML = `
+                    <div class="slide-in-right">
+                        <!-- Progress Bar -->
+                        <div class="mb-8">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400">Question ${currentStep + 1 > 9 ? currentStep + 1 : '0' + (currentStep + 1)} of 10</span>
+                                <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e]">${Math.round(progress)}%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#b2945e] transition-all duration-500" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+
+                        <h2 class="text-2xl md:text-3xl font-serif italic text-stone-900 mb-8 leading-snug">${q.text}</h2>
+                        
+                        <div class="space-y-2">
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                `;
+            } else {
+                // RESULTS & DYNAMIC UPSELL
+                // Calculate percentage: 0 raw friction = 100% capacity, 30 raw friction = 0% capacity
+                let percentScore = Math.round(((30 - totalScore) / 30) * 100);
+                const result = getResultData(percentScore);
+
+                container.innerHTML = `
+                    <div class="fade-in">
+                        <div class="text-center mb-10">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400 block mb-2">Diagnostic Complete</span>
+                            <div class="text-6xl font-serif italic text-stone-900 mb-2">${percentScore}<span class="text-3xl text-stone-500">%</span></div>
+                            <p class="text-xs font-bold uppercase tracking-widest text-[#b2945e]">Kinetic Bandwidth Score</p>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-[24px] border border-stone-200 shadow-xl mb-10 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-[#b2945e] opacity-5 rounded-full blur-2xl transform translate-x-10 -translate-y-10"></div>
+                            <div class="flex items-center gap-3 mb-6">
+                                <i data-lucide="${result.icon}" class="w-6 h-6 text-[#b2945e]"></i>
+                                <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-stone-900">${result.title}</h3>
+                            </div>
+                            <p class="text-stone-600 font-serif text-lg leading-relaxed mb-6">
+                                ${result.desc}
+                            </p>
+                            <div class="p-4 bg-stone-50 border border-stone-100 rounded-xl">
+                                <p class="text-xs text-stone-500 font-bold uppercase tracking-widest mb-1">Clinical Recommendation</p>
+                                <p class="text-sm text-stone-800 italic font-serif">"${result.action}"</p>
+                            </div>
+                        </div>
+
+                        <!-- DYNAMIC UPSELL LAYER -->
+                        <div class="bg-stone-900 rounded-[24px] p-8 text-center shadow-2xl border border-stone-800 relative overflow-hidden group">
+                            <div class="absolute inset-0 bg-[#b2945e] opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
+                            <h3 class="font-serif italic text-3xl text-white mb-3">${result.upsellTitle}</h3>
+                            <p class="text-sm text-stone-400 mb-8 max-w-sm mx-auto leading-relaxed">
+                                ${result.upsellDesc}
+                            </p>
+                            
+                            <a href="${result.upsellLink}" target="_blank" class="inline-block w-full py-4 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#d97706] transition-colors shadow-[0_0_20px_rgba(178,148,94,0.3)] relative z-10">
+                                ${result.btnText}
+                            </a>
+                            
+                            <p class="text-[9px] text-stone-500 uppercase tracking-widest mt-4 relative z-10">Secure Checkout via LiveAdaptiv</p>
+                        </div>
+                        
+                        <div class="text-center mt-8">
+                            <a href="https://liveadaptiv.com" class="text-[10px] font-bold uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors">
+                                &larr; Return to Hub
+                            </a>
+                        </div>
+                    </div>
+                `;
+                lucide.createIcons();
             }
 
-            // Render the Dynamic Results UI
-            rScreen.innerHTML = `
-                <div class="text-center mb-8">
-                    <h2 class="text-slate-400 uppercase tracking-widest font-bold text-xs mb-2">Diagnostic Complete</h2>
-                    <div class="text-6xl font-black ${uiConfig.color} mb-2 font-mono">${percentScore}<span class="text-2xl text-slate-600">%</span></div>
-                    <p class="text-sm text-slate-500">Kinetic Bandwidth Score</p>
-                </div>
-                
-                <div class="${uiConfig.bgTheme} border rounded-2xl p-6 md:p-8 mb-8 relative overflow-hidden">
-                    <div class="flex items-center gap-4 mb-4">
-                        ${uiConfig.icon}
-                        <h3 class="text-xl md:text-2xl font-bold text-white">${uiConfig.title}</h3>
-                    </div>
-                    <p class="text-slate-300 leading-relaxed text-sm md:text-base">
-                        ${uiConfig.desc}
-                    </p>
-                </div>
-                
-                <div class="bg-slate-900 border border-slate-700 p-8 rounded-2xl text-center shadow-2xl relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900 to-transparent z-0"></div>
-                    <div class="relative z-10">
-                        <p class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Prescribed Treatment Architecture</p>
-                        <h4 class="text-2xl font-bold text-white mb-4">${uiConfig.productName}</h4>
-                        <a href="${uiConfig.checkoutLink}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 bg-white text-slate-950 font-bold rounded-xl text-sm uppercase tracking-widest transition-all hover:scale-105 hover:bg-slate-200">
-                            Unlock Protocol (${uiConfig.productPrice}) <i data-lucide="lock" class="w-4 h-4"></i>
-                        </a>
-                        <p class="mt-4 text-[10px] text-slate-500 uppercase tracking-widest">Enterprise Encrypted Delivery</p>
-                    </div>
-                </div>
-                
-                <div class="mt-8 text-center">
-                    <a href="https://liveadaptiv.com" class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors">Return to LiveAdaptiv Hub</a>
-                </div>
-            `;
-            
-            lucide.createIcons();
+            container.classList.add('slide-in-right');
+        }
+
+        function handleSelection(val) {
+            totalScore += val;
+            setTimeout(() => {
+                nextStep();
+            }, 300); // Small delay so they see the click
+        }
+
+        function nextStep() {
+            currentStep++;
+            renderApp();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // Initialize App
+        renderApp();
+
     </script>
 </body>
 </html>
