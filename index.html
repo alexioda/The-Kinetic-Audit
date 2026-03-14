@@ -21,6 +21,7 @@
 
         .option-btn { transition: all 0.2s ease; border: 1px solid #e7e5e4; }
         .option-btn:hover { border-color: var(--gold); background-color: rgba(178, 148, 94, 0.05); }
+        .option-btn.selected { border-color: var(--gold); background-color: rgba(178, 148, 94, 0.1); box-shadow: 0 0 15px rgba(178, 148, 94, 0.2); }
     </style>
 </head>
 <body class="blueprint-dot min-h-screen flex flex-col">
@@ -54,62 +55,104 @@
 
         // --- APP STATE ---
         let currentStep = -1; 
-        let totalScore = 0;
+        let score = 0;
+        let selectedOption = null;
 
-        // 10-Question Clinical Audit Data
+        // 6-Question Clinical Audit Data (Original Version)
         const questions = [
-            { text: "When I wake up, my first thought regarding the day ahead is usually:", options: [ { text: "Energized or neutral.", value: 0 }, { text: "Mildly annoyed but manageable.", value: 1 }, { text: "A heavy sense of dread or exhaustion.", value: 2 }, { text: "Complete apathy; I am emotionally numb.", value: 3 } ] },
-            { text: "When a minor inconvenience occurs (e.g., an email, a dropped pen, a small delay):", options: [ { text: "I handle it easily.", value: 0 }, { text: "I get briefly frustrated.", value: 1 }, { text: "I feel a disproportionate spike of rage/panic.", value: 2 }, { text: "I feel nothing. I am too tired to care.", value: 3 } ] },
-            { text: "Regarding my empathy toward clients, patients, or team members:", options: [ { text: "I remain compassionate and engaged.", value: 0 }, { text: "I have to fake it occasionally.", value: 1 }, { text: "I view them as obstacles or burdens.", value: 2 }, { text: "I feel profound cynicism and detachment.", value: 3 } ] },
-            { text: "My sleep architecture right now is:", options: [ { text: "Solid. I wake up rested.", value: 0 }, { text: "Inconsistent, but I survive.", value: 1 }, { text: "I can't fall asleep because my mind races.", value: 2 }, { text: "I sleep, but wake up completely exhausted.", value: 3 } ] },
-            { text: "When I am not working, my brain is:", options: [ { text: "Present and engaged in my life.", value: 0 }, { text: "Thinking about work occasionally.", value: 1 }, { text: "Constantly looping over worst-case scenarios.", value: 2 }, { text: "Completely checked out / doomscrolling for hours.", value: 3 } ] },
-            { text: "Physically, my body feels:", options: [ { text: "Healthy and regulated.", value: 0 }, { text: "A bit tense, maybe minor headaches.", value: 1 }, { text: "Chronically tight (jaw, shoulders, chest).", value: 2 }, { text: "Heavy, exhausted, or experiencing chronic pain.", value: 3 } ] },
-            { text: "If my supervisor/system asked me to take on one more task right now:", options: [ { text: "I could handle it.", value: 0 }, { text: "I'd do it, but I'd be resentful.", value: 1 }, { text: "I would panic or snap at them.", value: 2 }, { text: "I would mentally or physically collapse.", value: 3 } ] },
-            { text: "My reliance on substances (caffeine, alcohol, sugar) to change my state is:", options: [ { text: "Minimal or zero.", value: 0 }, { text: "Normal/Average.", value: 1 }, { text: "Increasing. I need them to function/relax.", value: 2 }, { text: "Absolute. I am dependent on them to regulate.", value: 3 } ] },
-            { text: "When I think about my professional future:", options: [ { text: "I see growth and opportunity.", value: 0 }, { text: "I'm just trying to get through the week.", value: 1 }, { text: "I want to escape but feel trapped.", value: 2 }, { text: "I believe my career/industry has ruined me.", value: 3 } ] },
-            { text: "Which statement best describes your current state?", options: [ { text: "I am managing my friction well.", value: 0 }, { text: "I am stressed, but still fighting.", value: 1 }, { text: "I am surviving on pure adrenaline.", value: 2 }, { text: "I am running on empty. I am broken.", value: 3 } ] }
+            { 
+                q: "Reaction to Friction", 
+                desc: "When a major deadline shifts or a client cancels, what is your immediate default response?",
+                options: [
+                    { text: "I feel like a victim. 'Why does this always happen to me?'", val: 1 }, 
+                    { text: "I get angry and have to fight to fix it immediately.", val: 2 }, 
+                    { text: "I look for the opportunity or lesson hidden in the shift.", val: 5 }
+                ] 
+            },
+            { 
+                q: "Inner Monologue", 
+                desc: "When you are working quietly by yourself, what does the voice in your head sound like?",
+                options: [
+                    { text: "Highly critical. Pointing out where I am failing or falling behind.", val: 1 }, 
+                    { text: "Competitive. Focusing on how to beat the competition or prove myself.", val: 2 }, 
+                    { text: "Curious and expansive. Thinking about what I can create next.", val: 5 }
+                ] 
+            },
+            { 
+                q: "Motivation Source", 
+                desc: "What is the primary fuel driving your work and ambition right now?",
+                options: [
+                    { text: "Fear. I am avoiding failure, poverty, or letting people down.", val: 1 }, 
+                    { text: "Ego. I need to achieve the next level to prove my worth.", val: 2 }, 
+                    { text: "Purpose. I want to build something meaningful and expressive.", val: 6 }
+                ] 
+            },
+            { 
+                q: "View of Others", 
+                desc: "When dealing with subordinates, colleagues, or vendors, how do you primarily view them?",
+                options: [
+                    { text: "As obstacles or people who just don't 'get it'.", val: 2 }, 
+                    { text: "As people doing their best, even if I have to fix their mistakes.", val: 4 }, 
+                    { text: "As true partners and co-creators in the vision.", val: 6 }
+                ] 
+            },
+            { 
+                q: "Energy at 3 PM", 
+                desc: "How does your physical and mental bandwidth feel in the mid-afternoon?",
+                options: [
+                    { text: "Completely drained, foggy, and relying heavily on caffeine.", val: 1 }, 
+                    { text: "Wired, anxious, and physically tense.", val: 2 }, 
+                    { text: "Steady, calm, and capable of sustained focus.", val: 5 }
+                ] 
+            },
+            { 
+                q: "Goal Driver", 
+                desc: "When you set a massive 12-month goal, what is the core reason?",
+                options: [
+                    { text: "To escape my current situation.", val: 1 }, 
+                    { text: "To hit the revenue metric or acquire the title.", val: 2 }, 
+                    { text: "To experience my highest potential in real time.", val: 6 }
+                ] 
+            }
         ];
 
         // --- DYNAMIC ROUTING ENGINE ---
-        function getResultData(percentScore) {
-            if (percentScore >= 66) {
-                // TIER 1: HIGH BANDWIDTH
+        function getResultData(avgScore) {
+            if (avgScore <= 2.5) {
+                // TIER 3: BURNOUT RESCUE
                 return {
-                    title: "High Cognitive Bandwidth",
-                    subtitle: "Optimized / Low Resistance",
-                    icon: "shield-check",
-                    desc: "Your nervous system is currently regulated. You have the cognitive bandwidth required to build indestructible enterprise architecture. Now is the time to fortify your boundaries before the environment degrades your reserves.",
-                    action: "Scale your capacity and execute under pressure with The Alchemist Field Guide.",
-                    upsellTitle: "The Alchemist Field Guide",
-                    upsellDesc: "The ultimate manual for overriding autonomic panic and rewiring your cognitive baseline. Master your sovereign energy.",
-                    upsellLink: "https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1",
-                    btnText: "Acquire The Field Guide"
-                };
-            } else if (percentScore >= 33) {
-                // TIER 2: MODERATE DEBT
-                return {
-                    title: "Moderate Autonomic Debt",
-                    subtitle: "Sympathetic Response / Coping",
-                    icon: "zap",
-                    desc: "You are operating in a chronic state of 'Fight or Flight.' Your amygdala is actively dumping cortisol, resulting in high anxiety, disrupted sleep, and reactivity. You need structural tools to metabolize this stress before you enter collapse.",
-                    action: "Learn to convert biological anxiety and friction into actionable, anabolic fuel.",
-                    upsellTitle: "The Stress Transformation Protocol",
-                    upsellDesc: "A targeted framework to interrupt the cortisol loop, reframe your narrative, and reclaim your bandwidth.",
-                    upsellLink: "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e",
-                    btnText: "Acquire The Protocol"
-                };
-            } else {
-                // TIER 3: CRITICAL BURNOUT
-                return {
-                    title: "Critical Burnout Risk",
-                    subtitle: "Dorsal Vagal Shutdown",
-                    icon: "alert-triangle",
-                    desc: "Diagnostic Critical. You are exhibiting signs of severe Autonomic Collapse. You do not have the bandwidth for a complex masterclass right now. You need an immediate, frictionless lifeline to stop the psychological bleed.",
-                    action: "You need immediate biological stabilization before you can focus on high-level growth.",
+                    title: "Catabolic Friction",
+                    subtitle: "Critical Burnout Risk",
+                    desc: "Your current operating system is running on catabolic energy—fueled by conflict, fear, or a need to prove yourself. You are biologically drained and fighting the current.",
+                    action: "You need immediate biological stabilization before you can focus on high-level growth. You need the Burnout Rescue Workbook.",
                     upsellTitle: "The Burnout Rescue Workbook",
                     upsellDesc: "A targeted tactical manual to stop the bleeding, restore your sleep architecture, and recover your baseline bandwidth.",
                     upsellLink: "https://billing.liveadaptiv.com/checkout/buy/aab07394-9db6-46d1-8972-60038742f1b7",
                     btnText: "Acquire The Rescue Workbook"
+                };
+            } else if (avgScore <= 4.5) {
+                // TIER 2: STRESS TRANSFORMATION
+                return {
+                    title: "Transitional Energy",
+                    subtitle: "Coping / Rationalization",
+                    desc: "You are currently running a hybrid operating system. You cope well with stress, but you are likely tolerating more friction than you realize. You are surviving the current, but not directing it.",
+                    action: "To move from 'coping' to sovereignty, you must identify your hidden energy leaks. The Stress Transformation Protocol is your next step.",
+                    upsellTitle: "The Stress Transformation Protocol",
+                    upsellDesc: "Learn how to convert biological anxiety and friction into actionable, anabolic fuel for your career.",
+                    upsellLink: "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e",
+                    btnText: "Acquire The Protocol"
+                };
+            } else {
+                // TIER 1: ALCHEMIST FIELD GUIDE
+                return {
+                    title: "Anabolic Sovereignty",
+                    subtitle: "High Flow / Low Resistance",
+                    desc: "You are operating at a high level of anabolic energy. You view challenges as raw material, you create rather than react, and your motivation is driven by purpose.",
+                    action: "To lock in this frequency and scale it across your entire life, utilize the advanced frameworks inside The Alchemist Field Guide.",
+                    upsellTitle: "The Alchemist Field Guide",
+                    upsellDesc: "The ultimate manual for overriding autonomic panic and rewiring your cognitive baseline. Master your sovereign energy.",
+                    upsellLink: "https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1",
+                    btnText: "Acquire The Field Guide"
                 };
             }
         }
@@ -128,7 +171,7 @@
                         <h1 class="text-5xl md:text-6xl font-serif italic text-stone-900 leading-tight">The Kinetic<br>Audit.</h1>
                         <div class="w-16 h-1 bg-[#b2945e] mx-auto"></div>
                         <p class="text-lg text-stone-600 font-serif leading-relaxed max-w-xl mx-auto">
-                            Identify your invisible energy leaks. This 10-question clinical diagnostic maps the exact nature of the friction in your life. Answer instinctively.
+                            Where is your energy leaking? This diagnostic calculates your Resilience Pulse and identifies your Energy Archetype.
                         </p>
                         <button onclick="nextStep()" class="mt-8 bg-stone-900 text-white px-10 py-4 rounded-full font-sans text-xs font-bold tracking-[0.2em] uppercase shadow-lg hover:bg-[#b2945e] transition-all transform hover:-translate-y-1">
                             Begin Audit
@@ -139,9 +182,9 @@
                 // QUESTION SCREEN
                 const q = questions[currentStep];
                 let optionsHtml = '';
-                q.options.forEach((opt) => {
+                q.options.forEach((opt, idx) => {
                     optionsHtml += `
-                        <button onclick="handleSelection(${opt.value})" class="w-full text-left p-6 rounded-2xl bg-white option-btn mb-4 group relative overflow-hidden">
+                        <button onclick="selectOption(${opt.val})" class="w-full text-left p-6 rounded-2xl bg-white option-btn mb-4 group relative overflow-hidden">
                             <div class="absolute left-0 top-0 bottom-0 w-1 bg-[#b2945e] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             <span class="font-sans text-sm text-stone-700 leading-relaxed block pl-2">${opt.text}</span>
                         </button>
@@ -155,15 +198,15 @@
                         <!-- Progress Bar -->
                         <div class="mb-8">
                             <div class="flex justify-between items-center mb-2">
-                                <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400">Question ${currentStep + 1 > 9 ? currentStep + 1 : '0' + (currentStep + 1)} of 10</span>
-                                <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e]">${Math.round(progress)}%</span>
+                                <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400">Phase 0${currentStep + 1} of 06</span>
                             </div>
-                            <div class="w-full h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                            <div class="w-full h-1 bg-stone-200 rounded-full overflow-hidden">
                                 <div class="h-full bg-[#b2945e] transition-all duration-500" style="width: ${progress}%"></div>
                             </div>
                         </div>
 
-                        <h2 class="text-2xl md:text-3xl font-serif italic text-stone-900 mb-8 leading-snug">${q.text}</h2>
+                        <h2 class="text-3xl font-serif italic text-stone-900 mb-3">${q.q}</h2>
+                        <p class="text-sm text-stone-500 mb-8 max-w-md">${q.desc}</p>
                         
                         <div class="space-y-2">
                             ${optionsHtml}
@@ -172,23 +215,22 @@
                 `;
             } else {
                 // RESULTS & DYNAMIC UPSELL
-                // Calculate percentage: 0 raw friction = 100% capacity, 30 raw friction = 0% capacity
-                let percentScore = Math.round(((30 - totalScore) / 30) * 100);
-                const result = getResultData(percentScore);
+                const avgScore = score / questions.length;
+                const result = getResultData(avgScore);
+                const isCatabolic = avgScore <= 3.5;
 
                 container.innerHTML = `
                     <div class="fade-in">
                         <div class="text-center mb-10">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400 block mb-2">Diagnostic Complete</span>
-                            <div class="text-6xl font-serif italic text-stone-900 mb-2">${percentScore}<span class="text-3xl text-stone-500">%</span></div>
-                            <p class="text-xs font-bold uppercase tracking-widest text-[#b2945e]">Kinetic Bandwidth Score</p>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400 block mb-2">Audit Complete</span>
+                            <h2 class="text-4xl font-serif italic text-stone-900 mb-2">Your Archetype: <br><span class="text-[#b2945e]">${result.title}</span></h2>
                         </div>
 
                         <div class="bg-white p-8 rounded-[24px] border border-stone-200 shadow-xl mb-10 relative overflow-hidden">
                             <div class="absolute top-0 right-0 w-32 h-32 bg-[#b2945e] opacity-5 rounded-full blur-2xl transform translate-x-10 -translate-y-10"></div>
                             <div class="flex items-center gap-3 mb-6">
-                                <i data-lucide="${result.icon}" class="w-6 h-6 text-[#b2945e]"></i>
-                                <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-stone-900">${result.title}</h3>
+                                <i data-lucide="${isCatabolic ? 'alert-circle' : 'zap'}" class="w-6 h-6 text-[#b2945e]"></i>
+                                <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-stone-900">${result.subtitle}</h3>
                             </div>
                             <p class="text-stone-600 font-serif text-lg leading-relaxed mb-6">
                                 ${result.desc}
@@ -227,15 +269,15 @@
             container.classList.add('slide-in-right');
         }
 
-        function handleSelection(val) {
-            totalScore += val;
-            setTimeout(() => {
-                nextStep();
-            }, 300); // Small delay so they see the click
+        function selectOption(val) {
+            selectedOption = val;
+            score += val;
+            nextStep();
         }
 
         function nextStep() {
             currentStep++;
+            selectedOption = null;
             renderApp();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
