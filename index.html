@@ -37,7 +37,6 @@
 </head>
 <body class="min-h-screen blueprint-dot pb-24">
 
-    <!-- TOP NAVIGATION & PROGRESS -->
     <nav class="p-5 flex flex-col justify-center sticky top-0 z-50 glass-light border-b border-stone-200">
         <div class="flex justify-between items-center w-full max-w-2xl mx-auto mb-3">
             <a href="https://liveadaptiv.com" class="flex items-center gap-3 hover:opacity-70 transition-opacity">
@@ -50,7 +49,6 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-[#b2945e] animate-pulse"></span> Diagnostic Active
             </div>
         </div>
-        <!-- Progress Bar -->
         <div class="w-full max-w-2xl mx-auto h-1 bg-stone-200 rounded-full overflow-hidden">
             <div id="progressBar" class="h-full bg-[#b2945e] w-0 transition-all duration-500"></div>
         </div>
@@ -58,7 +56,6 @@
 
     <main class="p-6 space-y-8 max-w-2xl mx-auto">
 
-        <!-- HEADER -->
         <section class="text-center py-6 fade-in">
             <span class="text-[#b2945e] font-bold text-[9px] uppercase tracking-[0.3em] mb-4 block">Performance Diagnostic</span>
             <h1 class="text-5xl md:text-6xl font-serif italic text-stone-900 mb-4 leading-tight">The Kinetic Audit</h1>
@@ -67,7 +64,6 @@
             </p>
         </section>
 
-        <!-- MODULE 1: THE DRAIN -->
         <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow fade-in" style="animation-delay: 0.1s;">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-serif italic text-stone-900">1. Energy Leak Detection</h2>
@@ -81,7 +77,6 @@
             <textarea id="input_trigger" oninput="updateUI()" class="w-full bg-stone-50 border border-stone-200 p-5 rounded-2xl text-sm h-28 outline-none focus:border-[#b2945e] transition-all resize-none font-serif italic text-stone-700" placeholder="e.g., The fear of failing the project..."></textarea>
         </div>
 
-        <!-- MODULE 2: THE REACTION -->
         <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow fade-in" style="animation-delay: 0.2s;">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-serif italic text-stone-900">2. Reaction Speed</h2>
@@ -105,7 +100,6 @@
             </div>
         </div>
 
-        <!-- MODULE 3: THE NARRATIVE -->
         <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow fade-in" style="animation-delay: 0.3s;">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-serif italic text-stone-900">3. The Narrative</h2>
@@ -129,7 +123,6 @@
             </div>
         </div>
 
-        <!-- MODULE 4: THE ENERGY LENS -->
         <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow fade-in" style="animation-delay: 0.4s;">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-serif italic text-stone-900">4. The Energy Lens</h2>
@@ -138,43 +131,67 @@
             
             <div class="bg-stone-50 border-l-2 border-[#b2945e] p-4 rounded-r-xl mb-8">
                 <p class="text-[8px] uppercase tracking-widest text-[#b2945e] font-bold mb-1">The Lens</p>
-                <p class="text-xs text-stone-500 italic leading-relaxed">"How you view the world determines how you engage with it. Select your default response to stress."</p>
+                <p class="text-xs text-stone-500 italic leading-relaxed">"How you view the world determines how you engage with it. Select your default responses below to reveal your Kinetic Archetype."</p>
             </div>
             
             <div class="space-y-8">
-                <!-- Question 1 -->
                 <div>
                     <p class="text-sm font-bold text-stone-800 mb-3">1. When a problem hits, your first thought is:</p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectEnergy(0, 1, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Why does this always happen?"</button>
-                        <button onclick="selectEnergy(0, 2, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Who messed this up?"</button>
-                        <button onclick="selectEnergy(0, 5, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"How do we fix it?"</button>
+                        <button onclick="selectOption('energy', 0, 1, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Why does this always happen?"</button>
+                        <button onclick="selectOption('energy', 0, 2, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Who messed this up?"</button>
+                        <button onclick="selectOption('energy', 0, 5, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"How do we fix it?"</button>
                     </div>
                 </div>
 
-                <!-- Question 2 -->
                 <div>
                     <p class="text-sm font-bold text-stone-800 mb-3">2. Your primary motivation at work is:</p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectEnergy(1, 1, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Fear of failure."</button>
-                        <button onclick="selectEnergy(1, 2, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Winning / Proving myself."</button>
-                        <button onclick="selectEnergy(1, 5, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Purpose / Growth."</button>
+                        <button onclick="selectOption('energy', 1, 1, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Fear of failure."</button>
+                        <button onclick="selectOption('energy', 1, 2, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Winning / Proving myself."</button>
+                        <button onclick="selectOption('energy', 1, 5, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Purpose / Growth."</button>
                     </div>
                 </div>
 
-                <!-- Question 3 -->
                 <div>
                     <p class="text-sm font-bold text-stone-800 mb-3">3. When someone disagrees with you, you feel:</p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectEnergy(2, 1, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Ignored / Small."</button>
-                        <button onclick="selectEnergy(2, 2, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Angry / Ready to debate."</button>
-                        <button onclick="selectEnergy(2, 5, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Curious about their view."</button>
+                        <button onclick="selectOption('energy', 2, 1, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Ignored / Small."</button>
+                        <button onclick="selectOption('energy', 2, 2, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Angry / Ready to debate."</button>
+                        <button onclick="selectOption('energy', 2, 5, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Curious about their view."</button>
                     </div>
                 </div>
+
+                <div class="pt-6 border-t border-stone-100">
+                    <p class="text-sm font-bold text-stone-800 mb-3">4. When a massive, unexpected problem lands on your desk late in the day, what is your immediate internal response?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <button onclick="selectOption('archetype', 0, 'Rusher', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">My heart rate spikes and I immediately attack it.</button>
+                        <button onclick="selectOption('archetype', 0, 'Fixer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">I feel a wave of resentment because I'm the only one who can fix it.</button>
+                        <button onclick="selectOption('archetype', 0, 'Freezer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">My brain fogs over, I stare at the screen, and I want to walk away.</button>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="text-sm font-bold text-stone-800 mb-3">5. When you are operating at maximum capacity for too long, how does your body typically keep score?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <button onclick="selectOption('archetype', 1, 'Rusher', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">I feel wired, tense, and physically unable to wind down.</button>
+                        <button onclick="selectOption('archetype', 1, 'Fixer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">I feel a crushing weight in my chest or shoulders.</button>
+                        <button onclick="selectOption('archetype', 1, 'Freezer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">I feel completely drained, numb, and physically heavy.</button>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="text-sm font-bold text-stone-800 mb-3">6. When you are in the thick of the overwhelm, what is the lie you catch yourself believing?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <button onclick="selectOption('archetype', 2, 'Rusher', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"If I can just sprint through this week, things will finally slow down."</button>
+                        <button onclick="selectOption('archetype', 2, 'Fixer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"If other people would just step up, I wouldn't have to manage all of this."</button>
+                        <button onclick="selectOption('archetype', 2, 'Freezer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"If I could just disappear and be completely left alone for a month, I'd be fine."</button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <!-- SCORE SECTION -->
         <div class="bg-[#1c1917] p-10 rounded-[2.5rem] shadow-2xl text-center mt-10 relative overflow-hidden">
             <div class="absolute top-0 right-0 p-32 bg-[#b2945e]/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -189,10 +206,15 @@
                 <span id="energyType" class="text-[10px] font-bold uppercase tracking-widest text-stone-300">Awaiting Data...</span>
             </div>
 
-            <!-- Dynamic Prescription -->
             <div id="rec-engine" class="hidden relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-[#b2945e]">
                 <span id="rec-title" class="text-[8px] font-bold uppercase tracking-widest text-stone-400 mb-2 block">Primary Prescription</span>
                 <h3 id="rec-product-name" class="text-2xl font-serif italic text-stone-900 mb-3 leading-tight">...</h3>
+                
+                <div id="archetype-reveal" class="bg-stone-50 border border-stone-200 p-4 rounded-xl mb-4">
+                    <p class="text-[9px] uppercase tracking-widest text-[#b2945e] font-bold mb-1">Your Default Kinetic Response</p>
+                    <p id="archetype-text" class="text-sm text-stone-800 font-serif italic leading-relaxed">...</p>
+                </div>
+
                 <p id="rec-desc" class="text-sm text-stone-600 leading-relaxed mb-8 font-medium">...</p>
                 <a href="#" id="rec-link" target="_blank" class="block w-full py-4 bg-stone-900 hover:bg-[#b2945e] text-white font-bold rounded-xl text-[10px] uppercase tracking-widest text-center shadow-lg transition-all">
                     Get Protocol
@@ -200,7 +222,6 @@
             </div>
         </div>
 
-        <!-- ECOSYSTEM LINKS -->
         <div class="grid grid-cols-2 gap-4 pt-4">
             <a href="https://sovereign.liveadaptiv.com" class="glass-light p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white transition-all text-center border border-stone-200">
                 <i data-lucide="layout-grid" class="w-5 h-5 text-stone-400"></i>
@@ -214,8 +235,9 @@
             </a>
         </div>
         
-        <div class="text-center mt-6">
+        <div class="text-center mt-6 flex justify-center gap-6">
             <a href="https://liveadaptiv.com" class="text-[10px] font-bold uppercase tracking-widest text-stone-500 hover:text-[#b2945e] transition-colors">Return to Hub</a>
+            <a href="#" onclick="location.reload()" class="text-[10px] font-bold uppercase tracking-widest text-stone-500 hover:text-[#b2945e] transition-colors">Reset Diagnostic</a>
         </div>
 
     </main>
@@ -223,9 +245,12 @@
     <script>
         lucide.createIcons();
 
+        // Dual Trackers
         let energyScores = [0, 0, 0];
+        let archetypeSelections = [null, null, null];
 
-        function selectEnergy(qIndex, val, el) {
+        // Handles both Energy Lens and Archetype button clicks
+        function selectOption(type, qIndex, val, el) {
             // Visual Selection Logic
             const siblings = el.parentElement.querySelectorAll('button');
             siblings.forEach(s => {
@@ -237,22 +262,29 @@
             el.classList.add('bg-[#1c1917]', 'text-white', 'border-[#1c1917]', 'shadow-md');
 
             // Data Logic
-            energyScores[qIndex] = val;
+            if(type === 'energy') {
+                energyScores[qIndex] = val;
+            } else if (type === 'archetype') {
+                archetypeSelections[qIndex] = val;
+            }
+            
             updateUI();
         }
 
         function updateUI() {
-            // Calculate mandatory steps completed (Max 5)
+            // Calculate mandatory steps completed (Max 8 now)
             // 1. Textarea
             // 2. Radio button (Mindset)
-            // 3, 4, 5. Three energy lens questions
+            // 3-5. Three energy lens questions
+            // 6-8. Three archetype tie-breakers
             let mandatoryCompleted = 0;
             
             if(document.getElementById('input_trigger').value.length > 5) mandatoryCompleted++;
             if(document.querySelector('input[name="mindset"]:checked')) mandatoryCompleted++;
             mandatoryCompleted += energyScores.filter(s => s > 0).length;
+            mandatoryCompleted += archetypeSelections.filter(s => s !== null).length;
 
-            const pct = Math.min(100, (mandatoryCompleted / 5) * 100);
+            const pct = Math.min(100, (mandatoryCompleted / 8) * 100);
             document.getElementById('progressBar').style.width = pct + "%";
 
             calculateScore(mandatoryCompleted);
@@ -284,14 +316,35 @@
                 }
             });
 
+            // Adjust for Archetype Intensity (All subtract energy, Freezers subtract most)
+            archetypeSelections.forEach(a => {
+                if(a === 'Rusher') score -= 5;
+                if(a === 'Fixer') score -= 6;
+                if(a === 'Freezer') score -= 8;
+            });
+
             // Clamp bounds
             if(score < 0) score = 0;
             if(score > 100) score = 100;
 
-            // Only reveal score and prescription if the 5 mandatory actions are completed
-            if(mandatoryCompleted === 5) {
+            // Only reveal score and prescription if the 8 mandatory actions are completed
+            if(mandatoryCompleted === 8) {
                 document.getElementById('scoreDisplay').innerText = score + "%";
                 
+                // Calculate Dominant Archetype
+                const counts = { Rusher: 0, Fixer: 0, Freezer: 0 };
+                archetypeSelections.forEach(a => { if(a) counts[a]++ });
+                
+                let dominantArchetype = 'Fixer'; // Default
+                let maxCount = 0;
+                for (const [archetype, count] of Object.entries(counts)) {
+                    if (count > maxCount) {
+                        maxCount = count;
+                        dominantArchetype = archetype;
+                    }
+                }
+
+                // Calculate Energy Phase Type
                 const finalAvg = avgEnergy / 3;
                 let type = "Reviewing...";
                 if(finalAvg < 2) type = "The Fighter (High Friction)";
@@ -299,7 +352,7 @@
                 else type = "The Alchemist (High Flow)";
 
                 document.getElementById('energyType').innerText = type;
-                showRecommendation(score);
+                showRecommendation(score, dominantArchetype);
             } else {
                 document.getElementById('scoreDisplay').innerText = "--";
                 document.getElementById('energyType').innerText = "Awaiting Data...";
@@ -308,12 +361,22 @@
             }
         }
 
-        function showRecommendation(score) {
+        function showRecommendation(score, archetype) {
             const recBox = document.getElementById('rec-engine');
             const title = document.getElementById('rec-title');
             const name = document.getElementById('rec-product-name');
             const desc = document.getElementById('rec-desc');
             const link = document.getElementById('rec-link');
+            const archetypeText = document.getElementById('archetype-text');
+
+            // Inject the dynamic archetype identity
+            if(archetype === 'Rusher') {
+                archetypeText.innerHTML = "<strong>The Rusher:</strong> You treat time as the enemy. Your nervous system is locked in a sprint, trying to outrun the overwhelm.";
+            } else if (archetype === 'Fixer') {
+                archetypeText.innerHTML = "<strong>The Fixer:</strong> You absorb the system's anxiety. Your burnout isn't caused by a lack of capacity, but by an over-extension of responsibility.";
+            } else {
+                archetypeText.innerHTML = "<strong>The Freezer:</strong> Your system responds to pressure through shutdown. When the load gets too heavy, your nervous system pulls the emergency brake.";
+            }
 
             recBox.classList.remove('hidden');
             recBox.classList.add('fade-in');
@@ -330,7 +393,7 @@
                 // TIER 2: MODERATE FRICTION -> $47 Stress Transformation
                 title.innerText = "Diagnostic: Moderate Autonomic Debt";
                 name.innerText = "Stress Transformation Protocol";
-                desc.innerText = "You are operating in a chronic state of 'Fight or Flight.' Your amygdala is actively dumping cortisol, resulting in high anxiety, disrupted sleep, and reactivity. You need structural tools to metabolize this stress before you enter collapse.";
+                desc.innerText = "You are operating in a chronic state of 'Fight or Flight.' Your amygdala is actively dumping cortisol, resulting in high anxiety, disrupted sleep, and reactivity. The Alchemist Field Guide contains the master architecture to permanently rewire this specific archetype loop.";
                 link.innerText = "Unlock Architect's Edition ($47)";
                 link.href = "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e";
                 recBox.className = "relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-amber-500 fade-in block";
@@ -338,7 +401,7 @@
                 // TIER 1: LOW FRICTION (High Score) -> $97 Alchemist
                 title.innerText = "Diagnostic: High Cognitive Bandwidth";
                 name.innerText = "The Alchemist Field Guide";
-                desc.innerText = "Your nervous system is currently regulated. You have the cognitive bandwidth required to build indestructible enterprise architecture. Now is the time to fortify your boundaries and shift from 'Managing Stress' to 'Creating Reality.'";
+                desc.innerText = "Your nervous system is currently regulated. You have the cognitive bandwidth required to build indestructible enterprise architecture. Now is the time to fortify your boundaries and master the energy dynamics of your archetype.";
                 link.innerText = "Unlock Master Edition ($97)";
                 link.href = "https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1";
                 recBox.className = "relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-[#b2945e] fade-in block";
