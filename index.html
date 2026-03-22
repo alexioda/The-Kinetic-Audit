@@ -103,7 +103,7 @@
 
   .card-shell {
     width: 100%;
-    max-width: 420px;
+    max-width: 480px; /* Widened slightly for better desktop reading */
     border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(178,148,94,0.15);
@@ -147,7 +147,7 @@
 
   .card-body {
     background: #0f0f18;
-    padding: 24px 28px;
+    padding: 32px 28px;
   }
 
   .archetype-pill {
@@ -158,7 +158,7 @@
     border-radius: 100px;
     background: var(--accent-bg, rgba(178,148,94,0.1));
     border: 1px solid var(--accent-border, rgba(178,148,94,0.2));
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -167,19 +167,19 @@
 
   .protocol-item {
     display: flex;
-    gap: 12px;
-    padding: 12px 0;
+    gap: 16px;
+    padding: 16px 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
   }
   .protocol-item:last-child { border-bottom: none; }
 
   .protocol-num {
-    width: 22px; height: 22px;
+    width: 26px; height: 26px;
     border-radius: 50%;
     background: var(--accent-bg, rgba(178,148,94,0.1));
     border: 1px solid var(--accent-border, rgba(178,148,94,0.2));
     color: var(--accent-light, var(--gold-light));
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
@@ -195,21 +195,34 @@
     justify-content: space-between;
   }
 
-  /* Screenshot hint */
-  .screenshot-hint {
+  /* Updated Actions Hints */
+  .action-hint {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 20px;
     border-radius: 100px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(255,255,255,0.03);
-    font-size: 11px;
-    color: rgba(255,255,255,0.4);
-    margin-top: 24px;
-    animation: fadeIn 0.6s 0.8s ease forwards;
-    opacity: 0;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    width: 100%;
   }
+
+  .hint-screenshot {
+    border: 1px solid rgba(178,148,94,0.4);
+    background: rgba(178,148,94,0.1);
+    color: #e2e8f0;
+  }
+  .hint-screenshot:hover { background: rgba(178,148,94,0.2); }
+
+  .hint-email {
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: #cbd5e1;
+  }
+  .hint-email:hover { background: rgba(255,255,255,0.1); color: #f8fafc; }
 
   /* Pulse on score ring */
   .ring-pulse { animation: ringPulse 2s ease infinite; }
@@ -227,26 +240,24 @@
 
   /* Retake button */
   .retake-btn {
-    display: inline-flex; align-items: center; gap-6px;
-    padding: 10px 20px;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px;
     border-radius: 100px;
     border: 1px solid rgba(255,255,255,0.1);
     background: transparent;
-    color: rgba(255,255,255,0.4);
-    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s;
-    margin-top: 16px;
   }
-  .retake-btn:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+  .retake-btn:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.9); }
 </style>
 </head>
 <body class="bg-grid">
 
-<!-- NAV -->
 <nav class="sticky top-0 z-50 border-b border-white/5" style="background:rgba(2,6,23,0.85); backdrop-filter:blur(16px);">
   <div class="max-w-xl mx-auto px-6 h-14 flex items-center justify-between">
     <div class="flex items-center gap-2.5">
@@ -264,7 +275,6 @@
 
 <main class="max-w-xl mx-auto px-5 py-10 flex-grow w-full">
 
-  <!-- ── INTRO ─────────────────────────────────────────────────── -->
   <div id="intro-screen" class="fade-in text-center">
     <div class="w-16 h-16 mx-auto mb-6 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center shadow-[0_0_40px_rgba(178,148,94,0.1)]">
       <i data-lucide="activity" class="w-7 h-7 text-[#b2945e]"></i>
@@ -281,9 +291,7 @@
     <p class="text-slate-600 text-[10px] mt-5 uppercase tracking-widest">Approx. 3 minutes</p>
   </div>
 
-  <!-- ── QUESTIONS ─────────────────────────────────────────────── -->
   <div id="question-screen" class="hidden">
-    <!-- Progress -->
     <div class="mb-8">
       <div class="flex justify-between items-center mb-2">
         <span id="q-counter" class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Question 1 of 10</span>
@@ -294,7 +302,6 @@
       </div>
     </div>
 
-    <!-- Card -->
     <div class="rounded-2xl border border-white/7 p-7 md:p-9 shadow-2xl relative overflow-hidden" style="background: rgba(15,15,24,0.95);">
       <div class="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl pointer-events-none" style="background:rgba(178,148,94,0.04);transform:translate(30%,-30%);"></div>
       <h2 id="question-text" class="font-serif italic text-2xl md:text-3xl text-white leading-snug mb-8 relative z-10"></h2>
@@ -304,81 +311,102 @@
 
 </main>
 
-<!-- ── RESULTS SCORECARD ─────────────────────────────────────────── -->
 <div id="scorecard" class="hidden">
-  <div class="w-full max-w-[420px]">
+  
+  <div class="w-full max-w-[480px]">
 
-    <!-- Screenshot hint -->
-    <div class="screenshot-hint mx-auto w-fit mb-6">
-      <i data-lucide="camera" class="w-3.5 h-3.5"></i>
-      <span>Screenshot this card to keep your results</span>
+    <div class="flex flex-col md:flex-row gap-3 mb-6 result-reveal w-full">
+        <div class="action-hint hint-screenshot flex-1">
+            <i data-lucide="camera" class="w-4 h-4"></i>
+            <span>Screenshot Card to Save</span>
+        </div>
+        <button onclick="emailResults()" class="action-hint hint-email flex-1">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            <span>Email My Results</span>
+        </button>
     </div>
 
     <div id="card-shell" class="card-shell">
 
-      <!-- HEADER -->
       <div id="card-header" class="card-header">
-        <div class="flex items-start gap-4 relative z-10 result-reveal">
+        <div class="flex items-start gap-5 relative z-10 result-reveal">
           <div id="score-ring" class="score-ring ring-pulse">
-            <span id="score-num" class="font-serif italic text-3xl leading-none text-white"></span>
-            <span class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">/30</span>
+            <span id="score-num" class="font-serif italic text-4xl leading-none text-white"></span>
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">/30</span>
           </div>
           <div class="flex-1 pt-1">
-            <p class="text-[9px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-1.5">Diagnostic Complete</p>
-            <h2 id="result-title" class="font-serif italic text-xl text-white leading-tight mb-3"></h2>
+            <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-2">Diagnostic Complete</p>
+            <h2 id="result-title" class="font-serif italic text-2xl text-white leading-tight mb-3"></h2>
             <div id="archetype-pill" class="archetype-pill"></div>
           </div>
         </div>
       </div>
 
-      <!-- BODY -->
-      <div class="card-body space-y-5">
+      <div class="card-body space-y-8">
 
-        <!-- Clinical read -->
         <div class="result-reveal">
-          <p class="text-[9px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-2">Clinical Read</p>
-          <p id="clinical-read" class="text-sm text-slate-300 leading-relaxed font-serif italic"></p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-3">Clinical Read</p>
+          <p id="clinical-read" class="text-base text-slate-300 leading-relaxed font-serif italic"></p>
         </div>
 
-        <!-- Archetype read -->
-        <div id="archetype-block" class="result-reveal rounded-xl p-4" style="background: var(--accent-bg); border: 1px solid var(--accent-border);">
-          <p class="text-[9px] font-bold uppercase tracking-[0.35em] mb-2" style="color: var(--accent-light)">Your Friction Pattern</p>
-          <p id="archetype-read" class="text-sm leading-relaxed text-slate-300"></p>
+        <div id="archetype-block" class="result-reveal rounded-2xl p-5" style="background: var(--accent-bg); border: 1px solid var(--accent-border);">
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] mb-3" style="color: var(--accent-light)">Your Friction Pattern</p>
+          <p id="archetype-read" class="text-base leading-relaxed text-slate-200"></p>
         </div>
 
-        <!-- Immediate protocols -->
         <div class="result-reveal">
-          <p class="text-[9px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-3">3 Protocols for Right Now</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-4">3 Protocols for Right Now</p>
           <div id="protocols-list" class="space-y-0"></div>
+        </div>
+
+        <div class="result-reveal pt-8 border-t border-white/10">
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-[#b2945e] mb-4">Recommended Integration</p>
+          <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
+             <h4 id="product-title" class="font-serif italic text-2xl text-white mb-3"></h4>
+             <p id="product-desc" class="text-sm text-slate-400 mb-6 leading-relaxed"></p>
+             <a id="product-link" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full py-4 bg-[#b2945e] text-[#1c1917] rounded-xl text-[11px] font-bold uppercase tracking-widest hover:bg-[#d4b483] transition-colors shadow-lg">
+                <span id="product-price"></span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+             </a>
+          </div>
         </div>
 
       </div>
 
-      <!-- FOOTER -->
       <div class="card-footer result-reveal">
         <div>
-          <p class="text-[9px] font-bold uppercase tracking-[0.35em] text-slate-600 mb-0.5">LiveAdaptiv</p>
-          <p class="font-serif italic text-[11px] text-slate-500">Architecture for the Modern Soul</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-1">LiveAdaptiv</p>
+          <p class="font-serif italic text-xs text-slate-400">Architecture for the Modern Soul</p>
         </div>
         <div class="text-right">
-          <p id="footer-date" class="text-[9px] text-slate-600 font-mono"></p>
-          <p class="text-[9px] text-slate-600 uppercase tracking-widest mt-0.5">Kinetic Audit</p>
+          <p id="footer-date" class="text-[10px] text-slate-500 font-mono"></p>
+          <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Kinetic Audit</p>
         </div>
       </div>
     </div>
 
-    <!-- Retake -->
-    <div class="text-center result-reveal">
-      <button onclick="resetAudit()" class="retake-btn mx-auto mt-6">
-        <i data-lucide="refresh-cw" class="w-3 h-3 mr-1.5"></i> Retake Diagnostic
-      </button>
+    <div class="flex flex-col items-center mt-10 space-y-8 result-reveal">
+        <button onclick="resetAudit()" class="retake-btn">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Retake Diagnostic
+        </button>
+
+        <div class="flex gap-6 items-center">
+            <a href="https://www.linkedin.com/in/alex-ioda-5428b76" target="_blank" class="p-4 rounded-full bg-white/5 text-slate-400 hover:text-[#b2945e] hover:bg-white/10 transition-all border border-white/5">
+                <i data-lucide="linkedin" class="w-5 h-5"></i>
+            </a>
+            <a href="mailto:alexioda@gmail.com" class="p-4 rounded-full bg-white/5 text-slate-400 hover:text-[#b2945e] hover:bg-white/10 transition-all border border-white/5">
+                <i data-lucide="mail" class="w-5 h-5"></i>
+            </a>
+            <a href="https://liveadaptiv.com" target="_blank" class="p-4 rounded-full bg-white/5 text-slate-400 hover:text-[#b2945e] hover:bg-white/10 transition-all border border-white/5">
+                <i data-lucide="globe" class="w-5 h-5"></i>
+            </a>
+        </div>
     </div>
 
   </div>
 </div>
 
-<footer class="text-center pb-8 border-t border-white/5 mt-auto">
-  <p class="mt-6 text-[10px] text-slate-600 uppercase tracking-widest font-bold">© 2026 LiveAdaptiv Systems</p>
+<footer class="text-center pb-12 mt-auto">
+  <p class="mt-8 text-[11px] text-slate-600 uppercase tracking-widest font-bold">© 2026 LiveAdaptiv Systems</p>
 </footer>
 
 <script>
@@ -448,10 +476,7 @@ const questions = [
   ]}
 ];
 
-// ── ARCHETYPES (derived from score pattern) ─────────────────────────────
-// Q1, Q5 (looping/racing) → Rusher
-// Q6, Q3 (body/detachment) → Freezer  
-// Q7, Q2 (overwhelm/panic) → Fixer
+// ── ARCHETYPES ─────────────────────────────
 function deriveArchetype(answers) {
   const rusherScore  = (answers[0] || 0) + (answers[4] || 0) + (answers[8] || 0);
   const freezerScore = (answers[5] || 0) + (answers[2] || 0) + (answers[3] || 0);
@@ -491,24 +516,43 @@ const archetypeData = {
   }
 };
 
+// ── PRODUCT UPSELL DATA ───────────────────────────────────────────────────
 const tierData = {
   low: {
     title: "High Cognitive Bandwidth",
     theme: "theme-teal",
     accentVar: "--teal",
-    read: "Your autonomic system is currently regulated. You have the cognitive bandwidth available to absorb new frameworks, build new habits, and perform under elevated pressure. The work right now is fortification — reinforcing the architecture before the environment tests it."
+    read: "Your autonomic system is currently regulated. You have the cognitive bandwidth available to absorb new frameworks, build new habits, and perform under elevated pressure. The work right now is fortification — reinforcing the architecture before the environment tests it.",
+    product: {
+        title: "The Alchemist Field Guide",
+        desc: "You have the baseline to scale. This tactical workbook provides the frameworks to optimize your kinetic energy, master your 'Golden Shadow', and engineer deep flow states without sacrificing your wellbeing.",
+        link: "https://liveadaptiv.com",
+        price: "Access Field Guide ($27)"
+    }
   },
   mid: {
     title: "Moderate Autonomic Debt",
     theme: "theme-amber",
     accentVar: "--amber",
-    read: "You are operating in sustained sympathetic activation — the biological state commonly called 'fight or flight.' Cortisol is elevated. Your amygdala is managing threat assessment that should be handled by your prefrontal cortex. You are functional, but you are paying a toll to stay that way."
+    read: "You are operating in sustained sympathetic activation — the biological state commonly called 'fight or flight.' Cortisol is elevated. Your amygdala is managing threat assessment that should be handled by your prefrontal cortex. You are functional, but you are paying a toll to stay that way.",
+    product: {
+        title: "Stress Transformation Protocol",
+        desc: "You are currently burning metabolic fuel just to survive the week. Install this 7-day neurological reset to eliminate autonomic debt, reframe your friction, and halt the cortisol loop before you break.",
+        link: "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e",
+        price: "Install Protocol ($47)"
+    }
   },
   high: {
     title: "Critical Friction Load",
     theme: "theme-rose",
     accentVar: "--rose",
-    read: "Your diagnostic suggests dorsal vagal activation — the system's final conservation response to sustained, unmetabolized load. Cognitive bandwidth is significantly reduced. Decision quality is compromised. The priority right now is not performance. It is biological stabilization."
+    read: "Your diagnostic suggests dorsal vagal activation — the system's final conservation response to sustained, unmetabolized load. Cognitive bandwidth is significantly reduced. Decision quality is compromised. The priority right now is not performance. It is biological stabilization.",
+    product: {
+        title: "Clinical Strategy Session",
+        desc: "You cannot 'mindset' your way out of profound autonomic exhaustion. We need to deploy emergency architecture. Book a 1-on-1 intensive to locate the exact energy leak and engineer a sustainable boundary system.",
+        link: "https://calendly.com/alexioda",
+        price: "Book Strategy Session ($495)"
+    }
   }
 };
 
@@ -541,7 +585,7 @@ function renderQuestion() {
     div.style.animationDelay = `${i * 0.06}s`;
     div.innerHTML = `
       <div class="option-radio"></div>
-      <span class="text-slate-300 text-sm leading-snug">${opt.text}</span>
+      <span class="text-slate-300 text-base md:text-lg leading-snug">${opt.text}</span>
     `;
     div.addEventListener('click', () => handleSelection(opt.value, div));
     container.appendChild(div);
@@ -604,12 +648,18 @@ function showResults() {
     item.innerHTML = `
       <div class="protocol-num">${i + 1}</div>
       <div>
-        <p class="text-xs font-bold text-white mb-0.5">${p.title}</p>
-        <p class="text-xs text-slate-400 leading-relaxed">${p.body}</p>
+        <p class="text-sm font-bold text-white mb-1">${p.title}</p>
+        <p class="text-sm text-slate-400 leading-relaxed">${p.body}</p>
       </div>
     `;
     list.appendChild(item);
   });
+
+  // Dynamic Upsell Injection
+  document.getElementById('product-title').innerText = tierInfo.product.title;
+  document.getElementById('product-desc').innerText = tierInfo.product.desc;
+  document.getElementById('product-link').href = tierInfo.product.link;
+  document.getElementById('product-price').innerText = tierInfo.product.price;
 
   // Footer date
   const now = new Date();
@@ -628,7 +678,22 @@ function resetAudit() {
   document.getElementById('intro-screen').classList.add('fade-in');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+function emailResults() {
+  const archetype = deriveArchetype(answers);
+  const tier      = totalScore <= 10 ? 'low' : totalScore <= 20 ? 'mid' : 'high';
+  const tierInfo  = tierData[tier];
+  
+  const subject = encodeURIComponent(`My Kinetic Audit Results: ${archetype}`);
+  const bodyText = `I just completed The Kinetic Audit by LiveAdaptiv.\n\n` +
+                   `MY FRICTION PATTERN: ${archetype}\n` +
+                   `SCORE: ${totalScore}/30 (${tierInfo.title})\n\n` +
+                   `CLINICAL READ:\n${tierInfo.read}\n\n` +
+                   `Take the diagnostic at audit.liveadaptiv.com`;
+                   
+  const body = encodeURIComponent(bodyText);
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
 </script>
 </body>
 </html>
-
