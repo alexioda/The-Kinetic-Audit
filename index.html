@@ -1,412 +1,634 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Kinetic Audit | LiveAdaptiv</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --gold: #b2945e; --stone: #fafaf9; --charcoal: #1c1917; --stone-border: #e7e5e4; }
-        body { 
-            background-color: var(--stone); 
-            color: var(--charcoal); 
-            font-family: 'Inter', sans-serif; 
-            overscroll-behavior: none; 
-            -webkit-font-smoothing: antialiased;
-        }
-        .font-serif { font-family: 'Cormorant Garamond', serif; }
-        .blueprint-dot { background-image: radial-gradient(circle at 1px 1px, var(--stone-border) 1px, transparent 0); background-size: 30px 30px; }
-        
-        .fade-in { animation: fadeIn 0.6s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .glass-light { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(178, 148, 94, 0.1); }
-        .timer-glow { box-shadow: 0 10px 40px rgba(178, 148, 94, 0.08); }
-        
-        /* Form Overrides */
-        textarea { -webkit-appearance: none; }
-        .custom-checkbox input[type="checkbox"], .custom-checkbox input[type="radio"] {
-            accent-color: #b2945e;
-            width: 1.25rem;
-            height: 1.25rem;
-            cursor: pointer;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Kinetic Audit | LiveAdaptiv</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root {
+    --gold: #b2945e;
+    --gold-light: #d4b483;
+    --charcoal: #1c1917;
+    --stone: #fafaf9;
+    --teal: #0d9488;
+    --teal-light: #2dd4bf;
+    --amber: #d97706;
+    --rose: #e11d48;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: #020617;
+    color: #f8fafc;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .font-serif { font-family: 'Cormorant Garamond', serif; }
+
+  /* Animated background grid */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(178,148,94,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(178,148,94,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Question screen */
+  .fade-in { animation: fadeIn 0.5s ease forwards; opacity: 0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+  .slide-up { animation: slideUp 0.4s cubic-bezier(.16,1,.3,1) forwards; opacity: 0; }
+  @keyframes slideUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+  /* Option cards */
+  .option-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.03);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    animation: slideUp 0.4s ease forwards;
+    opacity: 0;
+  }
+  .option-card:hover { border-color: rgba(178,148,94,0.5); background: rgba(178,148,94,0.06); transform: translateX(4px); }
+  .option-card:nth-child(1) { animation-delay: 0.05s; }
+  .option-card:nth-child(2) { animation-delay: 0.10s; }
+  .option-card:nth-child(3) { animation-delay: 0.15s; }
+  .option-card:nth-child(4) { animation-delay: 0.20s; }
+
+  .option-radio {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+    transition: all 0.18s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .option-card.selected .option-radio {
+    border-color: var(--gold);
+    background: var(--gold);
+    box-shadow: 0 0 12px rgba(178,148,94,0.5);
+  }
+  .option-card.selected .option-radio::after {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--charcoal);
+  }
+  .option-card.selected { border-color: rgba(178,148,94,0.4); background: rgba(178,148,94,0.08); }
+
+  /* Progress bar */
+  .progress-fill { transition: width 0.5s cubic-bezier(.16,1,.3,1); }
+
+  /* ── RESULTS SCORECARD ─────────────────────────────────────── */
+  #scorecard {
+    background: #0a0a0f;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 20px 60px;
+  }
+
+  .card-shell {
+    width: 100%;
+    max-width: 420px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(178,148,94,0.15);
+    position: relative;
+  }
+
+  /* Tier-specific themes */
+  .theme-teal   { --accent: #0d9488; --accent-light: #2dd4bf; --accent-bg: rgba(13,148,136,0.12); --accent-border: rgba(13,148,136,0.3); }
+  .theme-amber  { --accent: #d97706; --accent-light: #fbbf24; --accent-bg: rgba(217,119,6,0.12);  --accent-border: rgba(217,119,6,0.3);  }
+  .theme-rose   { --accent: #e11d48; --accent-light: #f43f5e; --accent-bg: rgba(225,29,72,0.12);  --accent-border: rgba(225,29,72,0.3);  }
+
+  .card-header {
+    background: linear-gradient(160deg, #111118 0%, #0d0d14 100%);
+    padding: 32px 28px 24px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .card-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-light, #b2945e) 0%, transparent 70%);
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .score-ring {
+    width: 88px; height: 88px;
+    border-radius: 50%;
+    border: 3px solid var(--accent, var(--gold));
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    box-shadow: 0 0 24px rgba(var(--accent-rgb, 178,148,94), 0.2), inset 0 0 16px rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.4);
+    flex-shrink: 0;
+  }
+
+  .card-body {
+    background: #0f0f18;
+    padding: 24px 28px;
+  }
+
+  .archetype-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    background: var(--accent-bg, rgba(178,148,94,0.1));
+    border: 1px solid var(--accent-border, rgba(178,148,94,0.2));
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-light, var(--gold-light));
+  }
+
+  .protocol-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .protocol-item:last-child { border-bottom: none; }
+
+  .protocol-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--accent-bg, rgba(178,148,94,0.1));
+    border: 1px solid var(--accent-border, rgba(178,148,94,0.2));
+    color: var(--accent-light, var(--gold-light));
+    font-size: 10px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .card-footer {
+    background: #080810;
+    padding: 20px 28px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Screenshot hint */
+  .screenshot-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 24px;
+    animation: fadeIn 0.6s 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  /* Pulse on score ring */
+  .ring-pulse { animation: ringPulse 2s ease infinite; }
+  @keyframes ringPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(178,148,94,0.15); }
+    50%       { box-shadow: 0 0 32px rgba(178,148,94,0.35); }
+  }
+
+  .result-reveal { animation: fadeIn 0.5s ease forwards; opacity: 0; }
+  .result-reveal:nth-child(1) { animation-delay: 0.1s; }
+  .result-reveal:nth-child(2) { animation-delay: 0.25s; }
+  .result-reveal:nth-child(3) { animation-delay: 0.4s; }
+  .result-reveal:nth-child(4) { animation-delay: 0.55s; }
+  .result-reveal:nth-child(5) { animation-delay: 0.7s; }
+
+  /* Retake button */
+  .retake-btn {
+    display: inline-flex; align-items: center; gap-6px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 16px;
+  }
+  .retake-btn:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+</style>
 </head>
-<body class="min-h-screen blueprint-dot pb-24">
+<body class="bg-grid">
 
-    <nav class="p-5 flex flex-col justify-center sticky top-0 z-50 glass-light border-b border-stone-200">
-        <div class="flex justify-between items-center w-full max-w-2xl mx-auto mb-3">
-            <a href="https://liveadaptiv.com" class="flex items-center gap-3 hover:opacity-70 transition-opacity">
-                <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
-                    <span class="font-serif italic text-lg text-[#b2945e] pb-0.5">A</span>
-                </div>
-                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
-            </a>
-            <div class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#b2945e] animate-pulse"></span> Diagnostic Active
-            </div>
+<!-- NAV -->
+<nav class="sticky top-0 z-50 border-b border-white/5" style="background:rgba(2,6,23,0.85); backdrop-filter:blur(16px);">
+  <div class="max-w-xl mx-auto px-6 h-14 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-6 h-6 rounded-full border border-[#b2945e]/40 flex items-center justify-center">
+        <span class="font-serif italic text-sm text-[#b2945e]">A</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-400">LiveAdaptiv</span>
+    </div>
+    <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+      <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
+      Diagnostic Active
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-xl mx-auto px-5 py-10 flex-grow w-full">
+
+  <!-- ── INTRO ─────────────────────────────────────────────────── -->
+  <div id="intro-screen" class="fade-in text-center">
+    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center shadow-[0_0_40px_rgba(178,148,94,0.1)]">
+      <i data-lucide="activity" class="w-7 h-7 text-[#b2945e]"></i>
+    </div>
+    <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[#b2945e] mb-3">Clinical Diagnostic</p>
+    <h1 class="font-serif italic text-5xl text-white mb-4 leading-none">The Kinetic<br>Audit</h1>
+    <p class="text-slate-400 text-sm leading-relaxed max-w-sm mx-auto mb-10">
+      Ten questions. A clinical read on your current autonomic state and the friction pattern that's most active right now.
+      <br><br>Answer instinctively. Do not overthink.
+    </p>
+    <button onclick="startAudit()" class="px-8 py-4 bg-[#b2945e] hover:bg-[#d4b483] text-[#1c1917] font-bold rounded-full text-[11px] uppercase tracking-[0.2em] transition-all shadow-lg hover:shadow-[#b2945e]/25 flex items-center gap-2 mx-auto">
+      Begin Diagnostic <i data-lucide="arrow-right" class="w-4 h-4"></i>
+    </button>
+    <p class="text-slate-600 text-[10px] mt-5 uppercase tracking-widest">Approx. 3 minutes</p>
+  </div>
+
+  <!-- ── QUESTIONS ─────────────────────────────────────────────── -->
+  <div id="question-screen" class="hidden">
+    <!-- Progress -->
+    <div class="mb-8">
+      <div class="flex justify-between items-center mb-2">
+        <span id="q-counter" class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Question 1 of 10</span>
+        <span id="q-pct" class="text-[10px] font-bold text-[#b2945e]">10%</span>
+      </div>
+      <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+        <div id="progress-bar" class="progress-fill h-full bg-[#b2945e] rounded-full" style="width:10%"></div>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <div class="rounded-2xl border border-white/7 p-7 md:p-9 shadow-2xl relative overflow-hidden" style="background: rgba(15,15,24,0.95);">
+      <div class="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl pointer-events-none" style="background:rgba(178,148,94,0.04);transform:translate(30%,-30%);"></div>
+      <h2 id="question-text" class="font-serif italic text-2xl md:text-3xl text-white leading-snug mb-8 relative z-10"></h2>
+      <div id="options-container" class="space-y-3 relative z-10"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── RESULTS SCORECARD ─────────────────────────────────────────── -->
+<div id="scorecard" class="hidden">
+  <div class="w-full max-w-[420px]">
+
+    <!-- Screenshot hint -->
+    <div class="screenshot-hint mx-auto w-fit mb-6">
+      <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+      <span>Screenshot this card to keep your results</span>
+    </div>
+
+    <div id="card-shell" class="card-shell">
+
+      <!-- HEADER -->
+      <div id="card-header" class="card-header">
+        <div class="flex items-start gap-4 relative z-10 result-reveal">
+          <div id="score-ring" class="score-ring ring-pulse">
+            <span id="score-num" class="font-serif italic text-3xl leading-none text-white"></span>
+            <span class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">/30</span>
+          </div>
+          <div class="flex-1 pt-1">
+            <p class="text-[9px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-1.5">Diagnostic Complete</p>
+            <h2 id="result-title" class="font-serif italic text-xl text-white leading-tight mb-3"></h2>
+            <div id="archetype-pill" class="archetype-pill"></div>
+          </div>
         </div>
-        <div class="w-full max-w-2xl mx-auto h-1 bg-stone-200 rounded-full overflow-hidden">
-            <div id="progressBar" class="h-full bg-[#b2945e] w-0 transition-all duration-500"></div>
-        </div>
-    </nav>
+      </div>
 
-    <main class="p-6 space-y-8 max-w-2xl mx-auto">
+      <!-- BODY -->
+      <div class="card-body space-y-5">
 
-        <section class="text-center py-6 fade-in">
-            <span class="text-[#b2945e] font-bold text-[9px] uppercase tracking-[0.3em] mb-4 block">Performance Diagnostic</span>
-            <h1 class="text-5xl md:text-6xl font-serif italic text-stone-900 mb-4 leading-tight">The Kinetic Audit</h1>
-            <p class="text-sm text-stone-500 max-w-md mx-auto leading-relaxed font-light">
-                Where is your energy leaking? This diagnostic calculates your <strong class="font-semibold text-stone-800">Resilience Pulse</strong> and identifies your <strong class="font-semibold text-stone-800">Energy Archetype</strong>.
-            </p>
-        </section>
-
-        <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow fade-in" style="animation-delay: 0.1s;">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-serif italic text-stone-900">1. Energy Leak Detection</h2>
-                <i data-lucide="battery-warning" class="w-5 h-5 text-[#b2945e]"></i>
-            </div>
-            <div class="bg-stone-50 border-l-2 border-[#b2945e] p-4 rounded-r-xl mb-6">
-                <p class="text-[8px] uppercase tracking-widest text-[#b2945e] font-bold mb-1">The Concept</p>
-                <p class="text-xs text-stone-500 italic leading-relaxed">"You don't need more energy; you need fewer leaks. Identify the 'Catabolic' drain—the thing that sucks your battery dry."</p>
-            </div>
-            <label class="block text-[9px] font-bold uppercase tracking-widest text-stone-400 mb-3">What is your primary drain right now?</label>
-            <textarea id="input_trigger" oninput="updateUI()" class="w-full bg-stone-50 border border-stone-200 p-5 rounded-2xl text-sm h-28 outline-none focus:border-[#b2945e] transition-all resize-none font-serif italic text-stone-700" placeholder="e.g., The fear of failing the project..."></textarea>
-        </div>
-
-        <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow fade-in" style="animation-delay: 0.2s;">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-serif italic text-stone-900">2. Reaction Speed</h2>
-                <i data-lucide="zap" class="w-5 h-5 text-[#b2945e]"></i>
-            </div>
-            <label class="block text-[9px] font-bold uppercase tracking-widest text-stone-400 mb-4">In the last 48 hours, did you:</label>
-            
-            <div class="space-y-3">
-                <label class="custom-checkbox flex items-center gap-4 p-4 bg-stone-50 border border-stone-200 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="checkbox" id="check_email" onchange="updateUI()">
-                    <span class="text-sm text-stone-600 font-medium group-hover:text-stone-900">Reply to an email/text while frustrated?</span>
-                </label>
-                <label class="custom-checkbox flex items-center gap-4 p-4 bg-stone-50 border border-stone-200 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="checkbox" id="check_defensive" onchange="updateUI()">
-                    <span class="text-sm text-stone-600 font-medium group-hover:text-stone-900">Get defensive when receiving feedback?</span>
-                </label>
-                <label class="custom-checkbox flex items-center gap-4 p-4 bg-stone-50 border border-stone-200 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="checkbox" id="check_overwhelm" onchange="updateUI()">
-                    <span class="text-sm text-stone-600 font-medium group-hover:text-stone-900">Say "Yes" to a request out of guilt/fear?</span>
-                </label>
-            </div>
-        </div>
-
-        <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow fade-in" style="animation-delay: 0.3s;">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-serif italic text-stone-900">3. The Narrative</h2>
-                <i data-lucide="book-open" class="w-5 h-5 text-[#b2945e]"></i>
-            </div>
-            <label class="block text-[9px] font-bold uppercase tracking-widest text-stone-400 mb-4">Which statement feels most true today?</label>
-            
-            <div class="space-y-3">
-                <label class="custom-checkbox flex items-center gap-4 p-4 bg-stone-50 border border-stone-200 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="radio" name="mindset" value="1" onchange="updateUI()">
-                    <span class="text-sm text-stone-600 font-medium group-hover:text-stone-900">"I feel like things are happening TO me." (Victim)</span>
-                </label>
-                <label class="custom-checkbox flex items-center gap-4 p-4 bg-stone-50 border border-stone-200 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="radio" name="mindset" value="2" onchange="updateUI()">
-                    <span class="text-sm text-stone-600 font-medium group-hover:text-stone-900">"I have to fight to get what I want." (Conflict)</span>
-                </label>
-                <label class="custom-checkbox flex items-center gap-4 p-4 bg-stone-50 border border-stone-200 rounded-2xl cursor-pointer hover:border-[#b2945e] transition-all group">
-                    <input type="radio" name="mindset" value="3" onchange="updateUI()">
-                    <span class="text-sm text-stone-600 font-medium group-hover:text-stone-900">"I choose how I respond to this challenge." (Responsibility)</span>
-                </label>
-            </div>
-        </div>
-
-        <div class="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm timer-glow fade-in" style="animation-delay: 0.4s;">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-serif italic text-stone-900">4. The Energy Lens</h2>
-                <i data-lucide="eye" class="w-5 h-5 text-[#b2945e]"></i>
-            </div>
-            
-            <div class="bg-stone-50 border-l-2 border-[#b2945e] p-4 rounded-r-xl mb-8">
-                <p class="text-[8px] uppercase tracking-widest text-[#b2945e] font-bold mb-1">The Lens</p>
-                <p class="text-xs text-stone-500 italic leading-relaxed">"How you view the world determines how you engage with it. Select your default responses below to reveal your Kinetic Archetype."</p>
-            </div>
-            
-            <div class="space-y-8">
-                <div>
-                    <p class="text-sm font-bold text-stone-800 mb-3">1. When a problem hits, your first thought is:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectOption('energy', 0, 1, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Why does this always happen?"</button>
-                        <button onclick="selectOption('energy', 0, 2, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Who messed this up?"</button>
-                        <button onclick="selectOption('energy', 0, 5, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"How do we fix it?"</button>
-                    </div>
-                </div>
-
-                <div>
-                    <p class="text-sm font-bold text-stone-800 mb-3">2. Your primary motivation at work is:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectOption('energy', 1, 1, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Fear of failure."</button>
-                        <button onclick="selectOption('energy', 1, 2, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Winning / Proving myself."</button>
-                        <button onclick="selectOption('energy', 1, 5, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Purpose / Growth."</button>
-                    </div>
-                </div>
-
-                <div>
-                    <p class="text-sm font-bold text-stone-800 mb-3">3. When someone disagrees with you, you feel:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectOption('energy', 2, 1, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Ignored / Small."</button>
-                        <button onclick="selectOption('energy', 2, 2, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Angry / Ready to debate."</button>
-                        <button onclick="selectOption('energy', 2, 5, this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"Curious about their view."</button>
-                    </div>
-                </div>
-
-                <div class="pt-6 border-t border-stone-100">
-                    <p class="text-sm font-bold text-stone-800 mb-3">4. When a massive, unexpected problem lands on your desk late in the day, what is your immediate internal response?</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectOption('archetype', 0, 'Rusher', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">My heart rate spikes and I immediately attack it.</button>
-                        <button onclick="selectOption('archetype', 0, 'Fixer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">I feel a wave of resentment because I'm the only one who can fix it.</button>
-                        <button onclick="selectOption('archetype', 0, 'Freezer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">My brain fogs over, I stare at the screen, and I want to walk away.</button>
-                    </div>
-                </div>
-
-                <div>
-                    <p class="text-sm font-bold text-stone-800 mb-3">5. When you are operating at maximum capacity for too long, how does your body typically keep score?</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectOption('archetype', 1, 'Rusher', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">I feel wired, tense, and physically unable to wind down.</button>
-                        <button onclick="selectOption('archetype', 1, 'Fixer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">I feel a crushing weight in my chest or shoulders.</button>
-                        <button onclick="selectOption('archetype', 1, 'Freezer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">I feel completely drained, numb, and physically heavy.</button>
-                    </div>
-                </div>
-
-                <div>
-                    <p class="text-sm font-bold text-stone-800 mb-3">6. When you are in the thick of the overwhelm, what is the lie you catch yourself believing?</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <button onclick="selectOption('archetype', 2, 'Rusher', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"If I can just sprint through this week, things will finally slow down."</button>
-                        <button onclick="selectOption('archetype', 2, 'Fixer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"If other people would just step up, I wouldn't have to manage all of this."</button>
-                        <button onclick="selectOption('archetype', 2, 'Freezer', this)" class="w-full text-left p-4 bg-stone-50 border border-stone-200 rounded-2xl text-xs text-stone-600 font-medium hover:border-[#b2945e] transition-all">"If I could just disappear and be completely left alone for a month, I'd be fine."</button>
-                    </div>
-                </div>
-
-            </div>
+        <!-- Clinical read -->
+        <div class="result-reveal">
+          <p class="text-[9px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-2">Clinical Read</p>
+          <p id="clinical-read" class="text-sm text-slate-300 leading-relaxed font-serif italic"></p>
         </div>
 
-        <div class="bg-[#1c1917] p-10 rounded-[2.5rem] shadow-2xl text-center mt-10 relative overflow-hidden">
-            <div class="absolute top-0 right-0 p-32 bg-[#b2945e]/10 rounded-full blur-3xl pointer-events-none"></div>
-
-            <p class="text-[#b2945e] font-bold text-[9px] uppercase tracking-[0.3em] mb-6 relative z-10">Your Resilience Pulse</p>
-            
-            <div class="w-40 h-40 mx-auto border-2 border-[#b2945e] rounded-full flex items-center justify-center mb-6 relative z-10 shadow-[0_0_30px_rgba(178,148,94,0.15)] bg-stone-900/50 backdrop-blur-md">
-                <span id="scoreDisplay" class="text-6xl font-serif italic text-white font-bold">--</span>
-            </div>
-            
-            <div class="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-stone-700 bg-stone-800/80 relative z-10 mb-2">
-                <i data-lucide="shield" class="w-3 h-3 text-[#b2945e]"></i>
-                <span id="energyType" class="text-[10px] font-bold uppercase tracking-widest text-stone-300">Awaiting Data...</span>
-            </div>
-
-            <div id="rec-engine" class="hidden relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-[#b2945e]">
-                <span id="rec-title" class="text-[8px] font-bold uppercase tracking-widest text-stone-400 mb-2 block">Primary Prescription</span>
-                <h3 id="rec-product-name" class="text-2xl font-serif italic text-stone-900 mb-3 leading-tight">...</h3>
-                
-                <div id="archetype-reveal" class="bg-stone-50 border border-stone-200 p-4 rounded-xl mb-4">
-                    <p class="text-[9px] uppercase tracking-widest text-[#b2945e] font-bold mb-1">Your Default Kinetic Response</p>
-                    <p id="archetype-text" class="text-sm text-stone-800 font-serif italic leading-relaxed">...</p>
-                </div>
-
-                <p id="rec-desc" class="text-sm text-stone-600 leading-relaxed mb-8 font-medium">...</p>
-                <a href="#" id="rec-link" target="_blank" class="block w-full py-4 bg-stone-900 hover:bg-[#b2945e] text-white font-bold rounded-xl text-[10px] uppercase tracking-widest text-center shadow-lg transition-all">
-                    Get Protocol
-                </a>
-            </div>
+        <!-- Archetype read -->
+        <div id="archetype-block" class="result-reveal rounded-xl p-4" style="background: var(--accent-bg); border: 1px solid var(--accent-border);">
+          <p class="text-[9px] font-bold uppercase tracking-[0.35em] mb-2" style="color: var(--accent-light)">Your Friction Pattern</p>
+          <p id="archetype-read" class="text-sm leading-relaxed text-slate-300"></p>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 pt-4">
-            <a href="https://sovereign.liveadaptiv.com" class="glass-light p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white transition-all text-center border border-stone-200">
-                <i data-lucide="layout-grid" class="w-5 h-5 text-stone-400"></i>
-                <span class="text-[8px] uppercase font-bold tracking-widest text-[#b2945e]">Daily Maintenance</span>
-                <span class="text-xs font-semibold text-stone-800">Command Center</span>
-            </a>
-            <a href="https://calendly.com/alexioda" target="_blank" class="glass-light p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white transition-all text-center border border-stone-200">
-                <i data-lucide="calendar" class="w-5 h-5 text-stone-400"></i>
-                <span class="text-[8px] uppercase font-bold tracking-widest text-[#b2945e]">Deep Architecture</span>
-                <span class="text-xs font-semibold text-stone-800">Strategy Session</span>
-            </a>
-        </div>
-        
-        <div class="text-center mt-6 flex justify-center gap-6">
-            <a href="https://liveadaptiv.com" class="text-[10px] font-bold uppercase tracking-widest text-stone-500 hover:text-[#b2945e] transition-colors">Return to Hub</a>
-            <a href="#" onclick="location.reload()" class="text-[10px] font-bold uppercase tracking-widest text-stone-500 hover:text-[#b2945e] transition-colors">Reset Diagnostic</a>
+        <!-- Immediate protocols -->
+        <div class="result-reveal">
+          <p class="text-[9px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-3">3 Protocols for Right Now</p>
+          <div id="protocols-list" class="space-y-0"></div>
         </div>
 
-    </main>
+      </div>
 
-    <script>
-        lucide.createIcons();
+      <!-- FOOTER -->
+      <div class="card-footer result-reveal">
+        <div>
+          <p class="text-[9px] font-bold uppercase tracking-[0.35em] text-slate-600 mb-0.5">LiveAdaptiv</p>
+          <p class="font-serif italic text-[11px] text-slate-500">Architecture for the Modern Soul</p>
+        </div>
+        <div class="text-right">
+          <p id="footer-date" class="text-[9px] text-slate-600 font-mono"></p>
+          <p class="text-[9px] text-slate-600 uppercase tracking-widest mt-0.5">Kinetic Audit</p>
+        </div>
+      </div>
+    </div>
 
-        // Dual Trackers
-        let energyScores = [0, 0, 0];
-        let archetypeSelections = [null, null, null];
+    <!-- Retake -->
+    <div class="text-center result-reveal">
+      <button onclick="resetAudit()" class="retake-btn mx-auto mt-6">
+        <i data-lucide="refresh-cw" class="w-3 h-3 mr-1.5"></i> Retake Diagnostic
+      </button>
+    </div>
 
-        // Handles both Energy Lens and Archetype button clicks
-        function selectOption(type, qIndex, val, el) {
-            // Visual Selection Logic
-            const siblings = el.parentElement.querySelectorAll('button');
-            siblings.forEach(s => {
-                s.classList.remove('bg-[#1c1917]', 'text-white', 'border-[#1c1917]', 'shadow-md');
-                s.classList.add('bg-stone-50', 'text-stone-600', 'border-stone-200');
-            });
-            
-            el.classList.remove('bg-stone-50', 'text-stone-600', 'border-stone-200');
-            el.classList.add('bg-[#1c1917]', 'text-white', 'border-[#1c1917]', 'shadow-md');
+  </div>
+</div>
 
-            // Data Logic
-            if(type === 'energy') {
-                energyScores[qIndex] = val;
-            } else if (type === 'archetype') {
-                archetypeSelections[qIndex] = val;
-            }
-            
-            updateUI();
-        }
+<footer class="text-center pb-8 border-t border-white/5 mt-auto">
+  <p class="mt-6 text-[10px] text-slate-600 uppercase tracking-widest font-bold">© 2026 LiveAdaptiv Systems</p>
+</footer>
 
-        function updateUI() {
-            // Calculate mandatory steps completed (Max 8 now)
-            // 1. Textarea
-            // 2. Radio button (Mindset)
-            // 3-5. Three energy lens questions
-            // 6-8. Three archetype tie-breakers
-            let mandatoryCompleted = 0;
-            
-            if(document.getElementById('input_trigger').value.length > 5) mandatoryCompleted++;
-            if(document.querySelector('input[name="mindset"]:checked')) mandatoryCompleted++;
-            mandatoryCompleted += energyScores.filter(s => s > 0).length;
-            mandatoryCompleted += archetypeSelections.filter(s => s !== null).length;
+<script>
+lucide.createIcons();
 
-            const pct = Math.min(100, (mandatoryCompleted / 8) * 100);
-            document.getElementById('progressBar').style.width = pct + "%";
+// ── DATA ────────────────────────────────────────────────────────────────
+const questions = [
+  { text: "When I wake up, my first thought regarding the day ahead is usually:", options: [
+    { text: "Energized or neutral.", value: 0 },
+    { text: "Mildly annoyed but manageable.", value: 1 },
+    { text: "A heavy sense of dread or exhaustion.", value: 2 },
+    { text: "Complete apathy — I am emotionally numb.", value: 3 }
+  ]},
+  { text: "When a minor inconvenience occurs (e.g., an email, a small delay):", options: [
+    { text: "I handle it easily.", value: 0 },
+    { text: "I get briefly frustrated.", value: 1 },
+    { text: "I feel a disproportionate spike of rage or panic.", value: 2 },
+    { text: "I feel nothing. I am too tired to care.", value: 3 }
+  ]},
+  { text: "Regarding my empathy toward others in my environment:", options: [
+    { text: "I remain compassionate and engaged.", value: 0 },
+    { text: "I have to fake it occasionally.", value: 1 },
+    { text: "I view people as obstacles or burdens.", value: 2 },
+    { text: "I feel profound cynicism and detachment.", value: 3 }
+  ]},
+  { text: "My sleep right now is:", options: [
+    { text: "Solid. I wake up rested.", value: 0 },
+    { text: "Inconsistent, but I survive.", value: 1 },
+    { text: "I can't fall asleep — my mind races.", value: 2 },
+    { text: "I sleep, but wake up completely exhausted.", value: 3 }
+  ]},
+  { text: "When I am not working, my brain is:", options: [
+    { text: "Present and engaged in my life.", value: 0 },
+    { text: "Thinking about work occasionally.", value: 1 },
+    { text: "Constantly looping over worst-case scenarios.", value: 2 },
+    { text: "Completely checked out — doomscrolling for hours.", value: 3 }
+  ]},
+  { text: "Physically, my body feels:", options: [
+    { text: "Healthy and regulated.", value: 0 },
+    { text: "A bit tense, maybe minor headaches.", value: 1 },
+    { text: "Chronically tight — jaw, shoulders, chest.", value: 2 },
+    { text: "Heavy, exhausted, or in chronic pain.", value: 3 }
+  ]},
+  { text: "If I were asked to take on one more task right now:", options: [
+    { text: "I could handle it.", value: 0 },
+    { text: "I'd do it, but I'd be resentful.", value: 1 },
+    { text: "I would panic or snap.", value: 2 },
+    { text: "I would mentally or physically collapse.", value: 3 }
+  ]},
+  { text: "My reliance on substances (caffeine, alcohol, sugar) to regulate my state is:", options: [
+    { text: "Minimal or zero.", value: 0 },
+    { text: "Normal — nothing unusual.", value: 1 },
+    { text: "Increasing. I need them to function or relax.", value: 2 },
+    { text: "I am dependent on them to get through the day.", value: 3 }
+  ]},
+  { text: "When I think about the near future:", options: [
+    { text: "I see growth and opportunity.", value: 0 },
+    { text: "I'm just trying to get through the week.", value: 1 },
+    { text: "I want to escape but feel trapped.", value: 2 },
+    { text: "I have lost the ability to imagine things improving.", value: 3 }
+  ]},
+  { text: "Which statement best describes your current state?", options: [
+    { text: "I am managing my friction well.", value: 0 },
+    { text: "I am stressed, but still fighting.", value: 1 },
+    { text: "I am surviving on pure adrenaline.", value: 2 },
+    { text: "I am running on empty.", value: 3 }
+  ]}
+];
 
-            calculateScore(mandatoryCompleted);
-        }
+// ── ARCHETYPES (derived from score pattern) ─────────────────────────────
+// Q1, Q5 (looping/racing) → Rusher
+// Q6, Q3 (body/detachment) → Freezer  
+// Q7, Q2 (overwhelm/panic) → Fixer
+function deriveArchetype(answers) {
+  const rusherScore  = (answers[0] || 0) + (answers[4] || 0) + (answers[8] || 0);
+  const freezerScore = (answers[5] || 0) + (answers[2] || 0) + (answers[3] || 0);
+  const fixerScore   = (answers[6] || 0) + (answers[1] || 0) + (answers[7] || 0);
+  if (rusherScore >= freezerScore && rusherScore >= fixerScore) return "The Rusher";
+  if (freezerScore >= fixerScore) return "The Freezer";
+  return "The Fixer";
+}
 
-        function calculateScore(mandatoryCompleted) {
-            let score = 100;
+const archetypeData = {
+  "The Rusher": {
+    desc: "Your nervous system reads time as the enemy. The dominant pattern is acceleration — racing thoughts, compressed deadlines, the persistent sense that you are already behind. This is a sympathetic overdrive signature: the brake system is underactive.",
+    color: "amber",
+    protocols: [
+      { title: "The Tactical Exhale", body: "Inhale is the gas pedal. Exhale is the brake. Five seconds out, pause, five seconds out again. Do it now — your vagus nerve responds in under 90 seconds." },
+      { title: "Name Three Facts", body: "Panic is a loop. Logic is a line. Interrupt the circuit by naming three verifiable, present-moment facts out loud. The prefrontal cortex comes back online immediately." },
+      { title: "Shrink the Clock", body: "Remove the next week from consideration entirely. The only executable unit is the next 90 minutes. Write exactly one thing that matters in that window." }
+    ]
+  },
+  "The Freezer": {
+    desc: "Your system has moved into conservation mode — the dorsal vagal response that reads overwhelm as threat and responds with fog, dissociation, and paralysis. This is not weakness. It is a biological protection protocol that is misfiring in a low-danger environment.",
+    color: "teal",
+    protocols: [
+      { title: "Physical Pattern Interrupt", body: "The freeze state is held in the body, not the mind. Stand up. Press your feet into the floor. Take one full breath. Physiological state must shift before cognitive state can follow." },
+      { title: "The Smallest Possible Move", body: "Paralysis is sustained by the gap between where you are and where you think you should be. Close that gap by identifying the single smallest executable action — not the right action, just any action." },
+      { title: "Name the Fog", body: "Say out loud: 'My nervous system is in protection mode right now.' Observation breaks identification. You are not frozen — you are observing frozenness. That distinction is the exit." }
+    ]
+  },
+  "The Fixer": {
+    desc: "Your dominant pattern is over-responsibility — the load-bearing belief that outcomes depend entirely on your effort and vigilance. This creates a chronic sympathetic state driven not by external pressure but by internally generated obligation. The tension lives in the chest, jaw, and shoulders.",
+    color: "rose",
+    protocols: [
+      { title: "The Control Audit", body: "Draw a line. On the left: what you actually control. On the right: what you are currently trying to control. Everything on the right is a cortisol source with no return. Cancel those contracts now." },
+      { title: "Redistribute the Weight", body: "Ask: what is one thing I am carrying right now that belongs to someone else? Name it. Then physically set something down — your phone, your pen. The body takes the metaphor literally." },
+      { title: "The 90-Second Flush", body: "Emotion is chemistry. Cortisol, adrenaline, and norepinephrine have a biological half-life of 90 seconds when you stop feeding the story. Observe the sensation without narrating it. Let the chemistry complete its cycle." }
+    ]
+  }
+};
 
-            // Deduct for reactive behaviors
-            if(document.getElementById('check_email').checked) score -= 10;
-            if(document.getElementById('check_defensive').checked) score -= 10;
-            if(document.getElementById('check_overwhelm').checked) score -= 10;
+const tierData = {
+  low: {
+    title: "High Cognitive Bandwidth",
+    theme: "theme-teal",
+    accentVar: "--teal",
+    read: "Your autonomic system is currently regulated. You have the cognitive bandwidth available to absorb new frameworks, build new habits, and perform under elevated pressure. The work right now is fortification — reinforcing the architecture before the environment tests it."
+  },
+  mid: {
+    title: "Moderate Autonomic Debt",
+    theme: "theme-amber",
+    accentVar: "--amber",
+    read: "You are operating in sustained sympathetic activation — the biological state commonly called 'fight or flight.' Cortisol is elevated. Your amygdala is managing threat assessment that should be handled by your prefrontal cortex. You are functional, but you are paying a toll to stay that way."
+  },
+  high: {
+    title: "Critical Friction Load",
+    theme: "theme-rose",
+    accentVar: "--rose",
+    read: "Your diagnostic suggests dorsal vagal activation — the system's final conservation response to sustained, unmetabolized load. Cognitive bandwidth is significantly reduced. Decision quality is compromised. The priority right now is not performance. It is biological stabilization."
+  }
+};
 
-            // Adjust for Mindset narrative
-            const mindset = document.querySelector('input[name="mindset"]:checked');
-            if(mindset) {
-                if(mindset.value === "1") score -= 15;
-                if(mindset.value === "2") score -= 5;
-            }
+// ── STATE ───────────────────────────────────────────────────────────────
+let currentQ = 0;
+let totalScore = 0;
+let answers = [];
 
-            // Adjust for Energy Questions
-            let avgEnergy = 0;
-            energyScores.forEach(s => {
-                if(s > 0) {
-                    if(s === 1) score -= 10;
-                    if(s === 2) score -= 5;
-                    if(s === 5) score += 5; // Bonus for anabolic thinking
-                    avgEnergy += s;
-                }
-            });
+// ── FLOW ────────────────────────────────────────────────────────────────
+function startAudit() {
+  document.getElementById('intro-screen').classList.add('hidden');
+  document.getElementById('question-screen').classList.remove('hidden');
+  renderQuestion();
+}
 
-            // Adjust for Archetype Intensity (All subtract energy, Freezers subtract most)
-            archetypeSelections.forEach(a => {
-                if(a === 'Rusher') score -= 5;
-                if(a === 'Fixer') score -= 6;
-                if(a === 'Freezer') score -= 8;
-            });
+function renderQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('question-text').innerText = q.text;
+  document.getElementById('q-counter').innerText = `Question ${currentQ + 1} of ${questions.length}`;
+  const pct = Math.round(((currentQ + 1) / questions.length) * 100);
+  document.getElementById('progress-bar').style.width = `${pct}%`;
+  document.getElementById('q-pct').innerText = `${pct}%`;
 
-            // Clamp bounds
-            if(score < 0) score = 0;
-            if(score > 100) score = 100;
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
 
-            // Only reveal score and prescription if the 8 mandatory actions are completed
-            if(mandatoryCompleted === 8) {
-                document.getElementById('scoreDisplay').innerText = score + "%";
-                
-                // Calculate Dominant Archetype
-                const counts = { Rusher: 0, Fixer: 0, Freezer: 0 };
-                archetypeSelections.forEach(a => { if(a) counts[a]++ });
-                
-                let dominantArchetype = 'Fixer'; // Default
-                let maxCount = 0;
-                for (const [archetype, count] of Object.entries(counts)) {
-                    if (count > maxCount) {
-                        maxCount = count;
-                        dominantArchetype = archetype;
-                    }
-                }
+  q.options.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option-card';
+    div.style.animationDelay = `${i * 0.06}s`;
+    div.innerHTML = `
+      <div class="option-radio"></div>
+      <span class="text-slate-300 text-sm leading-snug">${opt.text}</span>
+    `;
+    div.addEventListener('click', () => handleSelection(opt.value, div));
+    container.appendChild(div);
+  });
+}
 
-                // Calculate Energy Phase Type
-                const finalAvg = avgEnergy / 3;
-                let type = "Reviewing...";
-                if(finalAvg < 2) type = "The Fighter (High Friction)";
-                else if(finalAvg < 4) type = "The Manager (Coping)";
-                else type = "The Alchemist (High Flow)";
+function handleSelection(value, el) {
+  document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[currentQ] = value;
+  totalScore += value;
+  setTimeout(() => {
+    currentQ++;
+    if (currentQ < questions.length) {
+      renderQuestion();
+    } else {
+      showResults();
+    }
+  }, 320);
+}
 
-                document.getElementById('energyType').innerText = type;
-                showRecommendation(score, dominantArchetype);
-            } else {
-                document.getElementById('scoreDisplay').innerText = "--";
-                document.getElementById('energyType').innerText = "Awaiting Data...";
-                document.getElementById('rec-engine').classList.add('hidden');
-                document.getElementById('rec-engine').classList.remove('fade-in');
-            }
-        }
+function showResults() {
+  document.getElementById('question-screen').classList.add('hidden');
+  document.querySelector('main').classList.add('hidden');
 
-        function showRecommendation(score, archetype) {
-            const recBox = document.getElementById('rec-engine');
-            const title = document.getElementById('rec-title');
-            const name = document.getElementById('rec-product-name');
-            const desc = document.getElementById('rec-desc');
-            const link = document.getElementById('rec-link');
-            const archetypeText = document.getElementById('archetype-text');
+  const scorecard = document.getElementById('scorecard');
+  scorecard.classList.remove('hidden');
 
-            // Inject the dynamic archetype identity
-            if(archetype === 'Rusher') {
-                archetypeText.innerHTML = "<strong>The Rusher:</strong> You treat time as the enemy. Your nervous system is locked in a sprint, trying to outrun the overwhelm.";
-            } else if (archetype === 'Fixer') {
-                archetypeText.innerHTML = "<strong>The Fixer:</strong> You absorb the system's anxiety. Your burnout isn't caused by a lack of capacity, but by an over-extension of responsibility.";
-            } else {
-                archetypeText.innerHTML = "<strong>The Freezer:</strong> Your system responds to pressure through shutdown. When the load gets too heavy, your nervous system pulls the emergency brake.";
-            }
+  const archetype = deriveArchetype(answers);
+  const arcInfo   = archetypeData[archetype];
+  const tier      = totalScore <= 10 ? 'low' : totalScore <= 20 ? 'mid' : 'high';
+  const tierInfo  = tierData[tier];
 
-            recBox.classList.remove('hidden');
-            recBox.classList.add('fade-in');
-            
-            if(score < 50) {
-                // TIER 3: HIGH FRICTION (Low Score) -> $27 Burnout Rescue
-                title.innerText = "Diagnostic: Critical Autonomic Friction";
-                name.innerText = "The Burnout Rescue Workbook";
-                desc.innerText = "You are exhibiting signs of severe Autonomic Collapse (Dorsal Vagal Shutdown). You do not have the bandwidth for a complex masterclass right now. You need an immediate, frictionless lifeline to stop the psychological bleed.";
-                link.innerText = "Unlock Rescue Protocol ($27)";
-                link.href = "https://billing.liveadaptiv.com/checkout/buy/aab07394-9db6-46d1-8972-60038742f1b7";
-                recBox.className = "relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-rose-500 fade-in block";
-            } else if (score < 80) {
-                // TIER 2: MODERATE FRICTION -> $47 Stress Transformation
-                title.innerText = "Diagnostic: Moderate Autonomic Debt";
-                name.innerText = "Stress Transformation Protocol";
-                desc.innerText = "You are operating in a chronic state of 'Fight or Flight.' Your amygdala is actively dumping cortisol, resulting in high anxiety, disrupted sleep, and reactivity. The Alchemist Field Guide contains the master architecture to permanently rewire this specific archetype loop.";
-                link.innerText = "Unlock Architect's Edition ($47)";
-                link.href = "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e";
-                recBox.className = "relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-amber-500 fade-in block";
-            } else {
-                // TIER 1: LOW FRICTION (High Score) -> $97 Alchemist
-                title.innerText = "Diagnostic: High Cognitive Bandwidth";
-                name.innerText = "The Alchemist Field Guide";
-                desc.innerText = "Your nervous system is currently regulated. You have the cognitive bandwidth required to build indestructible enterprise architecture. Now is the time to fortify your boundaries and master the energy dynamics of your archetype.";
-                link.innerText = "Unlock Master Edition ($97)";
-                link.href = "https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1";
-                recBox.className = "relative z-10 bg-white p-8 rounded-[2rem] text-left mt-8 border-l-4 border-[#b2945e] fade-in block";
-            }
-        }
-    </script>
+  // Theme
+  const shell = document.getElementById('card-shell');
+  shell.className = `card-shell ${tierInfo.theme}`;
+
+  // Score
+  document.getElementById('score-num').innerText = totalScore;
+
+  // Title & archetype pill
+  document.getElementById('result-title').innerText = tierInfo.title;
+  document.getElementById('archetype-pill').innerHTML = `
+    <span style="width:6px;height:6px;border-radius:50%;background:var(--accent-light);display:inline-block;"></span>
+    ${archetype}
+  `;
+
+  // Clinical read
+  document.getElementById('clinical-read').innerText = tierInfo.read;
+
+  // Archetype block
+  document.getElementById('archetype-read').innerText = arcInfo.desc;
+
+  // Protocols
+  const list = document.getElementById('protocols-list');
+  list.innerHTML = '';
+  arcInfo.protocols.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'protocol-item';
+    item.innerHTML = `
+      <div class="protocol-num">${i + 1}</div>
+      <div>
+        <p class="text-xs font-bold text-white mb-0.5">${p.title}</p>
+        <p class="text-xs text-slate-400 leading-relaxed">${p.body}</p>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+
+  // Footer date
+  const now = new Date();
+  document.getElementById('footer-date').innerText =
+    now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  lucide.createIcons();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetAudit() {
+  currentQ = 0; totalScore = 0; answers = [];
+  document.getElementById('scorecard').classList.add('hidden');
+  document.querySelector('main').classList.remove('hidden');
+  document.getElementById('intro-screen').classList.remove('hidden');
+  document.getElementById('intro-screen').classList.add('fade-in');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
 </body>
 </html>
+
