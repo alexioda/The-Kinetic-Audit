@@ -12,7 +12,6 @@
     --gold: #b2945e;
     --gold-light: #d4b483;
     --charcoal: #1c1917;
-    --stone: #fafaf9;
     --teal: #0d9488;
     --teal-light: #2dd4bf;
     --amber: #d97706;
@@ -31,7 +30,6 @@
 
   .font-serif { font-family: 'Cormorant Garamond', serif; }
 
-  /* Animated background grid */
   .bg-grid {
     background-image:
       linear-gradient(rgba(178,148,94,0.04) 1px, transparent 1px),
@@ -39,226 +37,182 @@
     background-size: 48px 48px;
   }
 
-  /* Question screen */
   .fade-in { animation: fadeIn 0.5s ease forwards; opacity: 0; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn {
+    from { opacity:0; transform:translateY(16px); }
+    to { opacity:1; transform:translateY(0); }
+  }
 
-  .slide-up { animation: slideUp 0.4s cubic-bezier(.16,1,.3,1) forwards; opacity: 0; }
-  @keyframes slideUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  .slide-up { animation: slideUp 0.4s cubic-bezier(.16,1,.3,1) forwards; opacity:0; }
+  @keyframes slideUp {
+    from { opacity:0; transform:translateY(24px); }
+    to { opacity:1; transform:translateY(0); }
+  }
 
-  /* Option cards */
   .option-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 18px 20px;
-    border-radius: 14px;
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 20px; border-radius: 14px;
     border: 1px solid rgba(255,255,255,0.07);
     background: rgba(255,255,255,0.03);
-    cursor: pointer;
-    transition: all 0.18s ease;
-    animation: slideUp 0.4s ease forwards;
-    opacity: 0;
+    cursor: pointer; transition: all 0.18s ease;
+    animation: slideUp 0.4s ease forwards; opacity:0;
   }
-  .option-card:hover { border-color: rgba(178,148,94,0.5); background: rgba(178,148,94,0.06); transform: translateX(4px); }
-  .option-card:nth-child(1) { animation-delay: 0.05s; }
-  .option-card:nth-child(2) { animation-delay: 0.10s; }
-  .option-card:nth-child(3) { animation-delay: 0.15s; }
-  .option-card:nth-child(4) { animation-delay: 0.20s; }
+  .option-card:hover {
+    border-color: rgba(178,148,94,0.5);
+    background: rgba(178,148,94,0.06);
+    transform: translateX(4px);
+  }
+  .option-card:nth-child(1) { animation-delay:0.05s; }
+  .option-card:nth-child(2) { animation-delay:0.10s; }
+  .option-card:nth-child(3) { animation-delay:0.15s; }
+  .option-card:nth-child(4) { animation-delay:0.20s; }
 
   .option-radio {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.2);
-    flex-shrink: 0;
-    transition: all 0.18s;
-    display: flex; align-items: center; justify-content: center;
+    width:22px; height:22px; border-radius:50%;
+    border:2px solid rgba(255,255,255,0.2);
+    flex-shrink:0; transition:all 0.18s;
+    display:flex; align-items:center; justify-content:center;
   }
   .option-card.selected .option-radio {
-    border-color: var(--gold);
-    background: var(--gold);
-    box-shadow: 0 0 12px rgba(178,148,94,0.5);
+    border-color:var(--gold); background:var(--gold);
+    box-shadow:0 0 12px rgba(178,148,94,0.5);
   }
   .option-card.selected .option-radio::after {
-    content: '';
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--charcoal);
+    content:''; width:8px; height:8px;
+    border-radius:50%; background:#1c1917;
   }
-  .option-card.selected { border-color: rgba(178,148,94,0.4); background: rgba(178,148,94,0.08); }
+  .option-card.selected {
+    border-color:rgba(178,148,94,0.4);
+    background:rgba(178,148,94,0.08);
+  }
 
-  /* Progress bar */
   .progress-fill { transition: width 0.5s cubic-bezier(.16,1,.3,1); }
 
-  /* ── RESULTS SCORECARD ─────────────────────────────────────── */
   #scorecard {
-    background: #0a0a0f;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 40px 20px 60px;
+    background:#0a0a0f; min-height:100vh;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:flex-start;
+    padding:40px 20px 60px;
   }
 
   .card-shell {
-    width: 100%;
-    max-width: 480px; /* Widened slightly for better desktop reading */
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(178,148,94,0.15);
-    position: relative;
+    width:100%; max-width:480px;
+    border-radius:24px; overflow:hidden;
+    box-shadow:0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(178,148,94,0.15);
   }
 
-  /* Tier-specific themes */
-  .theme-teal   { --accent: #0d9488; --accent-light: #2dd4bf; --accent-bg: rgba(13,148,136,0.12); --accent-border: rgba(13,148,136,0.3); }
-  .theme-amber  { --accent: #d97706; --accent-light: #fbbf24; --accent-bg: rgba(217,119,6,0.12);  --accent-border: rgba(217,119,6,0.3);  }
-  .theme-rose   { --accent: #e11d48; --accent-light: #f43f5e; --accent-bg: rgba(225,29,72,0.12);  --accent-border: rgba(225,29,72,0.3);  }
+  .theme-teal { --accent:#0d9488; --accent-light:#2dd4bf; --accent-bg:rgba(13,148,136,0.12); --accent-border:rgba(13,148,136,0.3); }
+  .theme-amber { --accent:#d97706; --accent-light:#fbbf24; --accent-bg:rgba(217,119,6,0.12); --accent-border:rgba(217,119,6,0.3); }
+  .theme-rose { --accent:#e11d48; --accent-light:#f43f5e; --accent-bg:rgba(225,29,72,0.12); --accent-border:rgba(225,29,72,0.3); }
 
   .card-header {
-    background: linear-gradient(160deg, #111118 0%, #0d0d14 100%);
-    padding: 32px 28px 24px;
-    position: relative;
-    overflow: hidden;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background:linear-gradient(160deg,#111118 0%,#0d0d14 100%);
+    padding:32px 28px 24px; position:relative;
+    overflow:hidden; border-bottom:1px solid rgba(255,255,255,0.06);
   }
-
   .card-header::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--accent-light, #b2945e) 0%, transparent 70%);
-    opacity: 0.08;
-    pointer-events: none;
+    content:''; position:absolute; top:-60px; right:-60px;
+    width:200px; height:200px; border-radius:50%;
+    background:radial-gradient(circle,var(--accent-light,#b2945e) 0%,transparent 70%);
+    opacity:0.08; pointer-events:none;
   }
 
   .score-ring {
-    width: 88px; height: 88px;
-    border-radius: 50%;
-    border: 3px solid var(--accent, var(--gold));
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    box-shadow: 0 0 24px rgba(var(--accent-rgb, 178,148,94), 0.2), inset 0 0 16px rgba(0,0,0,0.5);
-    background: rgba(0,0,0,0.4);
-    flex-shrink: 0;
+    width:88px; height:88px; border-radius:50%;
+    border:3px solid var(--accent,var(--gold));
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    background:rgba(0,0,0,0.4); flex-shrink:0;
+  }
+  .ring-pulse { animation:ringPulse 2s ease infinite; }
+  @keyframes ringPulse {
+    0%,100% { box-shadow:0 0 20px rgba(178,148,94,0.15); }
+    50% { box-shadow:0 0 32px rgba(178,148,94,0.35); }
   }
 
-  .card-body {
-    background: #0f0f18;
-    padding: 32px 28px;
-  }
+  .card-body { background:#0f0f18; padding:32px 28px; }
 
   .archetype-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
-    border-radius: 100px;
-    background: var(--accent-bg, rgba(178,148,94,0.1));
-    border: 1px solid var(--accent-border, rgba(178,148,94,0.2));
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent-light, var(--gold-light));
+    display:inline-flex; align-items:center; gap:6px;
+    padding:5px 12px; border-radius:100px;
+    background:var(--accent-bg,rgba(178,148,94,0.1));
+    border:1px solid var(--accent-border,rgba(178,148,94,0.2));
+    font-size:12px; font-weight:600;
+    letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--accent-light,var(--gold-light));
   }
 
   .protocol-item {
-    display: flex;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display:flex; gap:16px; padding:16px 0;
+    border-bottom:1px solid rgba(255,255,255,0.05);
   }
-  .protocol-item:last-child { border-bottom: none; }
+  .protocol-item:last-child { border-bottom:none; }
 
   .protocol-num {
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    background: var(--accent-bg, rgba(178,148,94,0.1));
-    border: 1px solid var(--accent-border, rgba(178,148,94,0.2));
-    color: var(--accent-light, var(--gold-light));
-    font-size: 12px;
-    font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    margin-top: 2px;
+    width:26px; height:26px; border-radius:50%;
+    background:var(--accent-bg,rgba(178,148,94,0.1));
+    border:1px solid var(--accent-border,rgba(178,148,94,0.2));
+    color:var(--accent-light,var(--gold-light));
+    font-size:12px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:2px;
   }
 
   .card-footer {
-    background: #080810;
-    padding: 20px 28px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    background:#080810; padding:20px 28px;
+    border-top:1px solid rgba(255,255,255,0.05);
+    display:flex; align-items:center; justify-content:space-between;
   }
 
-  /* Updated Actions Hints */
+  /* Action hints — above card, outside screenshot frame */
   .action-hint {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 14px 20px;
-    border-radius: 100px;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    width: 100%;
+    display:flex; align-items:center; justify-content:center;
+    gap:10px; padding:13px 20px; border-radius:100px;
+    font-size:12px; font-weight:600;
+    transition:all 0.2s ease; cursor:pointer;
+    font-family:'DM Sans',sans-serif;
+    border:none; /* reset button default */
   }
-
   .hint-screenshot {
-    border: 1px solid rgba(178,148,94,0.4);
-    background: rgba(178,148,94,0.1);
-    color: #e2e8f0;
+    border:1px solid rgba(178,148,94,0.35) !important;
+    background:rgba(178,148,94,0.08); color:#e2e8f0;
   }
-  .hint-screenshot:hover { background: rgba(178,148,94,0.2); }
-
+  .hint-screenshot:hover { background:rgba(178,148,94,0.16); }
   .hint-email {
-    border: 1px solid rgba(255,255,255,0.15);
-    background: rgba(255,255,255,0.05);
-    color: #cbd5e1;
+    border:1px solid rgba(255,255,255,0.12) !important;
+    background:rgba(255,255,255,0.04); color:#cbd5e1;
   }
-  .hint-email:hover { background: rgba(255,255,255,0.1); color: #f8fafc; }
+  .hint-email:hover:not(:disabled) { background:rgba(255,255,255,0.08); color:#f8fafc; }
+  .hint-email:disabled { opacity:0.3; cursor:not-allowed; }
 
-  /* Pulse on score ring */
-  .ring-pulse { animation: ringPulse 2s ease infinite; }
-  @keyframes ringPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(178,148,94,0.15); }
-    50%       { box-shadow: 0 0 32px rgba(178,148,94,0.35); }
-  }
+  .result-reveal { animation:fadeIn 0.5s ease forwards; opacity:0; }
+  .result-reveal:nth-child(1) { animation-delay:0.10s; }
+  .result-reveal:nth-child(2) { animation-delay:0.25s; }
+  .result-reveal:nth-child(3) { animation-delay:0.40s; }
+  .result-reveal:nth-child(4) { animation-delay:0.55s; }
+  .result-reveal:nth-child(5) { animation-delay:0.70s; }
 
-  .result-reveal { animation: fadeIn 0.5s ease forwards; opacity: 0; }
-  .result-reveal:nth-child(1) { animation-delay: 0.1s; }
-  .result-reveal:nth-child(2) { animation-delay: 0.25s; }
-  .result-reveal:nth-child(3) { animation-delay: 0.4s; }
-  .result-reveal:nth-child(4) { animation-delay: 0.55s; }
-  .result-reveal:nth-child(5) { animation-delay: 0.7s; }
-
-  /* Retake button */
   .retake-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 12px 24px;
-    border-radius: 100px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: transparent;
-    color: rgba(255,255,255,0.6);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 24px; border-radius:100px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:transparent; color:rgba(255,255,255,0.5);
+    font-size:12px; font-weight:600;
+    letter-spacing:0.08em; text-transform:uppercase;
+    cursor:pointer; transition:all 0.2s;
+    font-family:'DM Sans',sans-serif;
   }
-  .retake-btn:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.9); }
+  .retake-btn:hover {
+    border-color:rgba(255,255,255,0.25);
+    color:rgba(255,255,255,0.85);
+  }
 </style>
 </head>
 <body class="bg-grid">
 
-<nav class="sticky top-0 z-50 border-b border-white/5" style="background:rgba(2,6,23,0.85); backdrop-filter:blur(16px);">
+<!-- NAV -->
+<nav class="sticky top-0 z-50 border-b border-white/5"
+  style="background:rgba(2,6,23,0.85);backdrop-filter:blur(16px);">
   <div class="max-w-xl mx-auto px-6 h-14 flex items-center justify-between">
     <div class="flex items-center gap-2.5">
       <div class="w-6 h-6 rounded-full border border-[#b2945e]/40 flex items-center justify-center">
@@ -266,26 +220,32 @@
       </div>
       <span class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-400">LiveAdaptiv</span>
     </div>
-    <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+    <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest
+      text-slate-500 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
       <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
       Diagnostic Active
     </div>
   </div>
 </nav>
 
+<!-- INTRO + QUESTIONS -->
 <main class="max-w-xl mx-auto px-5 py-10 flex-grow w-full">
 
   <div id="intro-screen" class="fade-in text-center">
-    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center shadow-[0_0_40px_rgba(178,148,94,0.1)]">
+    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl border border-white/10 bg-white/5
+      flex items-center justify-center shadow-[0_0_40px_rgba(178,148,94,0.1)]">
       <i data-lucide="activity" class="w-7 h-7 text-[#b2945e]"></i>
     </div>
     <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[#b2945e] mb-3">Clinical Diagnostic</p>
     <h1 class="font-serif italic text-5xl text-white mb-4 leading-none">The Kinetic<br>Audit</h1>
     <p class="text-slate-400 text-sm leading-relaxed max-w-sm mx-auto mb-10">
-      Ten questions. A clinical read on your current autonomic state and the friction pattern that's most active right now.
-      <br><br>Answer instinctively. Do not overthink.
+      Ten questions. A clinical read on your current autonomic state and the friction
+      pattern that's most active right now.<br><br>Answer instinctively. Do not overthink.
     </p>
-    <button onclick="startAudit()" class="px-8 py-4 bg-[#b2945e] hover:bg-[#d4b483] text-[#1c1917] font-bold rounded-full text-[11px] uppercase tracking-[0.2em] transition-all shadow-lg hover:shadow-[#b2945e]/25 flex items-center gap-2 mx-auto">
+    <button onclick="startAudit()"
+      class="px-8 py-4 bg-[#b2945e] hover:bg-[#d4b483] text-[#1c1917] font-bold
+        rounded-full text-[11px] uppercase tracking-[0.2em] transition-all shadow-lg
+        flex items-center gap-2 mx-auto">
       Begin Diagnostic <i data-lucide="arrow-right" class="w-4 h-4"></i>
     </button>
     <p class="text-slate-600 text-[10px] mt-5 uppercase tracking-widest">Approx. 3 minutes</p>
@@ -294,49 +254,66 @@
   <div id="question-screen" class="hidden">
     <div class="mb-8">
       <div class="flex justify-between items-center mb-2">
-        <span id="q-counter" class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Question 1 of 10</span>
+        <span id="q-counter"
+          class="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+          Question 1 of 10
+        </span>
         <span id="q-pct" class="text-[10px] font-bold text-[#b2945e]">10%</span>
       </div>
       <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-        <div id="progress-bar" class="progress-fill h-full bg-[#b2945e] rounded-full" style="width:10%"></div>
+        <div id="progress-bar" class="progress-fill h-full bg-[#b2945e] rounded-full"
+          style="width:10%"></div>
       </div>
     </div>
 
-    <div class="rounded-2xl border border-white/7 p-7 md:p-9 shadow-2xl relative overflow-hidden" style="background: rgba(15,15,24,0.95);">
-      <div class="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl pointer-events-none" style="background:rgba(178,148,94,0.04);transform:translate(30%,-30%);"></div>
-      <h2 id="question-text" class="font-serif italic text-2xl md:text-3xl text-white leading-snug mb-8 relative z-10"></h2>
+    <div class="rounded-2xl border border-white/7 p-7 md:p-9 shadow-2xl relative overflow-hidden"
+      style="background:rgba(15,15,24,0.95);">
+      <div class="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl pointer-events-none"
+        style="background:rgba(178,148,94,0.04);transform:translate(30%,-30%);"></div>
+      <h2 id="question-text"
+        class="font-serif italic text-2xl md:text-3xl text-white leading-snug mb-8 relative z-10">
+      </h2>
       <div id="options-container" class="space-y-3 relative z-10"></div>
     </div>
   </div>
 
 </main>
 
+<!-- SCORECARD -->
 <div id="scorecard" class="hidden">
-  
   <div class="w-full max-w-[480px]">
 
-    <div class="flex flex-col md:flex-row gap-3 mb-6 result-reveal w-full">
-        <div class="action-hint hint-screenshot flex-1">
-            <i data-lucide="camera" class="w-4 h-4"></i>
-            <span>Screenshot Card to Save</span>
-        </div>
-        <button onclick="emailResults()" class="action-hint hint-email flex-1">
-            <i data-lucide="mail" class="w-4 h-4"></i>
-            <span>Email My Results</span>
-        </button>
+    <!-- Action hints — above card, clearly outside screenshot area -->
+    <div class="flex flex-col md:flex-row gap-3 mb-5 result-reveal w-full">
+      <div class="action-hint hint-screenshot flex-1">
+        <i data-lucide="camera" class="w-4 h-4"></i>
+        <span>Screenshot card to save</span>
+      </div>
+      <button id="email-btn" onclick="emailResults()" disabled
+        class="action-hint hint-email flex-1">
+        <i data-lucide="mail" class="w-4 h-4"></i>
+        <span>Email my results</span>
+      </button>
     </div>
 
+    <!-- Card -->
     <div id="card-shell" class="card-shell">
 
       <div id="card-header" class="card-header">
         <div class="flex items-start gap-5 relative z-10 result-reveal">
           <div id="score-ring" class="score-ring ring-pulse">
-            <span id="score-num" class="font-serif italic text-4xl leading-none text-white"></span>
-            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">/30</span>
+            <span id="score-num"
+              class="font-serif italic text-4xl leading-none text-white"></span>
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">
+              /30
+            </span>
           </div>
           <div class="flex-1 pt-1">
-            <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-2">Diagnostic Complete</p>
-            <h2 id="result-title" class="font-serif italic text-2xl text-white leading-tight mb-3"></h2>
+            <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-2">
+              Diagnostic Complete
+            </p>
+            <h2 id="result-title"
+              class="font-serif italic text-2xl text-white leading-tight mb-3"></h2>
             <div id="archetype-pill" class="archetype-pill"></div>
           </div>
         </div>
@@ -345,28 +322,44 @@
       <div class="card-body space-y-8">
 
         <div class="result-reveal">
-          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-3">Clinical Read</p>
-          <p id="clinical-read" class="text-base text-slate-300 leading-relaxed font-serif italic"></p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-3">
+            Clinical Read
+          </p>
+          <p id="clinical-read"
+            class="text-base text-slate-300 leading-relaxed font-serif italic"></p>
         </div>
 
-        <div id="archetype-block" class="result-reveal rounded-2xl p-5" style="background: var(--accent-bg); border: 1px solid var(--accent-border);">
-          <p class="text-[10px] font-bold uppercase tracking-[0.35em] mb-3" style="color: var(--accent-light)">Your Friction Pattern</p>
-          <p id="archetype-read" class="text-base leading-relaxed text-slate-200"></p>
+        <div id="archetype-block" class="result-reveal rounded-2xl p-5"
+          style="background:var(--accent-bg);border:1px solid var(--accent-border);">
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] mb-3"
+            style="color:var(--accent-light)">Your Friction Pattern</p>
+          <p id="archetype-read"
+            class="text-base leading-relaxed text-slate-200"></p>
         </div>
 
         <div class="result-reveal">
-          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-4">3 Protocols for Right Now</p>
-          <div id="protocols-list" class="space-y-0"></div>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-4">
+            3 Protocols for Right Now
+          </p>
+          <div id="protocols-list"></div>
         </div>
 
         <div class="result-reveal pt-8 border-t border-white/10">
-          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-[#b2945e] mb-4">Recommended Integration</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-[#b2945e] mb-4">
+            Recommended Next Step
+          </p>
           <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
-             <h4 id="product-title" class="font-serif italic text-2xl text-white mb-3"></h4>
-             <p id="product-desc" class="text-sm text-slate-400 mb-6 leading-relaxed"></p>
-             <a id="product-link" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full py-4 bg-[#b2945e] text-[#1c1917] rounded-xl text-[11px] font-bold uppercase tracking-widest hover:bg-[#d4b483] transition-colors shadow-lg">
-                <span id="product-price"></span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
-             </a>
+            <h4 id="product-title"
+              class="font-serif italic text-2xl text-white mb-3"></h4>
+            <p id="product-desc"
+              class="text-sm text-slate-400 mb-6 leading-relaxed"></p>
+            <a id="product-link" href="#" target="_blank"
+              class="flex items-center justify-center gap-2 w-full py-4 bg-[#b2945e]
+                text-[#1c1917] rounded-xl text-[11px] font-bold uppercase tracking-widest
+                hover:bg-[#d4b483] transition-colors shadow-lg">
+              <span id="product-price"></span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
           </div>
         </div>
 
@@ -374,45 +367,59 @@
 
       <div class="card-footer result-reveal">
         <div>
-          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-1">LiveAdaptiv</p>
-          <p class="font-serif italic text-xs text-slate-400">Architecture for the Modern Soul</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-1">
+            LiveAdaptiv
+          </p>
+          <p class="font-serif italic text-xs text-slate-400">
+            Architecture for the Modern Soul
+          </p>
         </div>
         <div class="text-right">
           <p id="footer-date" class="text-[10px] text-slate-500 font-mono"></p>
-          <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Kinetic Audit</p>
+          <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">
+            Kinetic Audit
+          </p>
         </div>
       </div>
     </div>
 
-    <div class="flex flex-col items-center mt-10 space-y-8 result-reveal">
-        <button onclick="resetAudit()" class="retake-btn">
-            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Retake Diagnostic
-        </button>
+    <!-- Retake -->
+    <div class="flex justify-center mt-10 result-reveal">
+      <button onclick="resetAudit()" class="retake-btn">
+        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Retake Diagnostic
+      </button>
+    </div>
 
-        <div class="flex gap-6 items-center">
-            <a href="https://www.linkedin.com/in/alex-ioda-5428b76" target="_blank" class="p-4 rounded-full bg-white/5 text-slate-400 hover:text-[#b2945e] hover:bg-white/10 transition-all border border-white/5">
-                <i data-lucide="linkedin" class="w-5 h-5"></i>
-            </a>
-            <a href="mailto:alexioda@gmail.com" class="p-4 rounded-full bg-white/5 text-slate-400 hover:text-[#b2945e] hover:bg-white/10 transition-all border border-white/5">
-                <i data-lucide="mail" class="w-5 h-5"></i>
-            </a>
-            <a href="https://liveadaptiv.com" target="_blank" class="p-4 rounded-full bg-white/5 text-slate-400 hover:text-[#b2945e] hover:bg-white/10 transition-all border border-white/5">
-                <i data-lucide="globe" class="w-5 h-5"></i>
-            </a>
-        </div>
+    <!-- Social links — bottom of page, below conversion moment -->
+    <div class="flex gap-5 items-center justify-center mt-10 pb-4 result-reveal">
+      <a href="https://www.linkedin.com/in/alex-ioda-5428b76" target="_blank"
+        class="p-4 rounded-full bg-white/5 text-slate-500 hover:text-[#b2945e]
+          hover:bg-white/10 transition-all border border-white/5">
+        <i data-lucide="linkedin" class="w-4 h-4"></i>
+      </a>
+      <a href="https://liveadaptiv.com" target="_blank"
+        class="p-4 rounded-full bg-white/5 text-slate-500 hover:text-[#b2945e]
+          hover:bg-white/10 transition-all border border-white/5">
+        <i data-lucide="globe" class="w-4 h-4"></i>
+      </a>
     </div>
 
   </div>
 </div>
 
 <footer class="text-center pb-12 mt-auto">
-  <p class="mt-8 text-[11px] text-slate-600 uppercase tracking-widest font-bold">© 2026 LiveAdaptiv Systems</p>
+  <p class="mt-8 text-[11px] text-slate-600 uppercase tracking-widest font-bold">
+    © 2026 LiveAdaptiv Systems
+  </p>
 </footer>
 
 <script>
 lucide.createIcons();
 
-// ── DATA ────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// CONTENT DATA
+// ════════════════════════════════════════════════════════════════
+
 const questions = [
   { text: "When I wake up, my first thought regarding the day ahead is usually:", options: [
     { text: "Energized or neutral.", value: 0 },
@@ -476,92 +483,100 @@ const questions = [
   ]}
 ];
 
-// ── ARCHETYPES ─────────────────────────────
-function deriveArchetype(answers) {
-  const rusherScore  = (answers[0] || 0) + (answers[4] || 0) + (answers[8] || 0);
-  const freezerScore = (answers[5] || 0) + (answers[2] || 0) + (answers[3] || 0);
-  const fixerScore   = (answers[6] || 0) + (answers[1] || 0) + (answers[7] || 0);
-  if (rusherScore >= freezerScore && rusherScore >= fixerScore) return "The Rusher";
-  if (freezerScore >= fixerScore) return "The Freezer";
+// ── ARCHETYPE DERIVATION ──────────────────────────────────────────
+function deriveArchetype(ans) {
+  const r = (ans[0]||0) + (ans[4]||0) + (ans[8]||0);
+  const f = (ans[5]||0) + (ans[2]||0) + (ans[3]||0);
+  const x = (ans[6]||0) + (ans[1]||0) + (ans[7]||0);
+  if (r >= f && r >= x) return "The Rusher";
+  if (f >= x) return "The Freezer";
   return "The Fixer";
 }
 
 const archetypeData = {
   "The Rusher": {
     desc: "Your nervous system reads time as the enemy. The dominant pattern is acceleration — racing thoughts, compressed deadlines, the persistent sense that you are already behind. This is a sympathetic overdrive signature: the brake system is underactive.",
-    color: "amber",
     protocols: [
-      { title: "The Tactical Exhale", body: "Inhale is the gas pedal. Exhale is the brake. Five seconds out, pause, five seconds out again. Do it now — your vagus nerve responds in under 90 seconds." },
-      { title: "Name Three Facts", body: "Panic is a loop. Logic is a line. Interrupt the circuit by naming three verifiable, present-moment facts out loud. The prefrontal cortex comes back online immediately." },
-      { title: "Shrink the Clock", body: "Remove the next week from consideration entirely. The only executable unit is the next 90 minutes. Write exactly one thing that matters in that window." }
+      { title: "The Tactical Exhale",
+        body: "Inhale is the gas pedal. Exhale is the brake. Five seconds out, pause, five seconds out again. Do it now — your vagus nerve responds in under 90 seconds." },
+      { title: "Name Three Facts",
+        body: "Panic is a loop. Logic is a line. Interrupt the circuit by naming three verifiable, present-moment facts out loud. The prefrontal cortex comes back online immediately." },
+      { title: "Shrink the Clock",
+        body: "Remove the next week from consideration entirely. The only executable unit is the next 90 minutes. Write exactly one thing that matters in that window." }
     ]
   },
   "The Freezer": {
-    desc: "Your system has moved into conservation mode — the dorsal vagal response that reads overwhelm as threat and responds with fog, dissociation, and paralysis. This is not weakness. It is a biological protection protocol that is misfiring in a low-danger environment.",
-    color: "teal",
+    desc: "Your system has moved into conservation mode — the dorsal vagal response that reads overwhelm as threat and responds with fog, dissociation, and paralysis. This is not weakness. It is a biological protection protocol misfiring in a low-danger environment.",
     protocols: [
-      { title: "Physical Pattern Interrupt", body: "The freeze state is held in the body, not the mind. Stand up. Press your feet into the floor. Take one full breath. Physiological state must shift before cognitive state can follow." },
-      { title: "The Smallest Possible Move", body: "Paralysis is sustained by the gap between where you are and where you think you should be. Close that gap by identifying the single smallest executable action — not the right action, just any action." },
-      { title: "Name the Fog", body: "Say out loud: 'My nervous system is in protection mode right now.' Observation breaks identification. You are not frozen — you are observing frozenness. That distinction is the exit." }
+      { title: "Physical Pattern Interrupt",
+        body: "The freeze state is held in the body, not the mind. Stand up. Press your feet into the floor. Take one full breath. Physiological state must shift before cognitive state can follow." },
+      { title: "The Smallest Possible Move",
+        body: "Paralysis is sustained by the gap between where you are and where you think you should be. Identify the single smallest executable action — not the right action, just any action." },
+      { title: "Name the Fog",
+        body: "Say out loud: 'My nervous system is in protection mode right now.' Observation breaks identification. You are not frozen — you are observing frozenness. That distinction is the exit." }
     ]
   },
   "The Fixer": {
     desc: "Your dominant pattern is over-responsibility — the load-bearing belief that outcomes depend entirely on your effort and vigilance. This creates a chronic sympathetic state driven not by external pressure but by internally generated obligation. The tension lives in the chest, jaw, and shoulders.",
-    color: "rose",
     protocols: [
-      { title: "The Control Audit", body: "Draw a line. On the left: what you actually control. On the right: what you are currently trying to control. Everything on the right is a cortisol source with no return. Cancel those contracts now." },
-      { title: "Redistribute the Weight", body: "Ask: what is one thing I am carrying right now that belongs to someone else? Name it. Then physically set something down — your phone, your pen. The body takes the metaphor literally." },
-      { title: "The 90-Second Flush", body: "Emotion is chemistry. Cortisol, adrenaline, and norepinephrine have a biological half-life of 90 seconds when you stop feeding the story. Observe the sensation without narrating it. Let the chemistry complete its cycle." }
+      { title: "The Control Audit",
+        body: "Draw a line. On the left: what you actually control. On the right: what you are currently trying to control. Everything on the right is a cortisol source with no return. Cancel those contracts now." },
+      { title: "Redistribute the Weight",
+        body: "Ask: what is one thing I am carrying right now that belongs to someone else? Name it. Then physically set something down — your phone, your pen. The body takes the metaphor literally." },
+      { title: "The 90-Second Flush",
+        body: "Emotion is chemistry. Cortisol, adrenaline, and norepinephrine have a biological half-life of 90 seconds when you stop feeding the story. Observe the sensation without narrating it. Let the chemistry complete." }
     ]
   }
 };
 
-// ── PRODUCT UPSELL DATA ───────────────────────────────────────────────────
+// ── TIER ROUTING — correct prices + Burnout Rescue for high tier ──
 const tierData = {
   low: {
     title: "High Cognitive Bandwidth",
     theme: "theme-teal",
-    accentVar: "--teal",
-    read: "Your autonomic system is currently regulated. You have the cognitive bandwidth available to absorb new frameworks, build new habits, and perform under elevated pressure. The work right now is fortification — reinforcing the architecture before the environment tests it.",
+    read: "Your autonomic system is currently regulated. You have the cognitive bandwidth to absorb new frameworks, build new habits, and perform under elevated pressure. The work right now is fortification — reinforcing the architecture before the environment tests it.",
     product: {
-        title: "The Alchemist Field Guide",
-        desc: "You have the baseline to scale. This tactical workbook provides the frameworks to optimize your kinetic energy, master your 'Golden Shadow', and engineer deep flow states without sacrificing your wellbeing.",
-        link: "https://liveadaptiv.com",
-        price: "Access Field Guide ($27)"
+      title: "The Alchemist Field Guide",
+      desc: "You have the baseline to scale. This deep-work protocol provides the frameworks to master your kinetic energy, do the Shadow Work, and engineer sustainable flow states without sacrificing wellbeing.",
+      link: "https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1",
+      price: "Access Field Guide — $97"
     }
   },
   mid: {
     title: "Moderate Autonomic Debt",
     theme: "theme-amber",
-    accentVar: "--amber",
-    read: "You are operating in sustained sympathetic activation — the biological state commonly called 'fight or flight.' Cortisol is elevated. Your amygdala is managing threat assessment that should be handled by your prefrontal cortex. You are functional, but you are paying a toll to stay that way.",
+    read: "You are operating in sustained sympathetic activation — the biological state commonly called 'fight or flight.' Cortisol is elevated. Your amygdala is managing threat assessment that should be handled by your prefrontal cortex. You are functional, but paying a toll to stay that way.",
     product: {
-        title: "Stress Transformation Protocol",
-        desc: "You are currently burning metabolic fuel just to survive the week. Install this 7-day neurological reset to eliminate autonomic debt, reframe your friction, and halt the cortisol loop before you break.",
-        link: "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e",
-        price: "Install Protocol ($47)"
+      title: "Stress Transformation Protocol",
+      desc: "You are burning metabolic fuel just to survive the week. This 7-day neurological reset eliminates autonomic debt, reframes your friction, and halts the cortisol loop before you break.",
+      link: "https://billing.liveadaptiv.com/checkout/buy/d29e3b81-78a4-4611-83f8-11fe76d9d82e",
+      price: "Install Protocol — $47"
     }
   },
   high: {
     title: "Critical Friction Load",
     theme: "theme-rose",
-    accentVar: "--rose",
     read: "Your diagnostic suggests dorsal vagal activation — the system's final conservation response to sustained, unmetabolized load. Cognitive bandwidth is significantly reduced. Decision quality is compromised. The priority right now is not performance. It is biological stabilization.",
     product: {
-        title: "Clinical Strategy Session",
-        desc: "You cannot 'mindset' your way out of profound autonomic exhaustion. We need to deploy emergency architecture. Book a 1-on-1 intensive to locate the exact energy leak and engineer a sustainable boundary system.",
-        link: "https://calendly.com/alexioda",
-        price: "Book Strategy Session ($495)"
+      title: "Burnout Rescue",
+      desc: "You do not have the bandwidth for a complex protocol right now. Start here: a low-friction, immediate-action workbook to stop the psychological bleed and restore a functional baseline. One step at a time.",
+      link: "https://billing.liveadaptiv.com/checkout/buy/aab07394-9db6-46d1-8972-60038742f1b7",
+      price: "Get Burnout Rescue — $27"
     }
   }
 };
 
-// ── STATE ───────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// STATE — no accumulated score, always derived fresh
+// ════════════════════════════════════════════════════════════════
+
 let currentQ = 0;
-let totalScore = 0;
 let answers = [];
 
-// ── FLOW ────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// AUDIT FLOW
+// ════════════════════════════════════════════════════════════════
+
 function startAudit() {
   document.getElementById('intro-screen').classList.add('hidden');
   document.getElementById('question-screen').classList.remove('hidden');
@@ -571,7 +586,8 @@ function startAudit() {
 function renderQuestion() {
   const q = questions[currentQ];
   document.getElementById('question-text').innerText = q.text;
-  document.getElementById('q-counter').innerText = `Question ${currentQ + 1} of ${questions.length}`;
+  document.getElementById('q-counter').innerText =
+    `Question ${currentQ + 1} of ${questions.length}`;
   const pct = Math.round(((currentQ + 1) / questions.length) * 100);
   document.getElementById('progress-bar').style.width = `${pct}%`;
   document.getElementById('q-pct').innerText = `${pct}%`;
@@ -585,7 +601,7 @@ function renderQuestion() {
     div.style.animationDelay = `${i * 0.06}s`;
     div.innerHTML = `
       <div class="option-radio"></div>
-      <span class="text-slate-300 text-base md:text-lg leading-snug">${opt.text}</span>
+      <span class="text-slate-300 text-base leading-snug">${opt.text}</span>
     `;
     div.addEventListener('click', () => handleSelection(opt.value, div));
     container.appendChild(div);
@@ -596,7 +612,7 @@ function handleSelection(value, el) {
   document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   answers[currentQ] = value;
-  totalScore += value;
+
   setTimeout(() => {
     currentQ++;
     if (currentQ < questions.length) {
@@ -608,6 +624,9 @@ function handleSelection(value, el) {
 }
 
 function showResults() {
+  // Always derive score fresh — no accumulation bug on retake
+  const totalScore = answers.reduce((sum, v) => sum + v, 0);
+
   document.getElementById('question-screen').classList.add('hidden');
   document.querySelector('main').classList.add('hidden');
 
@@ -615,31 +634,23 @@ function showResults() {
   scorecard.classList.remove('hidden');
 
   const archetype = deriveArchetype(answers);
-  const arcInfo   = archetypeData[archetype];
-  const tier      = totalScore <= 10 ? 'low' : totalScore <= 20 ? 'mid' : 'high';
-  const tierInfo  = tierData[tier];
+  const arcInfo = archetypeData[archetype];
+  const tier = totalScore <= 10 ? 'low' : totalScore <= 20 ? 'mid' : 'high';
+  const tierInfo = tierData[tier];
 
-  // Theme
-  const shell = document.getElementById('card-shell');
-  shell.className = `card-shell ${tierInfo.theme}`;
-
-  // Score
+  document.getElementById('card-shell').className = `card-shell ${tierInfo.theme}`;
   document.getElementById('score-num').innerText = totalScore;
-
-  // Title & archetype pill
   document.getElementById('result-title').innerText = tierInfo.title;
+
   document.getElementById('archetype-pill').innerHTML = `
-    <span style="width:6px;height:6px;border-radius:50%;background:var(--accent-light);display:inline-block;"></span>
+    <span style="width:6px;height:6px;border-radius:50%;
+      background:var(--accent-light);display:inline-block;flex-shrink:0;"></span>
     ${archetype}
   `;
 
-  // Clinical read
   document.getElementById('clinical-read').innerText = tierInfo.read;
-
-  // Archetype block
   document.getElementById('archetype-read').innerText = arcInfo.desc;
 
-  // Protocols
   const list = document.getElementById('protocols-list');
   list.innerHTML = '';
   arcInfo.protocols.forEach((p, i) => {
@@ -655,23 +666,27 @@ function showResults() {
     list.appendChild(item);
   });
 
-  // Dynamic Upsell Injection
   document.getElementById('product-title').innerText = tierInfo.product.title;
   document.getElementById('product-desc').innerText = tierInfo.product.desc;
   document.getElementById('product-link').href = tierInfo.product.link;
   document.getElementById('product-price').innerText = tierInfo.product.price;
 
-  // Footer date
-  const now = new Date();
   document.getElementById('footer-date').innerText =
-    now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    new Date().toLocaleDateString('en-US',
+      { month: 'short', day: 'numeric', year: 'numeric' });
+
+  // Enable email button now that results are ready
+  document.getElementById('email-btn').disabled = false;
 
   lucide.createIcons();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function resetAudit() {
-  currentQ = 0; totalScore = 0; answers = [];
+  currentQ = 0;
+  answers = [];
+
+  document.getElementById('email-btn').disabled = true;
   document.getElementById('scorecard').classList.add('hidden');
   document.querySelector('main').classList.remove('hidden');
   document.getElementById('intro-screen').classList.remove('hidden');
@@ -679,19 +694,32 @@ function resetAudit() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ════════════════════════════════════════════════════════════════
+// EMAIL RESULTS — guarded, only callable after completion
+// ════════════════════════════════════════════════════════════════
+
 function emailResults() {
+  if (answers.length < questions.length) return;
+
+  const totalScore = answers.reduce((sum, v) => sum + v, 0);
   const archetype = deriveArchetype(answers);
-  const tier      = totalScore <= 10 ? 'low' : totalScore <= 20 ? 'mid' : 'high';
-  const tierInfo  = tierData[tier];
-  
-  const subject = encodeURIComponent(`My Kinetic Audit Results: ${archetype}`);
-  const bodyText = `I just completed The Kinetic Audit by LiveAdaptiv.\n\n` +
-                   `MY FRICTION PATTERN: ${archetype}\n` +
-                   `SCORE: ${totalScore}/30 (${tierInfo.title})\n\n` +
-                   `CLINICAL READ:\n${tierInfo.read}\n\n` +
-                   `Take the diagnostic at audit.liveadaptiv.com`;
-                   
-  const body = encodeURIComponent(bodyText);
+  const tier = totalScore <= 10 ? 'low' : totalScore <= 20 ? 'mid' : 'high';
+  const tierInfo = tierData[tier];
+
+  const subject = encodeURIComponent(
+    `My Kinetic Audit Results — ${archetype} | Score ${totalScore}/30`
+  );
+  const body = encodeURIComponent(
+    `I just completed The Kinetic Audit by LiveAdaptiv.\n\n` +
+    `FRICTION PATTERN: ${archetype}\n` +
+    `SCORE: ${totalScore}/30 — ${tierInfo.title}\n\n` +
+    `CLINICAL READ:\n${tierInfo.read}\n\n` +
+    `RECOMMENDED NEXT STEP:\n` +
+    `${tierInfo.product.title}\n` +
+    `${tierInfo.product.link}\n\n` +
+    `Take the diagnostic: https://liveadaptiv.com`
+  );
+
   window.location.href = `mailto:?subject=${subject}&body=${body}`;
 }
 </script>
