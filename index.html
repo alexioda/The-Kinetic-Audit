@@ -210,7 +210,6 @@
 </head>
 <body class="bg-grid">
 
-<!-- NAV -->
 <nav class="sticky top-0 z-50 border-b border-white/5"
   style="background:rgba(2,6,23,0.85);backdrop-filter:blur(16px);">
   <div class="max-w-xl mx-auto px-6 h-14 flex items-center justify-between">
@@ -228,7 +227,6 @@
   </div>
 </nav>
 
-<!-- INTRO + QUESTIONS -->
 <main class="max-w-xl mx-auto px-5 py-10 flex-grow w-full">
 
   <div id="intro-screen" class="fade-in text-center">
@@ -236,10 +234,10 @@
       flex items-center justify-center shadow-[0_0_40px_rgba(178,148,94,0.1)]">
       <i data-lucide="activity" class="w-7 h-7 text-[#b2945e]"></i>
     </div>
-    <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[#b2945e] mb-3">Clinical Diagnostic</p>
+    <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[#b2945e] mb-3">Autonomic Diagnostic</p>
     <h1 class="font-serif italic text-5xl text-white mb-4 leading-none">The Kinetic<br>Audit</h1>
     <p class="text-slate-400 text-sm leading-relaxed max-w-sm mx-auto mb-10">
-      Ten questions. A clinical read on your current autonomic state and the friction
+      Ten questions. A systemic read on your current autonomic state and the friction
       pattern that's most active right now.<br><br>Answer instinctively. Do not overthink.
     </p>
     <button onclick="startAudit()"
@@ -279,11 +277,9 @@
 
 </main>
 
-<!-- SCORECARD -->
 <div id="scorecard" class="hidden">
   <div class="w-full max-w-[480px]">
 
-    <!-- Action hints — above card, clearly outside screenshot area -->
     <div class="flex flex-col md:flex-row gap-3 mb-5 result-reveal w-full">
       <div class="action-hint hint-screenshot flex-1">
         <i data-lucide="camera" class="w-4 h-4"></i>
@@ -296,7 +292,6 @@
       </button>
     </div>
 
-    <!-- Card -->
     <div id="card-shell" class="card-shell">
 
       <div id="card-header" class="card-header">
@@ -323,7 +318,7 @@
 
         <div class="result-reveal">
           <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-3">
-            Clinical Read
+            Systemic Read
           </p>
           <p id="clinical-read"
             class="text-base text-slate-300 leading-relaxed font-serif italic"></p>
@@ -383,14 +378,12 @@
       </div>
     </div>
 
-    <!-- Retake -->
     <div class="flex justify-center mt-10 result-reveal">
       <button onclick="resetAudit()" class="retake-btn">
         <i data-lucide="refresh-cw" class="w-4 h-4"></i> Retake Diagnostic
       </button>
     </div>
 
-    <!-- Social links — bottom of page, below conversion moment -->
     <div class="flex gap-5 items-center justify-center mt-10 pb-4 result-reveal">
       <a href="https://www.linkedin.com/in/alex-ioda-5428b76" target="_blank"
         class="p-4 rounded-full bg-white/5 text-slate-500 hover:text-[#b2945e]
@@ -713,7 +706,7 @@ function emailResults() {
     `I just completed The Kinetic Audit by LiveAdaptiv.\n\n` +
     `FRICTION PATTERN: ${archetype}\n` +
     `SCORE: ${totalScore}/30 — ${tierInfo.title}\n\n` +
-    `CLINICAL READ:\n${tierInfo.read}\n\n` +
+    `SYSTEMIC READ:\n${tierInfo.read}\n\n` +
     `RECOMMENDED NEXT STEP:\n` +
     `${tierInfo.product.title}\n` +
     `${tierInfo.product.link}\n\n` +
