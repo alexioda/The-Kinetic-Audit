@@ -478,11 +478,19 @@ const questions = [
 
 // ── ARCHETYPE DERIVATION ──────────────────────────────────────────
 function deriveArchetype(ans) {
-  const r = (ans[0]||0) + (ans[4]||0) + (ans[8]||0);
-  const f = (ans[5]||0) + (ans[2]||0) + (ans[3]||0);
-  const x = (ans[6]||0) + (ans[1]||0) + (ans[7]||0);
-  if (r >= f && r >= x) return "The Rusher";
-  if (f >= x) return "The Freezer";
+  let fixer = 0; // Option 1 tally
+  let rusher = 0; // Option 2 tally
+  let freezer = 0; // Option 3 tally
+
+  ans.forEach(val => {
+    if (val === 1) fixer++;
+    if (val === 2) rusher++;
+    if (val === 3) freezer++;
+  });
+
+  if (freezer >= rusher && freezer >= fixer && freezer > 0) return "The Freezer";
+  if (rusher >= fixer && rusher > 0) return "The Rusher";
+  
   return "The Fixer";
 }
 
