@@ -88,7 +88,7 @@
 
   .progress-fill { transition: width 0.5s cubic-bezier(.16,1,.3,1); }
 
-  #scorecard {
+  #scorecard, #email-gate {
     background:#0a0a0f; min-height:100vh;
     display:flex; flex-direction:column;
     align-items:center; justify-content:flex-start;
@@ -164,14 +164,13 @@
     display:flex; align-items:center; justify-content:space-between;
   }
 
-  /* Action hints — above card, outside screenshot frame */
   .action-hint {
     display:flex; align-items:center; justify-content:center;
     gap:10px; padding:13px 20px; border-radius:100px;
     font-size:12px; font-weight:600;
     transition:all 0.2s ease; cursor:pointer;
     font-family:'DM Sans',sans-serif;
-    border:none; /* reset button default */
+    border:none;
   }
   .hint-screenshot {
     border:1px solid rgba(178,148,94,0.35) !important;
@@ -227,7 +226,7 @@
   </div>
 </nav>
 
-<main class="max-w-xl mx-auto px-5 py-10 flex-grow w-full">
+<main class="max-w-xl mx-auto px-5 py-10 flex-grow w-full" id="main-content">
 
   <div id="intro-screen" class="fade-in text-center">
     <div class="w-16 h-16 mx-auto mb-6 rounded-2xl border border-white/10 bg-white/5
@@ -236,10 +235,15 @@
     </div>
     <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[#b2945e] mb-3">Autonomic Diagnostic</p>
     <h1 class="font-serif italic text-5xl text-white mb-4 leading-none">The Kinetic<br>Audit</h1>
-    <p class="text-slate-400 text-sm leading-relaxed max-w-sm mx-auto mb-10">
+    <p class="text-slate-400 text-sm leading-relaxed max-w-sm mx-auto mb-8">
       Ten questions. A systemic read on your current autonomic state and the friction
       pattern that's most active right now.<br><br>Answer instinctively. Do not overthink.
     </p>
+    
+    <div class="max-w-xs mx-auto mb-8">
+      <input type="text" id="participantName" placeholder="Enter your First Name" class="w-full bg-[#0f0f18] border border-white/10 py-3 px-4 rounded-xl text-white text-center focus:border-[#b2945e] outline-none transition-colors">
+    </div>
+
     <button onclick="startAudit()"
       class="px-8 py-4 bg-[#b2945e] hover:bg-[#d4b483] text-[#1c1917] font-bold
         rounded-full text-[11px] uppercase tracking-[0.2em] transition-all shadow-lg
@@ -277,6 +281,26 @@
 
 </main>
 
+<div id="email-gate" class="hidden">
+  <div class="fade-in text-center max-w-sm w-full mt-10">
+    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center shadow-[0_0_40px_rgba(178,148,94,0.1)]">
+      <i data-lucide="lock" class="w-7 h-7 text-[#b2945e]"></i>
+    </div>
+    <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[#b2945e] mb-3">Diagnostic Complete</p>
+    <h2 class="font-serif italic text-4xl text-white mb-4">Unlock Your Read.</h2>
+    <p class="text-slate-400 text-sm leading-relaxed mb-8">
+      Your autonomic response pattern has been mapped. Enter your email to view your systemic read, burnout score, and 3 custom protocols instantly.
+    </p>
+    <form id="leadForm" onsubmit="submitLead(event)" class="space-y-4">
+      <input type="email" id="userEmail" required placeholder="Your professional email" class="w-full bg-[#0f0f18] border border-white/10 py-4 px-5 rounded-xl text-white text-center focus:border-[#b2945e] outline-none transition-colors">
+      <button type="submit" id="unlockBtn" class="w-full py-4 bg-[#b2945e] hover:bg-[#d4b483] text-[#1c1917] font-bold rounded-xl text-[11px] uppercase tracking-[0.2em] transition-all shadow-lg flex justify-center items-center gap-2">
+        <span>Reveal My Results</span> <i data-lucide="unlock" class="w-4 h-4"></i>
+      </button>
+    </form>
+    <p class="text-slate-600 text-[10px] mt-6 uppercase tracking-widest">We never share your data.</p>
+  </div>
+</div>
+
 <div id="scorecard" class="hidden">
   <div class="w-full max-w-[480px]">
 
@@ -293,87 +317,57 @@
     </div>
 
     <div id="card-shell" class="card-shell">
-
       <div id="card-header" class="card-header">
         <div class="flex items-start gap-5 relative z-10 result-reveal">
           <div id="score-ring" class="score-ring ring-pulse">
-            <span id="score-num"
-              class="font-serif italic text-4xl leading-none text-white"></span>
-            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">
-              /30
-            </span>
+            <span id="score-num" class="font-serif italic text-4xl leading-none text-white"></span>
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">/30</span>
           </div>
           <div class="flex-1 pt-1">
-            <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-2">
-              Diagnostic Complete
-            </p>
-            <h2 id="result-title"
-              class="font-serif italic text-2xl text-white leading-tight mb-3"></h2>
+            <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-2">Diagnostic Complete</p>
+            <h2 id="result-title" class="font-serif italic text-2xl text-white leading-tight mb-3"></h2>
             <div id="archetype-pill" class="archetype-pill"></div>
           </div>
         </div>
       </div>
 
       <div class="card-body space-y-8">
-
         <div class="result-reveal">
-          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-3">
-            Systemic Read
-          </p>
-          <p id="clinical-read"
-            class="text-base text-slate-300 leading-relaxed font-serif italic"></p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-3">Systemic Read</p>
+          <p id="clinical-read" class="text-base text-slate-300 leading-relaxed font-serif italic"></p>
         </div>
 
-        <div id="archetype-block" class="result-reveal rounded-2xl p-5"
-          style="background:var(--accent-bg);border:1px solid var(--accent-border);">
-          <p class="text-[10px] font-bold uppercase tracking-[0.35em] mb-3"
-            style="color:var(--accent-light)">Your Friction Pattern</p>
-          <p id="archetype-read"
-            class="text-base leading-relaxed text-slate-200"></p>
+        <div id="archetype-block" class="result-reveal rounded-2xl p-5" style="background:var(--accent-bg);border:1px solid var(--accent-border);">
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] mb-3" style="color:var(--accent-light)">Your Friction Pattern</p>
+          <p id="archetype-read" class="text-base leading-relaxed text-slate-200"></p>
         </div>
 
         <div class="result-reveal">
-          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-4">
-            3 Protocols for Right Now
-          </p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-4">3 Protocols for Right Now</p>
           <div id="protocols-list"></div>
         </div>
 
         <div class="result-reveal pt-8 border-t border-white/10">
-          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-[#b2945e] mb-4">
-            Recommended Next Step
-          </p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-[#b2945e] mb-4">Recommended Next Step</p>
           <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
-            <h4 id="product-title"
-              class="font-serif italic text-2xl text-white mb-3"></h4>
-            <p id="product-desc"
-              class="text-sm text-slate-400 mb-6 leading-relaxed"></p>
-            <a id="product-link" href="#" target="_blank"
-              class="flex items-center justify-center gap-2 w-full py-4 bg-[#b2945e]
-                text-[#1c1917] rounded-xl text-[11px] font-bold uppercase tracking-widest
-                hover:bg-[#d4b483] transition-colors shadow-lg">
+            <h4 id="product-title" class="font-serif italic text-2xl text-white mb-3"></h4>
+            <p id="product-desc" class="text-sm text-slate-400 mb-6 leading-relaxed"></p>
+            <a id="product-link" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full py-4 bg-[#b2945e] text-[#1c1917] rounded-xl text-[11px] font-bold uppercase tracking-widest hover:bg-[#d4b483] transition-colors shadow-lg">
               <span id="product-price"></span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
           </div>
         </div>
-
       </div>
 
       <div class="card-footer result-reveal">
         <div>
-          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-1">
-            LiveAdaptiv
-          </p>
-          <p class="font-serif italic text-xs text-slate-400">
-            Architecture for the Modern Soul
-          </p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500 mb-1">LiveAdaptiv</p>
+          <p class="font-serif italic text-xs text-slate-400">Architecture for the Modern Soul</p>
         </div>
         <div class="text-right">
           <p id="footer-date" class="text-[10px] text-slate-500 font-mono"></p>
-          <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">
-            Kinetic Audit
-          </p>
+          <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Kinetic Audit</p>
         </div>
       </div>
     </div>
@@ -385,14 +379,10 @@
     </div>
 
     <div class="flex gap-5 items-center justify-center mt-10 pb-4 result-reveal">
-      <a href="https://www.linkedin.com/in/alex-ioda-5428b76" target="_blank"
-        class="p-4 rounded-full bg-white/5 text-slate-500 hover:text-[#b2945e]
-          hover:bg-white/10 transition-all border border-white/5">
+      <a href="https://www.linkedin.com/in/alex-ioda-5428b76" target="_blank" class="p-4 rounded-full bg-white/5 text-slate-500 hover:text-[#b2945e] hover:bg-white/10 transition-all border border-white/5">
         <i data-lucide="linkedin" class="w-4 h-4"></i>
       </a>
-      <a href="https://liveadaptiv.com" target="_blank"
-        class="p-4 rounded-full bg-white/5 text-slate-500 hover:text-[#b2945e]
-          hover:bg-white/10 transition-all border border-white/5">
+      <a href="https://liveadaptiv.com" target="_blank" class="p-4 rounded-full bg-white/5 text-slate-500 hover:text-[#b2945e] hover:bg-white/10 transition-all border border-white/5">
         <i data-lucide="globe" class="w-4 h-4"></i>
       </a>
     </div>
@@ -400,7 +390,7 @@
   </div>
 </div>
 
-<footer class="text-center pb-12 mt-auto">
+<footer class="text-center pb-12 mt-auto" id="main-footer">
   <p class="mt-8 text-[11px] text-slate-600 uppercase tracking-widest font-bold">
     © 2026 LiveAdaptiv Systems
   </p>
@@ -408,6 +398,11 @@
 
 <script>
 lucide.createIcons();
+
+// ════════════════════════════════════════════════════════════════
+// CONFIGURATION (CHANGE THIS TO YOUR REAL EMAIL)
+// ════════════════════════════════════════════════════════════════
+const FORMSUBMIT_EMAIL = "alexioda@gmail.com"; // <--- CHANGE THIS LINE!
 
 // ════════════════════════════════════════════════════════════════
 // CONTENT DATA
@@ -530,7 +525,7 @@ const archetypeData = {
   }
 };
 
-// ── TIER ROUTING — correct prices + Burnout Rescue for high tier ──
+// ── TIER ROUTING ──
 const tierData = {
   low: {
     title: "High Cognitive Bandwidth",
@@ -568,17 +563,20 @@ const tierData = {
 };
 
 // ════════════════════════════════════════════════════════════════
-// STATE — no accumulated score, always derived fresh
+// STATE 
 // ════════════════════════════════════════════════════════════════
-
 let currentQ = 0;
 let answers = [];
+let storedName = "";
 
 // ════════════════════════════════════════════════════════════════
 // AUDIT FLOW
 // ════════════════════════════════════════════════════════════════
 
 function startAudit() {
+  const nameInput = document.getElementById('participantName');
+  storedName = nameInput ? nameInput.value.trim() : "Anonymous";
+
   document.getElementById('intro-screen').classList.add('hidden');
   document.getElementById('question-screen').classList.remove('hidden');
   renderQuestion();
@@ -587,8 +585,7 @@ function startAudit() {
 function renderQuestion() {
   const q = questions[currentQ];
   document.getElementById('question-text').innerText = q.text;
-  document.getElementById('q-counter').innerText =
-    `Question ${currentQ + 1} of ${questions.length}`;
+  document.getElementById('q-counter').innerText = `Question ${currentQ + 1} of ${questions.length}`;
   const pct = Math.round(((currentQ + 1) / questions.length) * 100);
   document.getElementById('progress-bar').style.width = `${pct}%`;
   document.getElementById('q-pct').innerText = `${pct}%`;
@@ -619,25 +616,70 @@ function handleSelection(value, el) {
     if (currentQ < questions.length) {
       renderQuestion();
     } else {
-      showResults();
+      showEmailGate();
     }
   }, 320);
 }
 
-function showResults() {
-  // Always derive score fresh — no accumulation bug on retake
-  const totalScore = answers.reduce((sum, v) => sum + v, 0);
-
+function showEmailGate() {
   document.getElementById('question-screen').classList.add('hidden');
-  document.querySelector('main').classList.add('hidden');
+  document.getElementById('main-content').classList.add('hidden');
+  document.getElementById('main-footer').classList.add('hidden');
+  document.getElementById('email-gate').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
+// ════════════════════════════════════════════════════════════════
+// EMAIL CAPTURE & RESULTS LOGIC
+// ════════════════════════════════════════════════════════════════
+
+function submitLead(event) {
+  event.preventDefault();
+  
+  const emailInput = document.getElementById('userEmail').value;
+  const btn = document.getElementById('unlockBtn');
+  btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Processing...`;
+  btn.disabled = true;
+
+  // Calculate final data
+  const totalScore = answers.reduce((sum, v) => sum + v, 0);
+  const archetype = deriveArchetype(answers);
+  const tier = totalScore <= 10 ? 'low' : totalScore <= 20 ? 'mid' : 'high';
+  const tierInfo = tierData[tier];
+
+  // Attempt to send data to FormSubmit
+  fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
+      method: "POST",
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+          name: storedName,
+          email: emailInput,
+          score: totalScore,
+          archetype: archetype,
+          tier: tierInfo.title,
+          _subject: `New Audit Lead: ${archetype} (Score: ${totalScore})`
+      })
+  })
+  .then(response => response.json())
+  .then(data => {
+      // Regardless of success/fail, show them their results so they don't get blocked
+      unlockResults(totalScore, archetype, tierInfo);
+  })
+  .catch(error => {
+      console.log("Lead capture failed, but unlocking results anyway.", error);
+      unlockResults(totalScore, archetype, tierInfo);
+  });
+}
+
+function unlockResults(totalScore, archetype, tierInfo) {
+  document.getElementById('email-gate').classList.add('hidden');
   const scorecard = document.getElementById('scorecard');
   scorecard.classList.remove('hidden');
 
-  const archetype = deriveArchetype(answers);
   const arcInfo = archetypeData[archetype];
-  const tier = totalScore <= 10 ? 'low' : totalScore <= 20 ? 'mid' : 'high';
-  const tierInfo = tierData[tier];
 
   document.getElementById('card-shell').className = `card-shell ${tierInfo.theme}`;
   document.getElementById('score-num').innerText = totalScore;
@@ -673,10 +715,8 @@ function showResults() {
   document.getElementById('product-price').innerText = tierInfo.product.price;
 
   document.getElementById('footer-date').innerText =
-    new Date().toLocaleDateString('en-US',
-      { month: 'short', day: 'numeric', year: 'numeric' });
+    new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-  // Enable email button now that results are ready
   document.getElementById('email-btn').disabled = false;
 
   lucide.createIcons();
@@ -689,14 +729,22 @@ function resetAudit() {
 
   document.getElementById('email-btn').disabled = true;
   document.getElementById('scorecard').classList.add('hidden');
-  document.querySelector('main').classList.remove('hidden');
+  document.getElementById('email-gate').classList.add('hidden');
+  document.getElementById('main-content').classList.remove('hidden');
+  document.getElementById('main-footer').classList.remove('hidden');
   document.getElementById('intro-screen').classList.remove('hidden');
   document.getElementById('intro-screen').classList.add('fade-in');
+  
+  // Reset button state
+  const btn = document.getElementById('unlockBtn');
+  btn.innerHTML = `<span>Reveal My Results</span> <i data-lucide="unlock" class="w-4 h-4"></i>`;
+  btn.disabled = false;
+  
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ════════════════════════════════════════════════════════════════
-// EMAIL RESULTS — guarded, only callable after completion
+// EMAIL RESULTS 
 // ════════════════════════════════════════════════════════════════
 
 function emailResults() {
