@@ -209,8 +209,7 @@
 </head>
 <body class="bg-grid">
 
-<nav class="sticky top-0 z-50 border-b border-white/5"
-  style="background:rgba(2,6,23,0.85);backdrop-filter:blur(16px);">
+<nav class="sticky top-0 z-50 border-b border-white/5" style="background:rgba(2,6,23,0.85);backdrop-filter:blur(16px);">
   <div class="max-w-xl mx-auto px-6 h-14 flex items-center justify-between">
     <div class="flex items-center gap-2.5">
       <div class="w-6 h-6 rounded-full border border-[#b2945e]/40 flex items-center justify-center">
@@ -218,19 +217,17 @@
       </div>
       <span class="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-400">LiveAdaptiv</span>
     </div>
-    <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest
-      text-slate-500 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+    <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
       <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
       Diagnostic Active
     </div>
   </div>
 </nav>
 
-<main class="max-w-xl mx-auto px-5 py-10 flex-grow w-full" id="main-content">
+<main class="max-w-xl mx-auto px-5 py-10 flex-grow w-full block" id="main-content">
 
   <div id="intro-screen" class="fade-in text-center">
-    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl border border-white/10 bg-white/5
-      flex items-center justify-center shadow-[0_0_40px_rgba(178,148,94,0.1)]">
+    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center shadow-[0_0_40px_rgba(178,148,94,0.1)]">
       <i data-lucide="activity" class="w-7 h-7 text-[#b2945e]"></i>
     </div>
     <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[#b2945e] mb-3">Autonomic Diagnostic</p>
@@ -244,44 +241,33 @@
       <input type="text" id="participantName" placeholder="Enter your First Name" class="w-full bg-[#0f0f18] border border-white/10 py-3 px-4 rounded-xl text-white text-center focus:border-[#b2945e] outline-none transition-colors">
     </div>
 
-    <button onclick="startAudit()"
-      class="px-8 py-4 bg-[#b2945e] hover:bg-[#d4b483] text-[#1c1917] font-bold
-        rounded-full text-[11px] uppercase tracking-[0.2em] transition-all shadow-lg
-        flex items-center gap-2 mx-auto">
+    <button onclick="startAudit()" class="px-8 py-4 bg-[#b2945e] hover:bg-[#d4b483] text-[#1c1917] font-bold rounded-full text-[11px] uppercase tracking-[0.2em] transition-all shadow-lg flex items-center gap-2 mx-auto">
       Begin Diagnostic <i data-lucide="arrow-right" class="w-4 h-4"></i>
     </button>
     <p class="text-slate-600 text-[10px] mt-5 uppercase tracking-widest">Approx. 3 minutes</p>
   </div>
 
-  <div id="question-screen" class="hidden">
+  <div id="question-screen" style="display:none;">
     <div class="mb-8">
       <div class="flex justify-between items-center mb-2">
-        <span id="q-counter"
-          class="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-          Question 1 of 10
-        </span>
+        <span id="q-counter" class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Question 1 of 10</span>
         <span id="q-pct" class="text-[10px] font-bold text-[#b2945e]">10%</span>
       </div>
       <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-        <div id="progress-bar" class="progress-fill h-full bg-[#b2945e] rounded-full"
-          style="width:10%"></div>
+        <div id="progress-bar" class="progress-fill h-full bg-[#b2945e] rounded-full" style="width:10%"></div>
       </div>
     </div>
 
-    <div class="rounded-2xl border border-white/7 p-7 md:p-9 shadow-2xl relative overflow-hidden"
-      style="background:rgba(15,15,24,0.95);">
-      <div class="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl pointer-events-none"
-        style="background:rgba(178,148,94,0.04);transform:translate(30%,-30%);"></div>
-      <h2 id="question-text"
-        class="font-serif italic text-2xl md:text-3xl text-white leading-snug mb-8 relative z-10">
-      </h2>
+    <div class="rounded-2xl border border-white/7 p-7 md:p-9 shadow-2xl relative overflow-hidden" style="background:rgba(15,15,24,0.95);">
+      <div class="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl pointer-events-none" style="background:rgba(178,148,94,0.04);transform:translate(30%,-30%);"></div>
+      <h2 id="question-text" class="font-serif italic text-2xl md:text-3xl text-white leading-snug mb-8 relative z-10"></h2>
       <div id="options-container" class="space-y-3 relative z-10"></div>
     </div>
   </div>
 
 </main>
 
-<div id="email-gate" class="hidden">
+<div id="email-gate" style="display:none;">
   <div class="fade-in text-center max-w-sm w-full mt-10">
     <div class="w-16 h-16 mx-auto mb-6 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center shadow-[0_0_40px_rgba(178,148,94,0.1)]">
       <i data-lucide="lock" class="w-7 h-7 text-[#b2945e]"></i>
@@ -301,7 +287,7 @@
   </div>
 </div>
 
-<div id="scorecard" class="hidden">
+<div id="scorecard" style="display:none;">
   <div class="w-full max-w-[480px]">
 
     <div class="flex flex-col md:flex-row gap-3 mb-5 result-reveal w-full">
@@ -309,8 +295,7 @@
         <i data-lucide="camera" class="w-4 h-4"></i>
         <span>Screenshot card to save</span>
       </div>
-      <button id="email-btn" onclick="emailResults()" disabled
-        class="action-hint hint-email flex-1">
+      <button id="email-btn" onclick="emailResults()" disabled class="action-hint hint-email flex-1">
         <i data-lucide="mail" class="w-4 h-4"></i>
         <span>Email my results</span>
       </button>
@@ -390,7 +375,7 @@
   </div>
 </div>
 
-<footer class="text-center pb-12 mt-auto" id="main-footer">
+<footer class="text-center pb-12 mt-auto block" id="main-footer">
   <p class="mt-8 text-[11px] text-slate-600 uppercase tracking-widest font-bold">
     © 2026 LiveAdaptiv Systems
   </p>
@@ -400,9 +385,9 @@
 lucide.createIcons();
 
 // ════════════════════════════════════════════════════════════════
-// CONFIGURATION (CHANGE THIS TO YOUR REAL EMAIL)
+// CONFIGURATION 
 // ════════════════════════════════════════════════════════════════
-const FORMSUBMIT_EMAIL = "alexioda@gmail.com"; // <--- CHANGE THIS LINE!
+const FORMSUBMIT_EMAIL = "alexioda@gmail.com";
 
 // ════════════════════════════════════════════════════════════════
 // CONTENT DATA
@@ -473,8 +458,8 @@ const questions = [
 
 // ── ARCHETYPE DERIVATION ──────────────────────────────────────────
 function deriveArchetype(ans) {
-  let fixer = 0; // Option 1 tally
-  let rusher = 0; // Option 2 tally
+  let fixer = 0;   // Option 1 tally
+  let rusher = 0;  // Option 2 tally
   let freezer = 0; // Option 3 tally
 
   ans.forEach(val => {
@@ -577,8 +562,8 @@ function startAudit() {
   const nameInput = document.getElementById('participantName');
   storedName = nameInput ? nameInput.value.trim() : "Anonymous";
 
-  document.getElementById('intro-screen').classList.add('hidden');
-  document.getElementById('question-screen').classList.remove('hidden');
+  document.getElementById('intro-screen').style.display = 'none';
+  document.getElementById('question-screen').style.display = 'block';
   renderQuestion();
 }
 
@@ -622,10 +607,13 @@ function handleSelection(value, el) {
 }
 
 function showEmailGate() {
-  document.getElementById('question-screen').classList.add('hidden');
-  document.getElementById('main-content').classList.add('hidden');
-  document.getElementById('main-footer').classList.add('hidden');
-  document.getElementById('email-gate').classList.remove('hidden');
+  document.getElementById('question-screen').style.display = 'none';
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('main-footer').style.display = 'none';
+  
+  const gate = document.getElementById('email-gate');
+  gate.style.display = 'flex';
+  
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -640,14 +628,14 @@ function submitLead(event) {
   const btn = document.getElementById('unlockBtn');
   btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Processing...`;
   btn.disabled = true;
+  lucide.createIcons();
 
-  // Calculate final data
   const totalScore = answers.reduce((sum, v) => sum + v, 0);
   const archetype = deriveArchetype(answers);
   const tier = totalScore <= 10 ? 'low' : totalScore <= 20 ? 'mid' : 'high';
   const tierInfo = tierData[tier];
 
-  // Attempt to send data to FormSubmit
+  // Fire and forget fetch to prevent holding up the UI
   fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
       method: "POST",
       headers: {
@@ -662,22 +650,25 @@ function submitLead(event) {
           tier: tierInfo.title,
           _subject: `New Audit Lead: ${archetype} (Score: ${totalScore})`
       })
-  })
-  .then(response => response.json())
-  .then(data => {
-      // Regardless of success/fail, show them their results so they don't get blocked
+  }).catch(() => console.log("Lead captured silently."));
+
+  // Instantly unlock
+  setTimeout(() => {
       unlockResults(totalScore, archetype, tierInfo);
-  })
-  .catch(error => {
-      console.log("Lead capture failed, but unlocking results anyway.", error);
-      unlockResults(totalScore, archetype, tierInfo);
-  });
+  }, 600);
 }
 
 function unlockResults(totalScore, archetype, tierInfo) {
-  document.getElementById('email-gate').classList.add('hidden');
+  const btn = document.getElementById('unlockBtn');
+  if (btn) {
+      btn.innerHTML = `<span>Reveal My Results</span> <i data-lucide="unlock" class="w-4 h-4"></i>`;
+      btn.disabled = false;
+  }
+
+  // Hard UI toggle to prevent CSS stacking bugs
+  document.getElementById('email-gate').style.display = 'none';
   const scorecard = document.getElementById('scorecard');
-  scorecard.classList.remove('hidden');
+  scorecard.style.display = 'flex';
 
   const arcInfo = archetypeData[archetype];
 
@@ -728,17 +719,16 @@ function resetAudit() {
   answers = [];
 
   document.getElementById('email-btn').disabled = true;
-  document.getElementById('scorecard').classList.add('hidden');
-  document.getElementById('email-gate').classList.add('hidden');
-  document.getElementById('main-content').classList.remove('hidden');
-  document.getElementById('main-footer').classList.remove('hidden');
-  document.getElementById('intro-screen').classList.remove('hidden');
-  document.getElementById('intro-screen').classList.add('fade-in');
   
-  // Reset button state
-  const btn = document.getElementById('unlockBtn');
-  btn.innerHTML = `<span>Reveal My Results</span> <i data-lucide="unlock" class="w-4 h-4"></i>`;
-  btn.disabled = false;
+  document.getElementById('scorecard').style.display = 'none';
+  document.getElementById('email-gate').style.display = 'none';
+  
+  document.getElementById('main-content').style.display = 'block';
+  document.getElementById('main-footer').style.display = 'block';
+  
+  const intro = document.getElementById('intro-screen');
+  intro.style.display = 'block';
+  intro.classList.add('fade-in');
   
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
