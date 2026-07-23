@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #0c0a09;
+  color: #fafaf9;
+}
+
+.bg-kinetic {
+  background: radial-gradient(circle at top, #1c1917 0%, #0c0a09 100%);
+}
+
+button:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* Audio Player Dark Mode Tweaks */
+audio::-webkit-media-controls-panel {
+  background-color: #1c1917;
+}
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+  color: #fafaf9;
+}
