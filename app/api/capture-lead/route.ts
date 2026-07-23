@@ -1,28 +1,30 @@
-import { NextResponse } from 'next/server';
+// --- MAILERLITE INTEGRATION ---
+    const API_KEY = process.env.MAILERLITE_API_KEY;
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const { email, archetype, tier, b_name } = body;
-
-    // Honeypot trap
-    if (b_name) {
-      return NextResponse.json({ success: true }, { status: 200 });
+    if (!API_KEY) {
+      throw new Error('Missing MailerLite credentials in Vercel Environment Variables.');
     }
 
-    if (!email || !email.includes('@')) {
-      return NextResponse.json({ error: 'Valid email required' }, { status: 400 });
+    const crmResponse = await fetch(`https://connect.mailerlite.com/api/subscribers`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`
+      },
+      body: JSON.stringify({
+        email: email,
+        fields: { 
+          // MailerLite allows you to create these custom fields in their dashboard
+          kinetic_archetype: archetype, 
+          kinetic_tier: tier 
+        }
+      })
+    });
+
+    if (!crmResponse.ok) {
+      const errorData = await crmResponse.json();
+      console.error('MailerLite API Error:', errorData);
+      throw new Error('Failed to sync with MailerLite');
     }
-
-    // --- CRM INTEGRATION HERE ---
-    // Example: process.env.LOOPS_API_KEY
-    // Replace this block with your specific CRM fetch request as discussed previously.
-    console.log(`Lead Captured: ${email} | ${archetype} | ${tier}`);
-
-    return NextResponse.json({ success: true });
-
-  } catch (error) {
-    console.error('Lead Capture Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
-}
+    // -----------------------------
