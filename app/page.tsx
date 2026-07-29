@@ -203,34 +203,37 @@ export default function KineticDiagnostic() {
     // Metabolic load tiers – provisional thresholds (adjust with data)
     let tierInfo: any = {};
     if (totalScore <= 10) {
-      tierInfo = { 
-        name: "Friction", 
-        class: "border-teal-500 bg-gradient-to-br from-[#0f2a20] to-[#0c0a09]", 
-        color: "text-teal-600", 
-        cta: "Sovereign Command Center", 
-        ctaDesc: "Optimize your baseline systems before they break.", 
-        checkoutUrl: "https://billing.liveadaptiv.com/checkout/buy/sovereign-command-id", 
-        crisis: false 
+      tierInfo = {
+        name: "Friction",
+        class: "border-teal-500 bg-gradient-to-br from-[#0f2a20] to-[#0c0a09]",
+        color: "text-teal-600",
+        cta: "Sovereign Command Center",
+        ctaDesc: "A free daily protocol to metabolize friction before it compounds.",
+        checkoutUrl: "https://sovereign.liveadaptiv.com",
+        isFree: true,
+        crisis: false
       };
     } else if (totalScore <= 20) {
-      tierInfo = { 
-        name: "Smoldering", 
-        class: "border-gold-500 bg-gradient-to-br from-[#2a1f0d] to-[#0c0a09]", 
-        color: "text-gold-600", 
-        cta: "Adaptiv App", 
-        ctaDesc: "Track habits, detect energy leaks, and adjust behaviors daily.", 
-        checkoutUrl: "https://billing.liveadaptiv.com/checkout/buy/adaptiv-app-id", 
-        crisis: false 
+      tierInfo = {
+        name: "Smoldering",
+        class: "border-gold-500 bg-gradient-to-br from-[#2a1f0d] to-[#0c0a09]",
+        color: "text-gold-600",
+        cta: "Adaptiv App",
+        ctaDesc: "Track habits, detect energy leaks, and adjust behaviors daily.",
+        checkoutUrl: "https://billing.liveadaptiv.com/checkout/buy/68001ac0-e86f-4135-846e-7cf66779a923",
+        isFree: false,
+        crisis: false
       };
     } else {
-      tierInfo = { 
-        name: "Inferno", 
-        class: "border-rose-500 bg-gradient-to-br from-[#2a0d0d] to-[#0c0a09]", 
-        color: "text-rose-600", 
-        cta: "Burnout Rescue Workbook", 
-        ctaDesc: "The structured, immediate triage system to halt the spiral.", 
-        checkoutUrl: "https://billing.liveadaptiv.com/checkout/buy/burnout-rescue-id", 
-        crisis: true 
+      tierInfo = {
+        name: "Inferno",
+        class: "border-rose-500 bg-gradient-to-br from-[#2a0d0d] to-[#0c0a09]",
+        color: "text-rose-600",
+        cta: "Burnout Rescue Workbook",
+        ctaDesc: "The structured, immediate triage system to halt the spiral.",
+        checkoutUrl: "https://liveadaptiv.lemonsqueezy.com/checkout/buy/aab07394-9db6-46d1-8972-60038742f1b7",
+        isFree: false,
+        crisis: true
       };
     }
 
@@ -452,13 +455,15 @@ export default function KineticDiagnostic() {
             <h4 className="text-2xl font-serif italic mb-3">{resultData.tierInfo.cta}</h4>
             <p className="text-sm text-stone-600 mb-6">{resultData.tierInfo.ctaDesc}</p>
             
-            <a 
-              href={`${resultData.tierInfo.checkoutUrl}?checkout[email]=${encodeURIComponent(capturedEmail)}`}
-              target="_blank" 
+            <a
+              href={resultData.tierInfo.isFree
+                ? resultData.tierInfo.checkoutUrl
+                : `${resultData.tierInfo.checkoutUrl}?checkout[email]=${encodeURIComponent(capturedEmail)}`}
+              target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-8 py-3 bg-stone-950 text-white font-bold rounded-lg hover:bg-stone-800 transition"
             >
-              Access System Now
+              {resultData.tierInfo.isFree ? "Launch Now" : "Access System Now"}
             </a>
           </div>
         </div>
