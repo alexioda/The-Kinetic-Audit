@@ -5,16 +5,13 @@ import { Lock, ArrowLeft, Headphones, AlertCircle, LockKeyhole, CheckCircle } fr
 
 /**
  * Kinetic Blueprint Diagnostic – LiveAdaptiv Ecosystem
- * 
+ *
  * Methodology:
  * Based on polyvagal theory. Three archetypes correspond to nervous system states:
- * - Rusher: Sympathetic overdrive (fight/flight) – value 2
- * - Fixer: Anxious over‑functioning, mixed sympathetic/dorsal – value 1
- * - Freezer: Dorsal vagal shutdown (burnout) – value 3
- * - Integrated: Ventral vagal (safe, social) – value 0
- *
- * Severity is scored so that higher point totals reflect deeper autonomic dysregulation.
- * The metabolic load tiers are provisional and may be adjusted with population data.
+ * - Rusher: Sympathetic overdrive (fight/flight)
+ * - Fixer: Anxious over-functioning, mixed sympathetic/dorsal
+ * - Freezer: Dorsal vagal shutdown (burnout)
+ * - Integrated: Ventral vagal (safe, social)
  */
 
 const questions = [
@@ -22,9 +19,9 @@ const questions = [
     id: 1,
     text: "When a project timeline suddenly collapses, your immediate physiological response is:",
     options: [
+      { text: "A sense of numbness; I avoid the Slack channels.", value: 3, type: "freezer" },
       { text: "Heart rate spikes; I immediately start firing off directives.", value: 2, type: "rusher" },
       { text: "I feel a weight in my chest and silently rewrite the entire plan myself.", value: 1, type: "fixer" },
-      { text: "A sense of numbness; I avoid the Slack channels.", value: 3, type: "freezer" },
       { text: "I pause, breathe, and systematically assess the new constraints.", value: 0, type: "integrated" }
     ]
   },
@@ -32,9 +29,9 @@ const questions = [
     id: 2,
     text: "How do you internally view the people on your team when under extreme stress?",
     options: [
+      { text: "As threats demanding energy I don't have.", value: 3, type: "freezer" },
       { text: "As obstacles slowing me down.", value: 2, type: "rusher" },
       { text: "As dependents who need me to save them.", value: 1, type: "fixer" },
-      { text: "As threats demanding energy I don't have.", value: 3, type: "freezer" },
       { text: "As capable adults experiencing friction.", value: 0, type: "integrated" }
     ]
   },
@@ -42,9 +39,9 @@ const questions = [
     id: 3,
     text: "Your relationship with your email inbox at 9:00 PM is best described as:",
     options: [
+      { text: "Avoidant. I literally cannot look at the app icon.", value: 3, type: "freezer" },
       { text: "Combative. I must hit inbox zero before I can rest.", value: 2, type: "rusher" },
       { text: "Anxious. I check it to ensure nothing caught fire.", value: 1, type: "fixer" },
-      { text: "Avoidant. I literally cannot look at the app icon.", value: 3, type: "freezer" },
       { text: "Detached. Notifications are off.", value: 0, type: "integrated" }
     ]
   },
@@ -52,9 +49,9 @@ const questions = [
     id: 4,
     text: "When facing a systemic bottleneck, your default operational mode shifts to:",
     options: [
+      { text: "Disengaging until someone else provides a clear directive.", value: 3, type: "freezer" },
       { text: "Overriding the system with sheer force and velocity.", value: 2, type: "rusher" },
       { text: "Absorbing the workload to ensure it gets done correctly.", value: 1, type: "fixer" },
-      { text: "Disengaging until someone else provides a clear directive.", value: 3, type: "freezer" },
       { text: "Identifying the root constraint and adjusting the workflow.", value: 0, type: "integrated" }
     ]
   },
@@ -62,9 +59,9 @@ const questions = [
     id: 5,
     text: "How does your body physically manifest extended periods of friction?",
     options: [
+      { text: "Brain fog, lethargy, and a heavy feeling in my limbs.", value: 3, type: "freezer" },
       { text: "Jaw clenching, shallow breathing, and restless energy.", value: 2, type: "rusher" },
       { text: "Shoulder tension, headaches, and chronic fatigue.", value: 1, type: "fixer" },
-      { text: "Brain fog, lethargy, and a heavy feeling in my limbs.", value: 3, type: "freezer" },
       { text: "I recognize early tension and metabolize it through movement.", value: 0, type: "integrated" }
     ]
   },
@@ -72,9 +69,9 @@ const questions = [
     id: 6,
     text: "When a subordinate makes a critical error, your internal narrative is:",
     options: [
+      { text: "'This whole project is a disaster; I need to step back.'", value: 3, type: "freezer" },
       { text: "'I don't have time for incompetence; I'll push it through myself.'", value: 2, type: "rusher" },
       { text: "'I should have monitored them closer; I will fix this for them.'", value: 1, type: "fixer" },
-      { text: "'This whole project is a disaster; I need to step back.'", value: 3, type: "freezer" },
       { text: "'This is a system failure; how do we build a better guardrail?'", value: 0, type: "integrated" }
     ]
   },
@@ -82,9 +79,9 @@ const questions = [
     id: 7,
     text: "Your approach to establishing and maintaining professional boundaries is:",
     options: [
+      { text: "Rigid and isolating. I build walls to keep demands out.", value: 3, type: "freezer" },
       { text: "Non-existent. Boundaries slow down progress.", value: 2, type: "rusher" },
       { text: "Guilt-ridden. I say 'yes' to protect others from stress.", value: 1, type: "fixer" },
-      { text: "Rigid and isolating. I build walls to keep demands out.", value: 3, type: "freezer" },
       { text: "Clear and communicative. I protect my baseline bandwidth.", value: 0, type: "integrated" }
     ]
   },
@@ -92,9 +89,9 @@ const questions = [
     id: 8,
     text: "If you have a completely open Sunday afternoon, you are most likely to:",
     options: [
+      { text: "Zone out completely in front of a screen to escape.", value: 3, type: "freezer" },
       { text: "Pace the house or get a head start on Monday's tasks.", value: 2, type: "rusher" },
       { text: "Spend it doing favors, errands, or emotional labor for others.", value: 1, type: "fixer" },
-      { text: "Zone out completely in front of a screen to escape.", value: 3, type: "freezer" },
       { text: "Engage in deliberate recovery, hobbies, or active rest.", value: 0, type: "integrated" }
     ]
   },
@@ -102,9 +99,9 @@ const questions = [
     id: 9,
     text: "When conflict arises in a meeting, your autonomic response drives you to:",
     options: [
+      { text: "Go completely silent and wait for it to be over.", value: 3, type: "freezer" },
       { text: "Dominate the conversation and force a resolution.", value: 2, type: "rusher" },
       { text: "Mediate aggressively to make everyone comfortable again.", value: 1, type: "fixer" },
-      { text: "Go completely silent and wait for it to be over.", value: 3, type: "freezer" },
       { text: "Hold space for the friction without absorbing the anxiety.", value: 0, type: "integrated" }
     ]
   },
@@ -112,37 +109,47 @@ const questions = [
     id: 10,
     text: "How do you view your own capacity for output?",
     options: [
+      { text: "Depleted. I am running on fumes and avoiding the crash.", value: 3, type: "freezer" },
       { text: "Infinite, as long as I can keep my momentum high.", value: 2, type: "rusher" },
       { text: "Tied to my worth; I must be useful to be valuable.", value: 1, type: "fixer" },
-      { text: "Depleted. I am running on fumes and avoiding the crash.", value: 3, type: "freezer" },
       { text: "Finite and cyclical. I require systems to sustain it.", value: 0, type: "integrated" }
     ]
   }
 ];
 
+type AnswerRecord = { index: number; value: number; type: string };
+
 export default function KineticDiagnostic() {
   const [view, setView] = useState<'intro' | 'quiz' | 'processing' | 'results'>('intro');
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<any[]>(new Array(questions.length).fill(null));
+  const [answers, setAnswers] = useState<(AnswerRecord | null)[]>(new Array(questions.length).fill(null));
   const [resultData, setResultData] = useState<any>(null);
   const [isGated, setIsGated] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [capturedEmail, setCapturedEmail] = useState("");
+  // Surfaces lead-capture failures in the UI instead of only the browser console,
+  // so a broken /api/capture-lead endpoint doesn't fail completely silently.
+  const [leadCaptureFailed, setLeadCaptureFailed] = useState(false);
 
-  // Restore from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('kineticState');
     if (saved) {
-      const parsed = JSON.parse(saved);
-      setCurrentIndex(parsed.currentIndex);
-      setAnswers(parsed.answers);
-      if (parsed.currentIndex > 0 && parsed.currentIndex < questions.length) {
-        setView('quiz');
+      try {
+        const parsed = JSON.parse(saved);
+        setCurrentIndex(parsed.currentIndex);
+        setAnswers(parsed.answers);
+        if (parsed.currentIndex > 0 && parsed.currentIndex < questions.length) {
+          setView('quiz');
+        }
+      } catch (err) {
+        // Corrupted localStorage shouldn't crash the app on load.
+        console.error('Failed to restore saved quiz state:', err);
+        localStorage.removeItem('kineticState');
       }
     }
   }, []);
 
-  const saveState = (idx: number, ans: any[]) => {
+  const saveState = (idx: number, ans: (AnswerRecord | null)[]) => {
     localStorage.setItem('kineticState', JSON.stringify({ currentIndex: idx, answers: ans }));
   };
 
@@ -153,54 +160,76 @@ export default function KineticDiagnostic() {
     saveState(currentIndex, newAnswers);
   };
 
+  const handleBack = () => {
+    if (currentIndex > 0) {
+      const newIndex = currentIndex - 1;
+      setCurrentIndex(newIndex);
+      saveState(newIndex, answers);
+    }
+  };
+
   const calculateResults = () => {
-    // Aggregate scores by archetype (weighted, not just count)
-    let typeScores = { rusher: 0, fixer: 0, freezer: 0, integrated: 0 };
     let totalScore = 0;
+    const types = { rusher: 0, fixer: 0, freezer: 0, integrated: 0 };
 
     answers.forEach(a => {
+      if (!a) return;
       totalScore += a.value;
-      if (typeScores[a.type as keyof typeof typeScores] !== undefined) {
-        typeScores[a.type as keyof typeof typeScores] += a.value;
-      }
+      if (types[a.type as keyof typeof types] !== undefined) types[a.type as keyof typeof types]++;
     });
 
-    // Determine primary archetype based on highest weighted score
-    const { rusher, fixer, freezer, integrated } = typeScores;
-    const maxScore = Math.max(rusher, fixer, freezer);
-
     let primaryType = "The Integrated";
-    let desc = "Your nervous system demonstrates high autonomic flexibility. You respond to stress without getting stuck in a single defensive state.";
+    let desc = "You exhibit balanced kinetic responses, maintaining ventral vagal stability under pressure.";
     let audioSrc = "/audio/integrated.mp3";
+    let isMixed = false;
 
-    // Only override if there is a dominant dysregulated type
-    if (maxScore > 0) {
-      const candidates: string[] = [];
-      if (rusher === maxScore) candidates.push("The Rusher");
-      if (fixer === maxScore) candidates.push("The Fixer");
-      if (freezer === maxScore) candidates.push("The Freezer");
+    // Fix: previously this compared rusher/fixer/freezer counts against each
+    // other WITHOUT checking whether integrated was actually the highest count
+    // overall. That let a single non-integrated answer, tied against another
+    // single non-integrated answer, override an otherwise strongly regulated
+    // profile (e.g. 8 integrated + 1 freezer + 1 fixer produced "Mixed
+    // Profile: Fixer / Freezer"). Now integrated is included in the same
+    // comparison, so it only loses to a genuinely dominant dysregulated type.
+    const maxOverall = Math.max(types.rusher, types.fixer, types.freezer, types.integrated);
 
-      if (candidates.length === 1) {
-        primaryType = candidates[0];
-        if (primaryType === "The Rusher") {
-          desc = "Your default response to friction is aggressive acceleration. Your sympathetic nervous system stays locked in overdrive.";
-          audioSrc = "/audio/rusher.mp3";
-        } else if (primaryType === "The Fixer") {
-          desc = "Your default response is to absorb the system's anxiety and over‑function, often at the cost of your own reserves.";
-          audioSrc = "/audio/fixer.mp3";
-        } else if (primaryType === "The Freezer") {
-          desc = "Your nervous system pulls the emergency brake, leading to detachment, numbness, and collapse.";
-          audioSrc = "/audio/freezer.mp3";
-        }
-      } else {
-        // Tie – report mixed profile
-        primaryType = `Mixed: ${candidates.join('‑')}`;
-        desc = "You shift between multiple stress responses depending on the trigger. This indicates a complex autonomic pattern that requires a tailored approach.";
-        audioSrc = "/audio/mixed.mp3"; // Will need recording
+    if (maxOverall > 0 && types.integrated < maxOverall) {
+      const dominant: string[] = [];
+      if (types.rusher === maxOverall) dominant.push("Rusher");
+      if (types.fixer === maxOverall) dominant.push("Fixer");
+      if (types.freezer === maxOverall) dominant.push("Freezer");
+
+      if (dominant.length > 1) {
+        isMixed = true;
+        primaryType = `Mixed Profile: ${dominant.join(" / ")}`;
+        desc = `Your autonomic response fluctuates between ${dominant.join(" and ")} patterns depending on the systemic load.`;
+        audioSrc = "/audio/mixed.mp3";
+      } else if (dominant[0] === "Freezer") {
+        primaryType = "The Freezer";
+        desc = "Your nervous system pulls the emergency brake into dorsal shutdown, leading to detachment.";
+        audioSrc = "/audio/freezer.mp3";
+      } else if (dominant[0] === "Rusher") {
+        primaryType = "The Rusher";
+        desc = "Your default response to friction is aggressive sympathetic acceleration.";
+        audioSrc = "/audio/rusher.mp3";
+      } else if (dominant[0] === "Fixer") {
+        primaryType = "The Fixer";
+        desc = "Your default response is to absorb the system's anxiety and over-function.";
+        audioSrc = "/audio/fixer.mp3";
+      }
+    } else if (maxOverall > 0 && types.integrated === maxOverall) {
+      // Integrated tied with a dysregulated type at the top — still worth
+      // naming explicitly rather than silently defaulting to "Integrated"
+      // as if no friction pattern showed up at all.
+      const tiedWith: string[] = [];
+      if (types.rusher === maxOverall) tiedWith.push("Rusher");
+      if (types.fixer === maxOverall) tiedWith.push("Fixer");
+      if (types.freezer === maxOverall) tiedWith.push("Freezer");
+      if (tiedWith.length > 0) {
+        primaryType = "The Integrated";
+        desc = `You are largely regulated under pressure, with an emerging ${tiedWith.join(" and ")} pattern worth watching before it becomes a default.`;
       }
     }
 
-    // Metabolic load tiers – provisional thresholds (adjust with data)
     let tierInfo: any = {};
     if (totalScore <= 10) {
       tierInfo = {
@@ -237,14 +266,14 @@ export default function KineticDiagnostic() {
       };
     }
 
-    setResultData({ primaryType, desc, tierInfo, audioSrc });
+    setResultData({ primaryType, desc, tierInfo, audioSrc, isMixed });
   };
 
   const handleNext = () => {
     if (currentIndex < questions.length - 1) {
-      const nextIdx = currentIndex + 1;
-      setCurrentIndex(nextIdx);
-      saveState(nextIdx, answers);
+      const nextIndex = currentIndex + 1;
+      setCurrentIndex(nextIndex);
+      saveState(nextIndex, answers);
     } else {
       setView('processing');
       calculateResults();
@@ -252,21 +281,14 @@ export default function KineticDiagnostic() {
     }
   };
 
-  const handleBack = () => {
-    if (currentIndex > 0) {
-      const prevIdx = currentIndex - 1;
-      setCurrentIndex(prevIdx);
-      saveState(prevIdx, answers);
-    }
-  };
-
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+    setLeadCaptureFailed(false);
+
     const formData = new FormData(e.target as HTMLFormElement);
     const userEmail = formData.get('email') as string;
-    
+
     try {
       const res = await fetch('/api/capture-lead', {
         method: 'POST',
@@ -278,26 +300,27 @@ export default function KineticDiagnostic() {
           tier: resultData.tierInfo.name
         })
       });
-      
-      if (res.ok) {
-        setCapturedEmail(userEmail);
-        setIsGated(false);
-        localStorage.removeItem('kineticState');
+
+      if (!res.ok) {
+        // The lead was NOT saved server-side. We still let the user through —
+        // it would be a bad experience to block someone from their own
+        // results over a backend hiccup — but this is now visible instead of
+        // silent, both in the console (for local debugging) and in the UI
+        // (so you actually notice if this endpoint breaks in production).
+        console.error('capture-lead returned non-OK status:', res.status, await res.text().catch(() => ''));
+        setLeadCaptureFailed(true);
       } else {
-        // Even if the API fails, let the user through (fallback)
-        setCapturedEmail(userEmail);
-        setIsGated(false);
+        localStorage.removeItem('kineticState');
       }
     } catch (err) {
-      console.error(err);
+      console.error('capture-lead request failed:', err);
+      setLeadCaptureFailed(true);
+    } finally {
       setCapturedEmail(userEmail);
       setIsGated(false);
-    } finally {
       setIsSubmitting(false);
     }
   };
-
-  // ---- VIEW RENDERERS ----
 
   if (view === 'intro') {
     return (
@@ -308,12 +331,12 @@ export default function KineticDiagnostic() {
         </div>
         <p className="text-gold-500 tracking-[0.2em] text-xs font-bold uppercase">LiveAdaptiv Ecosystem</p>
         <h1 className="text-4xl md:text-5xl font-serif italic text-stone-50 leading-tight">The Kinetic Blueprint<br/>Diagnostic.</h1>
-        <p className="text-stone-400 max-w-md mx-auto text-sm leading-relaxed">
-          Identify your default response under pressure, measure your autonomic load, and map your precise path to systemic recovery. 
-          Rooted in polyvagal theory and conceptually aligned with the Maslach Burnout Inventory (MBI). Do not overthink your answers.
-        </p>
+        <p className="text-stone-400 max-w-md mx-auto text-sm leading-relaxed">Identify your default response under pressure, measure your autonomic load, and map your precise path to systemic recovery. Do not overthink your answers.</p>
         <button onClick={() => setView('quiz')} className="mt-8 px-8 py-3 bg-stone-50 text-stone-950 font-bold rounded-lg hover:bg-gold-400 transition-colors">Begin Assessment</button>
-        <p className="text-stone-600 text-xs mt-4 flex items-center justify-center gap-2"><Lock className="w-3 h-3" /> Private & secure. Progress saves automatically.</p>
+        <p className="text-stone-600 text-xs mt-4 flex items-center justify-center gap-2"><Lock className="w-3 h-3" /> Private &amp; secure. Progress saves automatically.</p>
+        <p className="text-stone-500 text-[10px] max-w-md mx-auto mt-6">
+          The Kinetic Blueprint draws on items conceptually aligned with the MBI emotional exhaustion and depersonalization subscales.
+        </p>
       </div>
     );
   }
@@ -330,7 +353,6 @@ export default function KineticDiagnostic() {
 
   if (view === 'quiz') {
     const q = questions[currentIndex];
-    // Correct progress: first question shows 10%, last shows 100%
     const progress = Math.round(((currentIndex + 1) / questions.length) * 100);
     const hasAnswer = answers[currentIndex] !== null;
 
@@ -347,12 +369,12 @@ export default function KineticDiagnostic() {
         </div>
 
         <h2 className="text-2xl font-serif italic text-stone-50 mb-6">{q.text}</h2>
-        
+
         <div className="space-y-3 mb-8" role="radiogroup">
           {q.options.map((opt, idx) => {
             const isSelected = answers[currentIndex]?.index === idx;
             return (
-              <button 
+              <button
                 key={idx}
                 role="radio"
                 aria-checked={isSelected}
@@ -369,17 +391,8 @@ export default function KineticDiagnostic() {
         </div>
 
         <div className="flex justify-between items-center pt-4 border-t border-stone-800">
-          <button 
-            onClick={handleBack} 
-            className={`text-sm text-stone-400 hover:text-stone-200 flex items-center gap-2 ${currentIndex === 0 ? 'invisible' : ''}`}
-          >
-            <ArrowLeft className="w-4 h-4" /> Back
-          </button>
-          <button 
-            onClick={handleNext} 
-            disabled={!hasAnswer} 
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors ${hasAnswer ? 'bg-stone-50 text-stone-950 hover:bg-gold-400' : 'bg-stone-800 text-stone-500 cursor-not-allowed'}`}
-          >
+          <button onClick={handleBack} className={`text-sm text-stone-400 hover:text-stone-200 flex items-center gap-2 ${currentIndex === 0 ? 'invisible' : ''}`}><ArrowLeft className="w-4 h-4" /> Back</button>
+          <button onClick={handleNext} disabled={!hasAnswer} className={`px-6 py-2 rounded-lg font-semibold transition-colors ${hasAnswer ? 'bg-stone-50 text-stone-950 hover:bg-gold-400' : 'bg-stone-800 text-stone-500 cursor-not-allowed'}`}>
             {currentIndex === questions.length - 1 ? 'See Results' : 'Continue'}
           </button>
         </div>
@@ -387,7 +400,6 @@ export default function KineticDiagnostic() {
     );
   }
 
-  // Results view with mixed-profile protocols and enhanced UI
   return (
     <div className="w-full flex-col">
       <div className={`p-8 rounded-2xl mb-8 text-center border ${resultData.tierInfo.class}`}>
@@ -407,7 +419,7 @@ export default function KineticDiagnostic() {
           </div>
           <div>
             <p className="text-xs font-bold text-stone-300">LiveAdaptiv Clinical Team Audio</p>
-            <p className="text-[10px] text-stone-500">Clinical analysis of your archetype</p>
+            <p className="text-[10px] text-stone-500">Listen to the clinical analysis of your systemic state</p>
           </div>
         </div>
         <audio controls className="w-full h-10 rounded">
@@ -418,7 +430,10 @@ export default function KineticDiagnostic() {
       {resultData.tierInfo.crisis && (
         <div className="mb-8 p-6 border border-rose-900/50 bg-rose-950/20 rounded-xl">
           <h3 className="text-rose-500 font-serif italic text-xl mb-2 flex items-center gap-2"><AlertCircle className="w-5 h-5" /> A moment of pause.</h3>
-          <p className="text-stone-400 text-sm leading-relaxed">Your results indicate a critical friction load. You are running on zero reserves. The protocols unlocked below are designed for immediate, acute triage. When you are ready, we have identified a precise system to help you stabilize.</p>
+          <p className="text-stone-400 text-sm leading-relaxed mb-3">Your results indicate a critical friction load deeply entrenched in dorsal vagal shutdown. The protocols unlocked below are designed for immediate, acute triage. When you are ready, we have identified a precise system to help you stabilize.</p>
+          <p className="text-stone-500 text-xs leading-relaxed border-t border-rose-900/30 pt-3">
+            This tool measures workplace friction, not mental health crisis. If you are in crisis or having thoughts of harming yourself, please contact the 988 Suicide &amp; Crisis Lifeline (call or text 988) or go to your nearest emergency room.
+          </p>
         </div>
       )}
 
@@ -440,12 +455,17 @@ export default function KineticDiagnostic() {
         </div>
       ) : (
         <div className="flex-col gap-6 animate-in fade-in duration-1000">
+          {leadCaptureFailed && (
+            <p className="text-[11px] text-stone-500 italic mb-4">
+              We couldn't confirm your email was saved on our end — your results below are unaffected, but you may not receive follow-up materials. Feel free to reach out directly if that matters to you.
+            </p>
+          )}
           <h3 className="text-2xl font-serif italic border-b border-stone-800 pb-2 mb-6">Your Kinetic Protocols</h3>
           <ul className="space-y-4 text-sm text-stone-300">
             <li className="flex gap-3"><CheckCircle className="w-5 h-5 text-gold-500 shrink-0" /> <span><strong>Protocol 1:</strong> Immediate physical grounding. Press feet flat against floor for 60 seconds when overwhelmed.</span></li>
             <li className="flex gap-3"><CheckCircle className="w-5 h-5 text-gold-500 shrink-0" /> <span><strong>Protocol 2:</strong> Audit your "yes". Say no to any new request for the next 48 hours.</span></li>
-            {resultData.primaryType.includes('Mixed') && (
-              <li className="flex gap-3"><CheckCircle className="w-5 h-5 text-gold-500 shrink-0" /> 
+            {resultData.isMixed && (
+              <li className="flex gap-3"><CheckCircle className="w-5 h-5 text-gold-500 shrink-0" />
                 <span><strong>Protocol 3:</strong> Orienting to safety. Gently turn your head left and right, letting your eyes scan the environment without focusing, for 30 seconds. This engages the social engagement system and can interrupt both freeze and fight/flight loops.</span>
               </li>
             )}
@@ -454,7 +474,7 @@ export default function KineticDiagnostic() {
             <p className="text-xs font-bold uppercase tracking-widest text-stone-500 mb-2">Your Next Step</p>
             <h4 className="text-2xl font-serif italic mb-3">{resultData.tierInfo.cta}</h4>
             <p className="text-sm text-stone-600 mb-6">{resultData.tierInfo.ctaDesc}</p>
-            
+
             <a
               href={resultData.tierInfo.isFree
                 ? resultData.tierInfo.checkoutUrl
