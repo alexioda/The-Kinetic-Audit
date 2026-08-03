@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, archetype, tier, b_name } = body;
+    const { email, pattern, tier, b_name } = body;
 
     // 1. Honeypot trap for bots
     if (b_name) {
@@ -30,9 +30,9 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         email: email,
-        fields: { 
-          kinetic_archetype: archetype, 
-          kinetic_tier: tier 
+        fields: {
+          kinetic_archetype: pattern,
+          kinetic_tier: tier
         }
       })
     });
