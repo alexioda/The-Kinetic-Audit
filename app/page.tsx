@@ -45,7 +45,9 @@ import { Lock, ArrowLeft, Headphones, AlertCircle, LockKeyhole, CheckCircle, Gau
  *     uses branded billing.liveadaptiv.com. Move it to the branded subdomain once
  *     you confirm the buy path resolves. Left working as-is so checkout isn't broken.
  *   - /audio/*.mp3 files must exist per pattern (rusher, fixer, freezer, mixed,
- *     sovereign). Missing files hide the player gracefully.
+ *     return-to-baseline). Missing files hide the player gracefully. The
+ *     regulated result is a STATE, not a fourth archetype — its track is a
+ *     universal "return to baseline" briefing, not a "you are a Sovereign" reward.
  */
 
 // ── Product / routing config (edit these, not the logic below) ───────────────
@@ -242,13 +244,21 @@ export default function KineticDiagnostic() {
         // dumps the user back onto the final question. Also guard against a
         // shape mismatch from a previously-shipped version of this assessment
         // (different question count) — a stale save from before this update
-        // would otherwise index past the end of `assessment` and crash.
+        // would otherwise misalign answers to the wrong questions.
+        //
+        // `currentIndex > 0` alone would drop a saved answer to question 1:
+        // selecting an option there saves state while currentIndex is still 0,
+        // so a reload before advancing lost that answer. Checking for any
+        // non-null answer catches that case too.
+        const hasProgress =
+          Array.isArray(parsed.answers) && parsed.answers.some((a: unknown) => a !== null);
         if (
           Array.isArray(parsed.answers) &&
           parsed.answers.length === assessment.length &&
           typeof parsed.currentIndex === 'number' &&
-          parsed.currentIndex > 0 &&
-          parsed.currentIndex < assessment.length
+          parsed.currentIndex >= 0 &&
+          parsed.currentIndex < assessment.length &&
+          hasProgress
         ) {
           setCurrentIndex(parsed.currentIndex);
           setAnswers(parsed.answers);
@@ -302,11 +312,11 @@ export default function KineticDiagnostic() {
     // --- Resolve the pattern (which default dominates under pressure) ---
     const maxOverall = Math.max(types.rusher, types.fixer, types.freezer, types.integrated);
 
-    let primaryType = "Sovereign Response";
-    let desc = "Under pressure, you're currently metabolizing friction rather than being run by it — regulated, responsive, sovereign.";
-    let audioSrc = "/audio/sovereign.mp3";
+    let primaryType = "A Regulated Baseline";
+    let desc = "Under pressure, you're currently metabolizing friction rather than being run by it. This isn't a fourth type — it's a state, the one all three patterns return to. Sovereignty isn't never leaving it; it's how fast you come back.";
+    let audioSrc = "/audio/return-to-baseline.mp3";
     let patternProtocol =
-      "Maintenance protocol. Keep one daily recovery anchor non-negotiable — the practice that holds this is the practice you'll drop first when load climbs.";
+      "Maintenance protocol. Keep one daily recovery anchor non-negotiable — the practice that holds this is the practice you'll drop first when load climbs. The three defaults are mapped in full in Metabolize.";
     let dominant: PatternType | null = null;
     let isMixed = false;
 
@@ -320,7 +330,7 @@ export default function KineticDiagnostic() {
         isMixed = true;
         const label = tied.map(cap).join(" / ");
         primaryType = `Mixed Default: ${label}`;
-        desc = `Right now your default shifts between ${joinWithAnd(tied.map(cap))} depending on the load. That fluidity is information, not a flaw — it tells you which state to catch first.`;
+        desc = `Right now your default shifts between ${joinWithAnd(tied.map(cap), "and")} depending on the load. That fluidity is information, not a flaw — it tells you which state to catch first.`;
         audioSrc = "/audio/mixed.mp3";
         patternProtocol =
           "Orienting protocol. Slowly turn your head left and right, letting your eyes drift across the room without fixing on anything, for 30 seconds. This re-engages the social-engagement system and can interrupt both the freeze and the fight/flight loop.";
@@ -347,14 +357,38 @@ export default function KineticDiagnostic() {
         }
       }
     } else if (maxOverall > 0 && types.integrated === maxOverall) {
-      // Sovereign is (tied for) highest, but a dysregulated pattern is emerging.
+      // Regulated is (tied for) highest. This is NOT a fourth archetype — it is
+      // a state. But we still surface the pattern they LEAN toward under heavier
+      // load, pulled from their actual answers: either a survival pattern tied at
+      // the top (emerging), or the highest-scoring one below it (quiet lean).
+      primaryType = "A Regulated Baseline";
+      audioSrc = "/audio/return-to-baseline.mp3";
+
       const emerging: PatternType[] = [];
       if (types.rusher === maxOverall) emerging.push("rusher");
       if (types.fixer === maxOverall) emerging.push("fixer");
       if (types.freezer === maxOverall) emerging.push("freezer");
+
+      const leanMax = Math.max(types.rusher, types.fixer, types.freezer);
+      const lean: PatternType[] = [];
+      if (leanMax > 0) {
+        if (types.rusher === leanMax) lean.push("rusher");
+        if (types.fixer === leanMax) lean.push("fixer");
+        if (types.freezer === leanMax) lean.push("freezer");
+      }
+
       if (emerging.length > 0) {
-        primaryType = "Sovereign Response";
-        desc = `You're largely regulated under pressure, with an emerging ${joinWithAnd(emerging.map(cap))} pattern worth catching before it becomes the default.`;
+        desc = `You're largely regulated under pressure — no pattern is running the show. There's an emerging ${joinWithAnd(emerging.map(cap), "and")} lean worth catching before it becomes the default. That's the one to watch, not to fix.`;
+        patternProtocol =
+          `Watch protocol. Your lean is ${emerging.map(cap).join(" / ")}. Learn its earliest physical signal — noticing it IS the Return Rate. The pattern is mapped in full in Metabolize.`;
+      } else if (lean.length > 0) {
+        desc = `You're regulated right now — no survival pattern is running the show. If anything tips you under heavier load, it leans toward ${joinWithAnd(lean.map(cap), "or")}. Worth knowing before it gets loud.`;
+        patternProtocol =
+          `Watch protocol. Your quiet lean is ${lean.map(cap).join(" / ")}. You don't need to fix it — just learn its early signal so your Return Rate stays fast. It's mapped in full in Metabolize.`;
+      } else {
+        desc = "You're regulated right now, and no single pattern surfaced. The three defaults — Rusher, Fixer, Freezer — are the terrain, not a verdict. Knowing all three is what keeps your Return Rate fast.";
+        patternProtocol =
+          "Map protocol. Read the three defaults — Rusher, Fixer, Freezer — as states, not types. Metabolize walks all three, and the Return Rate that keeps you here.";
       }
     }
 
@@ -649,8 +683,11 @@ function cap(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-function joinWithAnd(items: string[]): string {
+// Grammatical list join ("Rusher", "Rusher and Fixer", "Rusher, Fixer, and
+// Freezer") — up to three pattern names can tie, and plain .join(conjunction)
+// reads as "Rusher and Fixer and Freezer" once all three do.
+function joinWithAnd(items: string[], conjunction: string): string {
   if (items.length <= 1) return items.join("");
-  if (items.length === 2) return items.join(" and ");
-  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+  if (items.length === 2) return items.join(` ${conjunction} `);
+  return `${items.slice(0, -1).join(", ")}, ${conjunction} ${items[items.length - 1]}`;
 }
