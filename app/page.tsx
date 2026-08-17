@@ -474,7 +474,12 @@ export default function KineticDiagnostic() {
           b_name: formData.get('b_name'),
           pattern: resultData.primaryType,
           loadScore: resultData.loadScore,
-          tier: resultData.tierInfo.name
+          tier: resultData.tierInfo.name,
+          desc: resultData.desc,
+          patternProtocol: resultData.patternProtocol,
+          ctaTitle: resultData.tierInfo.cta,
+          ctaDesc: resultData.tierInfo.ctaDesc,
+          ctaUrl: resultData.tierInfo.checkoutUrl
         })
       });
 
