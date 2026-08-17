@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server';
 
-// Normalizes resultData.primaryType (a full display string like "The Freezer"
-// or "Mixed Default: Rusher / Fixer") into the clean tag your MailerLite
-// automation conditions actually check against.
 function normalizeArchetype(primaryType: string): string {
   const lower = (primaryType || '').toLowerCase();
   if (lower.includes('mixed')) return 'mixed';
@@ -13,10 +10,7 @@ function normalizeArchetype(primaryType: string): string {
   return 'unknown';
 }
 
-// Fire a completion notification email via Resend. Sends from your verified
-// send.liveadaptiv.com domain. Non-blocking: a failure here must never block
-// or fail the user's response.
-async function notifyOnCompletion(
+async function notifyOwner(
   email: string,
   archetype: string,
   tier: string
@@ -26,7 +20,7 @@ async function notifyOnCompletion(
   const FROM_EMAIL = 'alerts@send.liveadaptiv.com';
 
   if (!RESEND_API_KEY) {
-    console.error('RESEND_API_KEY missing — skipping completion notification.');
+    console.error('RESEND_API_KEY missing — skipping owner notification.');
     return;
   }
 
@@ -47,19 +41,84 @@ async function notifyOnCompletion(
 
     if (!res.ok) {
       const body = await res.text().catch(() => '');
-      console.error('Resend notification failed:', res.status, body);
+      console.error('Owner notification failed:', res.status, body);
     }
   } catch (err) {
-    console.error('Resend notification request failed:', err);
+    console.error('Owner notification request failed:', err);
+  }
+}
+
+async function sendResultsToClient(
+  email: string,
+  primaryType: string,
+  desc: string,
+  patternProtocol: string,
+  ctaTitle: string,
+  ctaDesc: string,
+  ctaUrl: string
+): Promise<void> {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  const FROM_EMAIL = 'results@send.liveadaptiv.com';
+
+  if (!RESEND_API_KEY) {
+    console.error('RESEND_API_KEY missing — skipping client results email.');
+    return;
+  }
+
+  const text = [
+    `Your Kinetic Blueprint Results`,
+    ``,
+    `Your current default under pressure: ${primaryType}`,
+    ``,
+    desc,
+    ``,
+    `Your protocol:`,
+    patternProtocol,
+    ``,
+    `Your next step: ${ctaTitle}`,
+    ctaDesc,
+    ctaUrl,
+  ].join('\n');
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: `LiveAdaptiv <${FROM_EMAIL}>`,
+        to: [email],
+        subject: `Your Kinetic Blueprint: ${primaryType}`,
+        text,
+      }),
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      console.error('Client results email failed:', res.status, body);
+    }
+  } catch (err) {
+    console.error('Client results email request failed:', err);
   }
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, pattern, tier, b_name } = body;
+    const {
+      email,
+      pattern,
+      tier,
+      b_name,
+      desc,
+      patternProtocol,
+      ctaTitle,
+      ctaDesc,
+      ctaUrl,
+    } = body;
 
-    // 1. Honeypot trap for bots
     if (b_name) {
       return NextResponse.json({ success: true }, { status: 200 });
     }
@@ -68,18 +127,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Valid email required' }, { status: 400 });
     }
 
-    // 2. Push to MailerLite API
+    const archetype = normalizeArchetype(pattern);
+
+    await Promise.all([
+      notifyOwner(email, archetype, tier),
+      sendResultsToClient(email, pattern, desc, patternProtocol, ctaTitle, ctaDesc, ctaUrl),
+    ]);
+
     const API_KEY = process.env.MAILERLITE_API_KEY;
     const GROUP_ID = process.env.MAILERLITE_GROUP_ID;
 
     if (!API_KEY || !GROUP_ID) {
       throw new Error('Missing MailerLite credentials in Vercel Environment Variables.');
     }
-
-    const archetype = normalizeArchetype(pattern);
-
-    // Fire-and-log notification email — does not block or affect the response.
-    await notifyOnCompletion(email, archetype, tier);
 
     const crmResponse = await fetch(`https://connect.mailerlite.com/api/subscribers`, {
       method: 'POST',
@@ -101,10 +161,6 @@ export async function POST(request: Request) {
     if (!crmResponse.ok) {
       const errorData = await crmResponse.json().catch(() => ({}));
       console.error('MailerLite API Error:', errorData);
-      // Log and continue rather than fail the whole request — the frontend
-      // already treats a non-2xx capture-lead response as non-fatal (it still
-      // shows the user their results either way). No reason to also throw
-      // here and mask that this was specifically a MailerLite sync issue.
       return NextResponse.json({ success: true, mailerliteSynced: false });
     }
 
