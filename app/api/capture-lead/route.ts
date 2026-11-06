@@ -58,7 +58,7 @@ async function notifyOwner(
   tier: string
 ): Promise<void> {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  const NOTIFY_EMAIL = 'alexioda@gmail.com';
+  const NOTIFY_EMAIL = 'alex@liveadaptiv.com';
   const FROM_EMAIL = 'alerts@send.liveadaptiv.com';
 
   if (!RESEND_API_KEY) {
