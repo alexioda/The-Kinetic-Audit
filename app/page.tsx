@@ -327,6 +327,9 @@ export default function KineticDiagnostic() {
                 {isSubmitting ? 'Securing...' : 'Show My Protocols'}
               </button>
             </form>
+            <p className="text-stone-500 text-[11px] mt-4 max-w-sm mx-auto">
+              We send your result and email to our email provider so we can deliver your results and follow-ups. See our <a href="https://www.liveadaptiv.com/privacy.html" className="underline hover:text-stone-300">Privacy Policy</a>.
+            </p>
           </div>
         </div>
       ) : (
