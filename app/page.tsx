@@ -185,7 +185,7 @@ export default function KineticDiagnostic() {
       <div className="w-full text-center space-y-6">
         <div className="flex justify-center gap-3 mb-6 opacity-70">
           <span className="text-[10px] font-bold tracking-widest text-stone-400 uppercase border border-stone-800 px-2 py-1 rounded">Polyvagal-Informed</span>
-          <span className="text-[10px] font-bold tracking-widest text-stone-400 uppercase border border-stone-800 px-2 py-1 rounded">No Third-Party Sharing</span>
+          <span className="text-[10px] font-bold tracking-widest text-stone-400 uppercase border border-stone-800 px-2 py-1 rounded">We never sell your data</span>
         </div>
         <p className="text-gold-500 tracking-[0.2em] text-xs font-bold uppercase">LiveAdaptiv Ecosystem</p>
         <h1 className="text-4xl md:text-5xl font-serif italic text-stone-50 leading-tight">The Kinetic Blueprint<br/>Diagnostic.</h1>
@@ -327,6 +327,9 @@ export default function KineticDiagnostic() {
                 {isSubmitting ? 'Securing...' : 'Show My Protocols'}
               </button>
             </form>
+            <p className="text-stone-500 text-[11px] mt-4 max-w-sm mx-auto">
+              We send your result and email to our email provider so we can deliver your results and follow-ups. See our <a href="https://www.liveadaptiv.com/privacy.html" className="underline hover:text-stone-300">Privacy Policy</a>.
+            </p>
           </div>
         </div>
       ) : (

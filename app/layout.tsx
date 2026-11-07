@@ -30,8 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="text-center p-6 border-t border-stone-900 mt-auto">
           <p className="text-stone-600 text-[10px]">
             &copy; {new Date().getFullYear()} LiveAdaptiv. Educational purposes only. Not medical advice. 
-            <a href="#" className="underline hover:text-stone-400 ml-2">Privacy Policy</a> |
-            <a href="#" className="underline hover:text-stone-400 ml-2">Methodology</a>
+            <a href="https://www.liveadaptiv.com/privacy.html" className="underline hover:text-stone-400 ml-2">Privacy Policy</a>
           </p>
         </footer>
         {/* Vercel Analytics automatically tracks page views here */}
